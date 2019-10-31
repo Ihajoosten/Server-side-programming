@@ -8,7 +8,7 @@ namespace Core.Interfaces
 {
     public interface IDishRepo
     {
-        IQueryable<Entities.Dish> Dishes { get; }
+        IQueryable<Dish> Dishes { get; }
 
         List<Dish> GetDishes();
 
@@ -16,8 +16,8 @@ namespace Core.Interfaces
 
         void CreateDish(Dish dish);
 
-        void UpdateDish(int? id);
+        void UpdateDish(Dish dish);
 
-        void DeleteDish(int? id);
+        void DeleteDish(Dish dish);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Core.Entities
@@ -30,5 +31,9 @@ namespace Core.Entities
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = true)]
         public decimal Price { get; set; }
+
+        [Required]
+        [Column("DishMeals")]
+        public ICollection<MealDishes> Meals { get; set; } = new List<MealDishes>();
     }
 }

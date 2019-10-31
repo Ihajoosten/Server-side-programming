@@ -15,10 +15,10 @@ namespace Core.Interfaces
 
         Meal GetMealById(int? id);
 
-        bool CreateMeal(Meal dish, Dish[] dishes);
+        bool CreateMeal(Meal meal, Dish[] dishes);
 
-        void UpdateMeal(int? id);
+        void UpdateMeal(Meal meal);
 
-        void DeleteMeal(int? id);
+        void DeleteMeal(Meal meal);
     }
 }
