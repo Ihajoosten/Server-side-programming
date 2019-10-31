@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Infrastructure.Chef;
+using Microsoft.EntityFrameworkCore;
+using Core.Interfaces;
 
 namespace Chef
 {
@@ -30,6 +33,12 @@ namespace Chef
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            services.AddDbContext<ChefDbContext>(options =>
+                options.UseSqlServer(Configuration["Data:Products:ConnectionString"]));
+
+            services.AddTransient<IMealRepo, EFMealRepo>();
+            services.AddTransient<IDishRepo, EFDishRepo>();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
