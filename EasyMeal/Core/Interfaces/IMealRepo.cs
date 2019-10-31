@@ -9,7 +9,7 @@ namespace Core.Interfaces
     public interface IMealRepo
     {
 
-        IQueryable<Meal> Dishes { get; }
+        IQueryable<Meal> Meals { get; }
 
         List<Meal> GetMeals();
 
