@@ -1,5 +1,5 @@
 language: csharp
-solution: EasyMeal.sln
+solution: C:\Users\LucJo\Desktop\Server-side-programming\Server-side-programming\EasyMeal\EasyMeal.sln
 
 mono:
   - latest
