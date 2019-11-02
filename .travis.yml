@@ -13,4 +13,4 @@ branches:
 
 script:
   - dotnet restore
-  - dotnet test
+  - dotnet build
