@@ -1,5 +1,5 @@
 language: csharp
-solution: EasyMeal.sln
+solution: EasyMeal\EasyMeal.sln
 
 mono:
   - latest
