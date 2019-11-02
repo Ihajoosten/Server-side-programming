@@ -1,14 +1,7 @@
 language: csharp
+mono: none
+dotnet: 3.0.100
 solution: ./EasyMeal/EasyMeal.sln
-dist: trusty
-
-install:
-  - sudo apt-get install nunit-console
-  - nuget restore ./EasyMeal/EasyMeal.sln
-
-script:
-  - xbuild ./EasyMeal/EasyMeal.sln
-
 mono:
   - 4.2.3
 os:
@@ -17,3 +10,7 @@ os:
 branches:
   only:
     - master
+
+script:
+  - dotnet restore
+  - dotnet test
