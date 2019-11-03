@@ -1,2 +1,2 @@
-# Server-side-programming [![Build Status](https://travis-ci.com/LucJoostenNL/Server-side-programming.svg?token=MzyseizasM3XhpqpM8gg&branch=master)](https://travis-ci.com/LucJoostenNL/Server-side-programming)
+# Server-side-programming [![Build Status](https://dev.azure.com/LucJoosten1234/LucJoosten1234/_apis/build/status/LucJoosten1234-ASP.NET%20Core-CI?branchName=master)](https://dev.azure.com/LucJoosten1234/LucJoosten1234/_build/latest?definitionId=4&branchName=master)
 This is an individual server-side programming assignement for the first period of my second year. This contains a Web GUI with CRUD-operations for a Chef as admin, an Web GUI for Customers to order Meals based on the weekplans of the Chef and a Level 2 &amp; 3 RESTful Web API
