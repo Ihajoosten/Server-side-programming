@@ -12,6 +12,8 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
+solution: ./EasyMeal/EasyMeal.sln
+
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
