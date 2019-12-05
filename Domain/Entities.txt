@@ -55,7 +55,6 @@ Voor morgen uitwerken entiteiten met alle annotations boven de props
 
 / *********** Menu **************/
 
-	- string name
 	- ICollection<Meal> meals 
 	- int week
 	- int year

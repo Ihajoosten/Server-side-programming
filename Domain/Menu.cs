@@ -7,18 +7,15 @@ namespace Domain
 {
     public class Menu
     {
+        public Menu() { }
+        
         [Required]
-        public Client Client { get; set; }
+        public int Week { get; set; }
 
         [Required]
-        public Dish Dish { get; set; }
+        public int Year { get; set; }
 
         [Required]
-        [Display(Name = "Dish Size")]
-        public DishSize Size { get; set; }
-
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime OrderDate { get; set; }
+        public ICollection<Meal> Meals { get; set; } = new List<Meal>();
     }
 }
