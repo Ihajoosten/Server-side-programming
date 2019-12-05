@@ -11,14 +11,13 @@ namespace DomainServices
 
         IQueryable<Order> Order { get; }
 
+        // As a customer I want to see the order details
         Order GetOrderById(int? id);
 
+        // As a customer I want to see a list with orders
         List<Order> GetOrders();
 
+        // As a customer I want to create a new order
         void CreateOrder(Order order);
-
-        void UpdateOrder(int? id);
-
-        void DeleteOrder(int? id);
     }
 }

@@ -10,6 +10,7 @@ namespace DomainServices
     {
         IQueryable<Cook> Cook { get; }
 
+        // As a new Cook I want to register myself
         void CreateCook(Cook cook);
 
     }

@@ -10,14 +10,19 @@ namespace DomainServices
     {
         IQueryable<Meal> Meal { get; }
 
+        // As a Cook I want to get a Meal by ID to see the details
         Meal GetMealById(int? id);
 
+        // As a Cook I want to see a list of Meals
         List<Meal> GetMeals();
 
+        // As a Cook I want to create a new Meal
         void CreateMeal(Meal meal);
 
+        // As a Cook I want to update an existing Meal
         void UpdateMeal(int? id);
 
+        // As a Cook I want to delete incorrect Meals
         void DeleteMeal(int? id);
     }
 }
