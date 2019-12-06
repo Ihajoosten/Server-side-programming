@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20191206133512_initial-migration.cs" />
-    <Compile Remove="Migrations\20191206133512_initial-migration.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Client\" />
   </ItemGroup>
 

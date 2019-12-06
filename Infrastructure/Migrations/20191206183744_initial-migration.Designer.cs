@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(CookDbContext))]
-    [Migration("20191206134326_initial-migration")]
+    [Migration("20191206183744_initial-migration")]
     partial class initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("CookId");
 
+                    b.Property<string>("DType")
+                        .IsRequired();
+
                     b.Property<string>("Description")
                         .IsRequired();
 
@@ -95,8 +98,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Restriction");
 
                     b.Property<int>("Size");
-
-                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 

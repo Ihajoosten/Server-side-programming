@@ -4,6 +4,5 @@ using System.Text;
 
 namespace Domain
 {
-    public enum DishSize
-    { Small, Medium, Large }
+    public enum DishSize { Small, Medium, Large }
 }

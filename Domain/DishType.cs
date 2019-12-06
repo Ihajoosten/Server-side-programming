@@ -4,6 +4,5 @@ using System.Text;
 
 namespace Domain
 {
-    public enum DishType
-    { Starter, Main, Dessert }
+    public enum DishType { Starter, Main, Dessert }
 }

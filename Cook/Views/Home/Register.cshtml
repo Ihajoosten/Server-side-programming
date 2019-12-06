@@ -12,7 +12,9 @@
     <link rel="stylesheet" type="text/css" href="~/lib/font-awesome/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="~/css/landing.css">
 </head>
-<body>
+<body id="page-top">
+    @await Html.PartialAsync("_NavbarPartial")
+
     <div class="form-body">
         <div class="row">
             <div class="form-holder">
@@ -30,12 +32,15 @@
                             <div class="form-button text-center">
                                 <button id="submit" type="submit" class="ibtn">Register</button>
                             </div>
+                            <div class="text-white text-center">
+                                Already an account? <a href="forget2.html">Log in</a>
+                            </div>
                         </form>
-                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    @await Html.PartialAsync("_FooterPartial")
 </body>
 </html>

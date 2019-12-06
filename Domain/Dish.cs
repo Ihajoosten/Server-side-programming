@@ -39,5 +39,6 @@ namespace Domain
 
         [Required]
         public Cook Cook { get; set; }
+
     }
 }

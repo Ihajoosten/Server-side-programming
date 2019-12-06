@@ -13,8 +13,8 @@
     <link rel="stylesheet" type="text/css" href="~/css/landing.css">
 </head>
 <body>
-
-    <header class="masthead">
+    @await Html.PartialAsync("_NavbarPartial")
+    <div class="form-body text-white vh-100">
         <div class="container h-100">
             <div class="row h-100">
                 <div class="col-lg-12 my-auto">
@@ -26,6 +26,8 @@
                 </div>
             </div>
         </div>
-    </header>
+    </div>
+    @await Html.PartialAsync("_FooterPartial")
+
 </body>
 </html>

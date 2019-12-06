@@ -87,7 +87,7 @@ namespace Infrastructure.Migrations
                     Name = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: false),
                     Image = table.Column<byte[]>(nullable: false),
-                    Type = table.Column<int>(nullable: false),
+                    DType = table.Column<string>(nullable: false),
                     Restriction = table.Column<int>(nullable: false),
                     Size = table.Column<int>(nullable: false),
                     Price = table.Column<decimal>(nullable: false),
