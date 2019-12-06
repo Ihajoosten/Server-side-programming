@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Cook.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Infrastructure.Cook;
+using DomainServices;
 
 namespace Cook
 {
@@ -36,11 +38,19 @@ namespace Cook
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+               options.UseSqlServer(
+                   Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<CookDbContext>(options =>
+               options.UseSqlServer(Configuration["Cook:ConnectionString"]));
+
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddTransient<IDishService, EFDishService>();
+            services.AddTransient<IMealService, EFMealService>();
+            services.AddTransient<IMenuService, EFMenuService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
