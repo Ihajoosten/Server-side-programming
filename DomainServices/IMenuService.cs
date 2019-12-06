@@ -18,12 +18,12 @@ namespace DomainServices
         List<Menu> GetMenus();
 
         // As a Cook I want to create a new Menu
-        void CreateMenu(Menu menu);
+        void CreateMenu(Menu menu, Meal[] meals);
 
         // As a Cook I want to update an existing Menu
-        void UpdateMenu(int? id);
+        void UpdateMenu(Menu menu);
 
         // As a Cook I want to delete incorrect Menus
-        void DeleteMenu(int? id);
+        void DeleteMenu(Menu menu);
     }
 }

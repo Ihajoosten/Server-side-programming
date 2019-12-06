@@ -20,6 +20,8 @@ namespace Infrastructure.Cook
 
         public async void CreateMeal(Meal meal, Dish[] dishes)
         {
+            if (meal == null) throw new OperationCanceledException();
+
             if (dishes.Length == 3)
             {
                 try
@@ -40,6 +42,7 @@ namespace Infrastructure.Cook
 
         public async void DeleteMeal(Meal meal)
         {
+            if (meal == null) throw new NullReferenceException();
             var entry = _context.Meal.FirstOrDefault(m => m.Id == meal.Id);
             _context.Meal.Remove(entry);
             await _context.SaveChangesAsync();
@@ -55,6 +58,7 @@ namespace Infrastructure.Cook
 
         public async void UpdateMeal(Meal meal)
         {
+            if (meal == null) throw new NullReferenceException();
             _context.Meal.Update(meal);
             await _context.SaveChangesAsync();
         }

@@ -20,6 +20,7 @@ namespace Infrastructure.Cook
 
         public async void CreateDish(Dish dish)
         {
+            if (dish == null) throw new OperationCanceledException();
             var entry = _context.Dish.FirstOrDefault(p => p.Id == dish.Id);
             if (entry != null)
             {
@@ -38,7 +39,6 @@ namespace Infrastructure.Cook
         public async void DeleteDish(Dish dish)
         {
             if (dish == null) throw new NullReferenceException();
-
             var entry = _context.Dish.FirstOrDefault(d => d.Id == dish.Id);
             _context.Dish.Remove(entry);
             await _context.SaveChangesAsync();
@@ -47,7 +47,6 @@ namespace Infrastructure.Cook
         public Dish GetDishById(int? id)
         {
             if (id == null) throw new KeyNotFoundException();
-
             var dish = _context.Dish.SingleOrDefault(d => d.Id == id);
             return dish;
         }
@@ -56,9 +55,10 @@ namespace Infrastructure.Cook
 
         public async void UpdateDish(Dish dish)
         {
+            if (dish == null) throw new NullReferenceException();
             var x = _context.Dish.FirstOrDefault(d => d.Id == dish.Id);
             _context.Dish.Update(x);
-           await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
     }
 }
