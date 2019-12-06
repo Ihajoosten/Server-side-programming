@@ -15,6 +15,16 @@ namespace Cook.Controllers
             return View();
         }
 
+        public IActionResult Login()
+        {
+            return View("Login");
+        }
+
+        public IActionResult Register()
+        {
+            return View("Register");
+        }
+
         public IActionResult Privacy()
         {
             return View();
