@@ -17,12 +17,12 @@ namespace DomainServices
         List<Meal> GetMeals();
 
         // As a Cook I want to create a new Meal
-        void CreateMeal(Meal meal);
+        void CreateMeal(Meal meal, Dish[] dishes);
 
         // As a Cook I want to update an existing Meal
-        void UpdateMeal(int? id);
+        void UpdateMeal(Meal meal);
 
         // As a Cook I want to delete incorrect Meals
-        void DeleteMeal(int? id);
+        void DeleteMeal(Meal meal);
     }
 }

@@ -20,7 +20,7 @@ namespace Infrastructure.Cook
 
         public async void CreateDish(Dish dish)
         {
-            var entry = _context.Dish.FirstOrDefault(p => p.Name == dish.Name);
+            var entry = _context.Dish.FirstOrDefault(p => p.Id == dish.Id);
             if (entry != null)
             {
                 entry.Name = dish.Name;
@@ -35,20 +35,20 @@ namespace Infrastructure.Cook
             await _context.SaveChangesAsync();
         }
 
-        public async void DeleteDish(int? id)
+        public async void DeleteDish(Dish dish)
         {
-            if (id == null) throw new KeyNotFoundException();
+            if (dish == null) throw new NullReferenceException();
 
-            var entry = await _context.Dish.FindAsync(id);
+            var entry = _context.Dish.FirstOrDefault(d => d.Id == dish.Id);
             _context.Dish.Remove(entry);
             await _context.SaveChangesAsync();
         }
 
-        public Dish GetDishByName(string name)
+        public Dish GetDishById(int? id)
         {
-            if (name == null) throw new KeyNotFoundException();
+            if (id == null) throw new KeyNotFoundException();
 
-            var dish = _context.Dish.SingleOrDefault(d => d.Name == name);
+            var dish = _context.Dish.SingleOrDefault(d => d.Id == id);
             return dish;
         }
 
@@ -56,7 +56,8 @@ namespace Infrastructure.Cook
 
         public async void UpdateDish(Dish dish)
         {
-           _context.Dish.Update(dish);
+            var x = _context.Dish.FirstOrDefault(d => d.Id == dish.Id);
+            _context.Dish.Update(x);
            await _context.SaveChangesAsync();
         }
     }

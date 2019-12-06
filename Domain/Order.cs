@@ -9,6 +9,8 @@ namespace Domain
     {
         public Order() { }
 
+        [Key]
+        public int Id { get; set; }
 
         [Required]
         public Client Client { get; set; }

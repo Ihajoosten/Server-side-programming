@@ -8,7 +8,10 @@ namespace Domain
     public class Menu
     {
         public Menu() { }
-        
+
+        [Key]
+        public int Id { get; set; }
+
         [Required]
         public int Week { get; set; }
 

@@ -7,6 +7,8 @@ namespace Domain
 {
     public class Meal
     {
+        [Key]
+        public int Id { get; set; }
 
         [Required]
         [DataType(DataType.Date)]

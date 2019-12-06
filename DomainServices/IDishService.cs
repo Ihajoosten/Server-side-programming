@@ -11,7 +11,7 @@ namespace DomainServices
         IQueryable<Dish> Dish { get; }
 
         // As a Cook I want to get a Dish by Name to see the details
-        Dish GetDishByName(string name);
+        Dish GetDishById(int? id);
 
         // As a Cook I want to see a list of Dishes
         List<Dish> GetDishes();
@@ -23,7 +23,7 @@ namespace DomainServices
         void UpdateDish(Dish dish);
 
         // As a Cook I want to delete incorrect Dishes
-        void DeleteDish(int? id);
+        void DeleteDish(Dish dish);
 
     }
 }

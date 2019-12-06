@@ -12,12 +12,14 @@ namespace Infrastructure.Cook
         public CookDbContext(DbContextOptions<CookDbContext> options) : base(options){}
 
         public DbSet<Dish> Dish { get; set; }
+        public DbSet<Meal> Meal { get; set; }
 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Dish>();
+            modelBuilder.Entity<Meal>();
         }
     }
 }
