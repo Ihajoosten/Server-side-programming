@@ -2,9 +2,8 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
         <div class="container">
             <img src="~/img/EasyMeal_icon.svg" height="50" width="50" alt="Alternate Text" />
-            <a class="navbar-brand js-scroll-trigger ml-3" href="#page-top">Easy Meal</a>
+            <a class="navbar-brand js-scroll-trigger ml-3" asp-action="Index" asp-controller="Home">Easy Meal</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                Menu
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -16,7 +15,7 @@
                         <a class="nav-link js-scroll-trigger" href="#features">Meals</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#contact">Dishes</a>
+                        <a class="nav-link js-scroll-trigger" asp-action="Index" asp-controller="Dishes">Dishes</a>
                     </li>
                 </ul>
             </div>

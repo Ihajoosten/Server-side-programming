@@ -1,0 +1,95 @@
+﻿@model Domain.Dish
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/font-awesome/css/all.min.css">
+    <link href="~/css/landing.css" rel="stylesheet" />
+</head>
+<body>
+    @await Html.PartialAsync("_NavbarPartial")
+
+    <div class="form-body">
+        <div class="row">
+            <div class="form-holder">
+                <div class="form-content">
+                    <form asp-action="Create" enctype="multipart/form-data" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <nav class="col-sm mb-3">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                                    <li class="breadcrumb-item"><a asp-area="" asp-controller="Dishes" asp-action="Index">Dishes</a></li>
+                                    <li class="breadcrumb-item">Create</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <input asp-for="Description" class="form-control" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm form-group">
+                                <label asp-for="Image" class="control-label"></label>
+                                <div class="custom-file">
+                                    <input asp-for="Image" type="file" class="custom-file-input" id="customFile">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                </div>
+                                <span asp-validation-for="Image" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm form-group">
+                                <label asp-for="Type" class="control-label"></label>
+                                <select asp-for="Type" class="form-control" asp-items="ViewBag.Types"></select>
+                                <span asp-validation-for="Type" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm form-group">
+                                <label asp-for="Restriction" class="control-label"></label>
+                                <select asp-for="Restriction" class="form-control" asp-items="ViewBag.Restrictions"></select>
+                                <span asp-validation-for="Restriction" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm form-group">
+                                <label asp-for="Size" class="control-label"></label>
+                                <select asp-for="Size" class="form-control" asp-items="ViewBag.Sizes"></select>
+                                <span asp-validation-for="Size" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-4 form-group text-left offset-sm-4">
+                            <label asp-for="Price" class="control-label"></label>
+                            <input asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="text-center">
+                                    <button class="form-group btn btn-secondary mt-5" asp-action="Index">Back to List</button>
+                                    <button type="submit" class="form-group btn btn-warning mt-5"> Create new dish</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_FooterPartial")
+</body>
+</html>
+
+
