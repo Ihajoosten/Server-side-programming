@@ -1,26 +1,32 @@
 ﻿    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-        <div class="container">
-            <img src="~/img/EasyMeal_icon.svg" height="50" width="50" alt="Alternate Text" />
-            <a class="navbar-brand js-scroll-trigger ml-3" asp-action="Index" asp-controller="Home">Easy Meal</a>
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#download">Menus</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#features">Meals</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" asp-action="Index" asp-controller="Dishes">Dishes</a>
-                    </li>
-                </ul>
-            </div>
+<nav class="navbar navbar-expand-sm fixed-top" id="mainNav">
+    <div class="container">
+        <img src="~/img/EasyMeal_icon.svg" height="50" width="50" alt="Logo" class="text-center" />
+        <a class="navbar-brand js-scroll-trigger text-center ml-2" style="font-size:25px; color: orange" asp-controller="Home" asp-action="Index">Easy Meal</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-sm-auto mt-2">
+                <li class="nav-item">
+                    <a style="color: white" asp-area="" asp-controller="Home" asp-action="Login">
+                        <button class="btn btn-sm btn-outline-primary js-scroll-trigger m-1">Login</button>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a style="color: white" asp-area="" asp-controller="Home" asp-action="Register">
+                        <button class="btn btn-sm btn-outline-warning js-scroll-trigger m-1">Register</button>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a style="color: white" asp-area="" asp-controller="Home" asp-action="Logout">
+                        <button class="btn btn-sm btn-outline-danger js-scroll-trigger m-1">Logout</button>
+                    </a>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

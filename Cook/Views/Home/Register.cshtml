@@ -1,46 +1,52 @@
 ﻿@{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Login";
     Layout = null;
 }
+
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="~/img/EasyMeal_icon.svg" rel="icon" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="~/lib/font-awesome/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="~/css/landing.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Luc Joosten">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Custom styles for this template -->
+    <link href="~/css/landing.css" rel="stylesheet">
+    <link href="~/css/login.css" rel="stylesheet" />
 </head>
+
 <body id="page-top">
+
+    <!-- Navigation -->
     @await Html.PartialAsync("_NavbarPartial")
 
-    <div class="form-body">
-        <div class="row">
-            <div class="form-holder">
-                <div class="form-content">
-                    <div class="form-items">
-                        <h3 class="text-center">Register Cook</h3>
-                        <div class="page-links text-center">
-                            <a asp-area="" asp-controller="Home" asp-action="Login">Login</a>
-                            <a asp-area="" asp-controller="Home" asp-action="Register" class="active">Register</a>
+    <section id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4 mx-auto m-4">
+                    <h3 class="text-center mb-3">Register Cook</h3>
+                    <form>
+                        <input id="input-login" class="form-control m-2" type="text" name="name" placeholder="Full Name" required>
+                        <input id="input-login" class="form-control m-2" type="email" name="username" placeholder="E-mail Address" required>
+                        <input id="input-login" class="form-control m-2" type="password" name="password" placeholder="Password" required>
+                        <input class="m-2" type="checkbox" id="chk1"><label for="chk1">Remeber me</label>
+                        <div class="form-button text-center">
+                            <button id="submit" type="submit" class="btn btn-outline-warning col m-2 mb-2">Login</button>
                         </div>
-                        <form>
-                            <input class="form-control" type="text" name="name" placeholder="Full Name" required>
-                            <input class="form-control" type="email" name="email" placeholder="E-mail Address" required>
-                            <input class="form-control" type="password" name="password" placeholder="Password" required>
-                            <div class="form-button text-center">
-                                <button id="submit" type="submit" class="ibtn">Register</button>
-                            </div>
-                            <div class="text-white text-center">
-                                Already an account? <a href="forget2.html">Log in</a>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="text-center">
+                            <a asp-controller="Home" asp-action="Login">Already an account? Sign in!</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Footer -->
     @await Html.PartialAsync("_FooterPartial")
 </body>
 </html>

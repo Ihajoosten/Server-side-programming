@@ -1,0 +1,14 @@
+﻿input#input-login {
+    background-color: #222;
+}
+
+input#input-login:hover {
+    background-color: #d5d5d5;
+    transition: 1s;
+}
+
+button a {
+    list-style: none;
+    text-decoration: none;
+    color: #fff;
+}

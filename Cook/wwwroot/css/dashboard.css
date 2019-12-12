@@ -1,0 +1,68 @@
+﻿ol.breadcrumb {
+    padding: 0.25rem;
+    background-color: orange;
+}
+
+ol li a {
+    color: #222;
+    list-style: none;
+    text-decoration: none;
+}
+
+    ol li a:hover {
+        color: #fff;
+        list-style: none;
+        text-decoration: none;
+        border-bottom: 2px solid #222;
+        transition: 0.75s;
+    }
+
+.sidebar {
+    margin: 0;
+    padding: 0;
+    height: 265px;
+    width: 100px;
+    background-color: #1f1f1f;
+    overflow: auto;
+}
+
+    .sidebar a {
+        display: block;
+        color: #fff;
+        padding: 20px;
+        text-decoration: none;
+        border-bottom: 2px solid #555;
+    }
+
+        .sidebar a.active {
+            background-color: orange;
+            color: white;
+        }
+
+        .sidebar a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+
+div.content {
+    margin-left: 50px;
+    padding: 1px 16px;
+    margin-bottom: 80px;
+}
+
+@media screen and (max-width: 700px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        margin: 15px;
+    }
+
+        .sidebar a {
+            float: left;
+        }
+
+    div.content {
+        margin-left: 0;
+    }
+}

@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="~/lib/font-awesome/css/all.min.css">
     <link href="~/css/landing.css" rel="stylesheet" />
 </head>
-<body>
+<body style="background-color: #222 !important">
     @await Html.PartialAsync("_NavbarPartial")
 
     <div class="form-body">
@@ -75,17 +75,16 @@
                             <input asp-for="Price" class="form-control" />
                             <span asp-validation-for="Price" class="text-danger"></span>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="text-center">
-                                    <button class="form-group btn btn-secondary mt-5" asp-action="Index">Back to List</button>
-                                    <button type="submit" class="form-group btn btn-warning mt-5"> Create new dish</button>
-                                </div>
-                            </div>
+
+                        <div class="text-center">
+                            <button class="form-group btn btn-secondary mt-5" asp-action="Index">Back to List</button>
+                            <button type="submit" class="form-group btn btn-warning mt-5"> Create new dish</button>
                         </div>
+
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
     @await Html.PartialAsync("_FooterPartial")
