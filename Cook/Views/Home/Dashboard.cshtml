@@ -24,7 +24,6 @@
                 <div class="col-sm-8 offset-sm-2">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     </ol>
                 </div>
             </div>
@@ -37,19 +36,19 @@
                     <a class="active" href="#home">Home</a>
                     <a href="#news">Menus</a>
                     <a href="#contact">Meals</a>
-                    <a href="#about">Dishes</a>
+                    <a asp-controller="Dishes" asp-action="Index">Dishes</a>
                 </div>
                 <div class="col-md-7 content">
-                    <h2>Responsive Sidebar Example</h2>
+                    <h3>Responsive Sidebar Example</h3>
                     <p>This example use media queries to transform the sidebar to a top navigation bar when the screen size is 700px or less.</p>
                     <p>We have also added a media query for screens that are 400px or less, which will vertically stack and center the navigation links.</p>
-                    <h3>Resize the browser window to see the effect.</h3>
+                    <h4>Resize the browser window to see the effect.</h4>
                     <br />
                     <hr />
-                    <h2>Responsive Sidebar Example</h2>
+                    <h3>Responsive Sidebar Example</h3>
                     <p>This example use media queries to transform the sidebar to a top navigation bar when the screen size is 700px or less.</p>
                     <p>We have also added a media query for screens that are 400px or less, which will vertically stack and center the navigation links.</p>
-                    <h3>Resize the browser window to see the effect.</h3>
+                    <h4>Resize the browser window to see the effect.</h4>
                 </div>
             </div>
         </div>

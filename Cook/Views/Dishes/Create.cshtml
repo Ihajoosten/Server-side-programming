@@ -1,94 +1,114 @@
 ﻿@model Domain.Dish
 
 @{
-    ViewData["Title"] = "Create";
     Layout = null;
 }
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="~/lib/font-awesome/css/all.min.css">
-    <link href="~/css/landing.css" rel="stylesheet" />
-</head>
-<body style="background-color: #222 !important">
-    @await Html.PartialAsync("_NavbarPartial")
 
-    <div class="form-body">
-        <div class="row">
-            <div class="form-holder">
-                <div class="form-content">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Luc Joosten">
+    <title>Create Dish</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Custom styles for this template -->
+    <link href="~/css/landing.css" rel="stylesheet">
+    <link href="~/css/dish/create.css" rel="stylesheet" />
+</head>
+
+<body id="page-top">
+
+    <!-- Navigation -->
+    @await Html.PartialAsync("_NavbarPartial")
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a asp-area="" asp-controller="Dishes" asp-action="Index">Dishes</a></li>
+                        <li class="breadcrumb-item">Create</li>
+
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <h3 class="text-left mb-5">New Dish</h3>
                     <form asp-action="Create" enctype="multipart/form-data" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="row">
-                            <nav class="col-sm mb-3">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                                    <li class="breadcrumb-item"><a asp-area="" asp-controller="Dishes" asp-action="Index">Dishes</a></li>
-                                    <li class="breadcrumb-item">Create</li>
-                                </ol>
-                            </nav>
-                        </div>
                         <div class="row text-left">
-                            <div class="col-sm form-group">
+                            <div class="col-md form-group">
                                 <label asp-for="Name" class="control-label"></label>
-                                <input asp-for="Name" class="form-control" />
+                                <input id="createDishInput" asp-for="Name" class="form-control" placeholder="Name" />
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
-                            <div class="col-sm form-group">
+                            <div class="col-md form-group">
                                 <label asp-for="Description" class="control-label"></label>
-                                <input asp-for="Description" class="form-control" />
+                                <input id="createDishInput" asp-for="Description" class="form-control" placeholder="Description" />
                                 <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
-                            <div class="col-sm form-group">
-                                <label asp-for="Image" class="control-label"></label>
-                                <div class="custom-file">
-                                    <input asp-for="Image" type="file" class="custom-file-input" id="customFile">
-                                    <label class="custom-file-label" for="customFile">Choose file</label>
-                                </div>
-                                <span asp-validation-for="Image" class="text-danger"></span>
+                            <div class="col-md form-group">
+                                <label asp-for="Price" class="control-label"></label>
+                                <input id="createDishInput" asp-for="Price" class="form-control" placeholder="Price" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="row text-left">
-                            <div class="col-sm form-group">
+                            <div class="col-md form-group">
                                 <label asp-for="Type" class="control-label"></label>
                                 <select asp-for="Type" class="form-control" asp-items="ViewBag.Types"></select>
                                 <span asp-validation-for="Type" class="text-danger"></span>
                             </div>
-                            <div class="col-sm form-group">
+                            <div class="col-md form-group">
                                 <label asp-for="Restriction" class="control-label"></label>
                                 <select asp-for="Restriction" class="form-control" asp-items="ViewBag.Restrictions"></select>
                                 <span asp-validation-for="Restriction" class="text-danger"></span>
                             </div>
-                            <div class="col-sm form-group">
+                            <div class="col-md form-group">
                                 <label asp-for="Size" class="control-label"></label>
                                 <select asp-for="Size" class="form-control" asp-items="ViewBag.Sizes"></select>
                                 <span asp-validation-for="Size" class="text-danger"></span>
                             </div>
-
                         </div>
-                        <div class="col-sm-4 form-group text-left offset-sm-4">
-                            <label asp-for="Price" class="control-label"></label>
-                            <input asp-for="Price" class="form-control" />
-                            <span asp-validation-for="Price" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-4 form-group text-left ">
+                                <label asp-for="Image" class="control-label"></label>
+                                <div class="custom-file">
+                                    <input id="createDishInput" asp-for="Image" type="file" class="custom-file-input">
+                                    <label class="custom-file-label" asp-for="Image">Choose file</label>
+                                </div>
+                                <span asp-validation-for="Image" class="text-danger"></span>
+                            </div>
                         </div>
-
-                        <div class="text-center">
-                            <button class="form-group btn btn-secondary mt-5" asp-action="Index">Back to List</button>
-                            <button type="submit" class="form-group btn btn-warning mt-5"> Create new dish</button>
+                        <div class="row text-right">
+                            <div class="col-1 form-group text-center mt-4 mr-5">
+                                <button type="submit" class="btn btn-outline-warning">Save</button>
+                            </div>
+                            <div class="col-1 form-group text-center mt-4">
+                                <button class="btn btn-outline-secondary" asp-action="Index">Back</button>
+                            </div>
                         </div>
-
                     </form>
                 </div>
             </div>
-
         </div>
-    </div>
+    </section>
+    
+
+    <!-- Footer -->
     @await Html.PartialAsync("_FooterPartial")
 </body>
 </html>
+
 
 
