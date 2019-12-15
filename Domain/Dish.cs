@@ -19,7 +19,7 @@ namespace Domain
         [Required]
         public string Description { get; set; }
 
-        [Required]
+        //[Required]
         public byte[] Image { get; set; }
 
         [Required]
@@ -37,8 +37,8 @@ namespace Domain
         [DisplayFormat(ApplyFormatInEditMode = true)]
         public decimal Price { get; set; }
 
-        [Required]
-        public Cook Cook { get; set; }
+        //[Required]
+        //public Cook Cook { get; set; }
 
     }
 }

@@ -75,13 +75,10 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CookId");
-
                     b.Property<string>("Description")
                         .IsRequired();
 
-                    b.Property<byte[]>("Image")
-                        .IsRequired();
+                    b.Property<byte[]>("Image");
 
                     b.Property<int?>("MealId");
 
@@ -97,8 +94,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Type");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CookId");
 
                     b.HasIndex("MealId");
 
@@ -143,11 +138,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Dish", b =>
                 {
-                    b.HasOne("Domain.Cook", "Cook")
-                        .WithMany()
-                        .HasForeignKey("CookId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Domain.Meal")
                         .WithMany("Dishes")
                         .HasForeignKey("MealId");

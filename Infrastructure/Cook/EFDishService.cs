@@ -18,30 +18,50 @@ namespace Infrastructure.Cook
 
         public IQueryable<Dish> Dish => _context.Dish;
 
-        public async void CreateDish(Dish dish)
+        public void CreateDish(Dish dish)
         {
-            if (dish == null) throw new OperationCanceledException();
-            var entry = _context.Dish.FirstOrDefault(p => p.Id == dish.Id);
-            if (entry != null)
+            //if (dish == null) throw new OperationCanceledException();
+            //var entry = _context.Dish.FirstOrDefault(p => p.Id == dish.Id);
+            //if (entry != null)
+            //{
+            //    entry.Name = dish.Name;
+            //    entry.Image = dish.Image;
+            //    entry.Description = dish.Description;
+            //    entry.Price = dish.Price;
+            //    entry.Restriction = dish.Restriction;
+            //    entry.Size = dish.Size;
+            //    entry.Type = dish.Type;
+            //    entry.Cook = dish.Cook;
+            //}
+
+            if (dish.Id == 0)
             {
-                entry.Name = dish.Name;
-                entry.Image = dish.Image;
-                entry.Description = dish.Description;
-                entry.Price = dish.Price;
-                entry.Restriction = dish.Restriction;
-                entry.Size = dish.Size;
-                entry.Type = dish.Type;
-                entry.Cook = dish.Cook;
+                _context.Dish.Add(dish);
             }
-            await _context.SaveChangesAsync();
+            else
+            {
+                Dish entry = _context.Dish.FirstOrDefault(p => p.Id == dish.Id);
+                if (entry != null)
+                {
+                    entry.Name = dish.Name;
+                    entry.Image = dish.Image;
+                    entry.Description = dish.Description;
+                    entry.Price = dish.Price;
+                    entry.Restriction = dish.Restriction;
+                    entry.Size = dish.Size;
+                    entry.Type = dish.Type;
+                    //entry.Cook = dish.Cook;
+                }
+            }
+            _context.SaveChanges();
         }
 
-        public async void DeleteDish(Dish dish)
+        public void DeleteDish(Dish dish)
         {
             if (dish == null) throw new NullReferenceException();
             var entry = _context.Dish.FirstOrDefault(d => d.Id == dish.Id);
             _context.Dish.Remove(entry);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
         public Dish GetDishById(int? id)
@@ -53,12 +73,10 @@ namespace Infrastructure.Cook
 
         public List<Dish> GetDishes() => _context.Dish.ToList();
 
-        public async void UpdateDish(Dish dish)
+        public void UpdateDish(Dish dish)
         {
-            if (dish == null) throw new NullReferenceException();
-            var x = _context.Dish.FirstOrDefault(d => d.Id == dish.Id);
-            _context.Dish.Update(x);
-            await _context.SaveChangesAsync();
+            _context.Dish.Update(dish);
+            _context.SaveChanges();
         }
     }
 }

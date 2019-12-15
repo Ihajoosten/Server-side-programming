@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class initialmigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -86,23 +86,16 @@ namespace Infrastructure.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: false),
-                    Image = table.Column<byte[]>(nullable: false),
-                    DType = table.Column<string>(nullable: false),
+                    Image = table.Column<byte[]>(nullable: true),
+                    Type = table.Column<int>(nullable: false),
                     Restriction = table.Column<int>(nullable: false),
                     Size = table.Column<int>(nullable: false),
                     Price = table.Column<decimal>(nullable: false),
-                    CookId = table.Column<int>(nullable: false),
                     MealId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Dish", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Dish_Cook_CookId",
-                        column: x => x.CookId,
-                        principalTable: "Cook",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Dish_Meal_MealId",
                         column: x => x.MealId,
@@ -110,11 +103,6 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Dish_CookId",
-                table: "Dish",
-                column: "CookId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Dish_MealId",

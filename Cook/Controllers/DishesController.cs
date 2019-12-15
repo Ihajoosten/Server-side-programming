@@ -17,8 +17,10 @@ namespace Cook.Controllers
     {
         private readonly IDishService _service;
 
-        public DishesController(IDishService service) => _service = service;
-
+        public DishesController(IDishService service)
+        {
+            _service = service;
+        }
 
         // GET: Dishes
         public ViewResult Index() => View(_service.Dish.ToList());
@@ -104,7 +106,7 @@ namespace Cook.Controllers
             {
                 new SelectListItem
                 {
-                    Text = "Select Restrictions",
+                    Text = "Select Restriction",
                     Value = ""
                 }
             };
@@ -127,7 +129,7 @@ namespace Cook.Controllers
                 sizes.Add(new SelectListItem { Text = Enum.GetName(typeof(DishSize), size), Value = size.ToString() });
             }
             ViewBag.Sizes = sizes;
-            return View();
+            return View(new Dish());
         }
 
         // POST: Dishes/Create

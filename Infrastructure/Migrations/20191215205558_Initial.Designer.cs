@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(CookDbContext))]
-    [Migration("20191206183744_initial-migration")]
-    partial class initialmigration
+    [Migration("20191215205558_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -77,16 +77,10 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CookId");
-
-                    b.Property<string>("DType")
-                        .IsRequired();
-
                     b.Property<string>("Description")
                         .IsRequired();
 
-                    b.Property<byte[]>("Image")
-                        .IsRequired();
+                    b.Property<byte[]>("Image");
 
                     b.Property<int?>("MealId");
 
@@ -99,9 +93,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("Size");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Type");
 
-                    b.HasIndex("CookId");
+                    b.HasKey("Id");
 
                     b.HasIndex("MealId");
 
@@ -146,11 +140,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Dish", b =>
                 {
-                    b.HasOne("Domain.Cook", "Cook")
-                        .WithMany()
-                        .HasForeignKey("CookId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Domain.Meal")
                         .WithMany("Dishes")
                         .HasForeignKey("MealId");
