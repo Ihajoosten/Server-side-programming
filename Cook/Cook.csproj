@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\css\menu\" />
-    <Folder Include="wwwroot\css\meal\" />
   </ItemGroup>
 
 </Project>
