@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Domain.Meal>
+﻿@model IEnumerable<Domain.Menu>
 
 @{
     Layout = null;
@@ -12,12 +12,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="Luc Joosten">
-    <title>Meals</title>
+    <title>Menus</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- Custom styles for this template -->
     <link href="~/css/landing.css" rel="stylesheet">
-    <link href="~/css/meal/index.css" rel="stylesheet" />
+    <link href="~/css/menu/index.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
 </head>
 <body>
@@ -29,7 +29,7 @@
                 <div class="col-sm-8 offset-sm-2">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a asp-area="" asp-controller="Meals" asp-action="Index">Meals</a></li>
+                        <li class="breadcrumb-item"><a asp-area="" asp-controller="Menus" asp-action="Index">Menus</a></li>
                         <li class="breadcrumb-item">Index</li>
 
                     </ol>
@@ -41,26 +41,27 @@
     <div class="container">
         <div class="row offset-md-2">
             <div class="col-md-10 content">
-                <a asp-controller="Meals" asp-action="Create"><button class="btn btn-outline-warning text-center">+ New Meal</button></a>
+                <a asp-controller="Menus" asp-action="Create"><button class="btn btn-outline-warning text-center">+ New Menu</button></a>
                 <div class="row mt-4">
-                    @for (int i = 0; i < 4; i++)
+                    @for (int i = 0; i < 8; i++)
                     {
                         <div class="col-md-4 card-header-pills mr-1 mb-3">
                             <div class="card-body text-black-50">
-                                <h6 class="card-title text-white-50">Date valid</h6>
-                                @if (@i < 3)
+                                <h6 class="card-title text-white-50">Week Nr</h6>
+                                <h6 class="card-title text-white-50">Year</h6>
+                                @if (@i < 7)
                                 {
-                                    <span><p class="badge badge-pill badge-warning card-text"><i class="fas fa-exclamation-triangle" style="margin-right:5px;"></i>@i/3 meals</p></span>
+                                    <span><p class="badge badge-pill badge-warning card-text"><i class="fas fa-exclamation-triangle" style="margin-right:5px;"></i>@i/7 meals</p></span>
                                 }
                                 else
                                 {
-                                    <span><p class="badge badge-pill badge-warning card-text"><i class="fas fa-check-circle" style="margin-right:5px;"></i>@i/3 meals</p></span>
+                                    <span><p class="badge badge-pill badge-warning card-text"><i class="fas fa-check-circle" style="margin-right:5px;"></i>@i/7 meals</p></span>
 
                                 }
                                 <ol class="text-white-50 mt-2">
                                     @for (int y = 0; y < i; y++)
                                     {
-                                        <li>Dish Name</li>
+                                        <li>Meals Name</li>
                                     }
                                 </ol>
                                 <div class="text-center mt-4">
