@@ -5,11 +5,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Cook.Models;
+using DomainServices;
+using Domain;
 
 namespace Cook.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IDishService _dishService;
+        private readonly IMealService _mealService;
+        private readonly IMenuService _menuService;
+
+        public HomeController(IDishService dishService, IMealService mealService, IMenuService menuService)
+        {
+            _dishService = dishService;
+            _mealService = mealService;
+            _menuService = menuService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -27,6 +40,12 @@ namespace Cook.Controllers
 
         public IActionResult Dashboard()
         {
+            List<Menu> menus = _menuService.GetMenus();
+            List<Meal> meals = _mealService.GetMeals();
+            List<Dish> dishes = _dishService.GetDishes();
+            ViewBag.Menus = menus;
+            ViewBag.Meals = meals;
+            ViewBag.Dishes = dishes;
             return View("Dashboard");
         }
 

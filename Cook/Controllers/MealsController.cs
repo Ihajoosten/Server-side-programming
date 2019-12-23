@@ -7,16 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Domain;
 using Infrastructure.Cook;
+using DomainServices;
+using Cook.Models;
 
 namespace Cook.Controllers
 {
     public class MealsController : Controller
     {
         private readonly CookDbContext _context;
+        private readonly IDishService _dishService;
+        private readonly IMealService _mealService;
 
-        public MealsController(CookDbContext context)
+        public MealsController(CookDbContext context, IDishService dishService, IMealService mealService)
         {
             _context = context;
+            _dishService = dishService;
+            _mealService = mealService;
         }
 
         // GET: Meals
@@ -46,23 +52,43 @@ namespace Cook.Controllers
         // GET: Meals/Create
         public IActionResult Create()
         {
+            List<Dish> starters = new List<Dish>();
+            List<Dish> mains = new List<Dish>();
+            List<Dish> desserts = new List<Dish>();
+            var types = new List<String>();
+            
+            foreach (DishType type in Enum.GetValues(typeof(DishType)))
+            {
+                types.Add(type.ToString());
+            }
+            foreach (Dish dish in _dishService.GetDishes())
+            {
+                if (dish.Type.ToString() == types[0]) starters.Add(dish);
+                else if (dish.Type.ToString() == types[1]) mains.Add(dish);
+                else if (dish.Type.ToString() == types[2]) desserts.Add(dish);
+            }
+            ViewBag.Starters = starters;
+            ViewBag.Mains = mains;
+            ViewBag.Desserts = desserts;
             return View();
         }
 
         // POST: Meals/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DateValid")] Meal meal)
+        public IActionResult Create(CreateMealModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(meal);
-                await _context.SaveChangesAsync();
+                Meal meal = new Meal() { DateValid = model.DateForMeal };
+                Dish start = _dishService.Dish.First(d => d.Id == model.StarterId);
+                Dish main = _dishService.Dish.First(d => d.Id == model.MainId);
+                Dish dessert = _dishService.Dish.First(d => d.Id == model.DessertId);
+                var dishes = new Dish[] { start, main, dessert };
+                _mealService.CreateMeal(meal, dishes);
                 return RedirectToAction(nameof(Index));
             }
-            return View(meal);
+            return View(model);
         }
 
         // GET: Meals/Edit/5

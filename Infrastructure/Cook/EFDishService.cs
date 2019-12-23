@@ -20,21 +20,7 @@ namespace Infrastructure.Cook
 
         public void CreateDish(Dish dish)
         {
-            //if (dish == null) throw new OperationCanceledException();
-            //var entry = _context.Dish.FirstOrDefault(p => p.Id == dish.Id);
-            //if (entry != null)
-            //{
-            //    entry.Name = dish.Name;
-            //    entry.Image = dish.Image;
-            //    entry.Description = dish.Description;
-            //    entry.Price = dish.Price;
-            //    entry.Restriction = dish.Restriction;
-            //    entry.Size = dish.Size;
-            //    entry.Type = dish.Type;
-            //    entry.Cook = dish.Cook;
-            //}
-
-            if (dish.Id == 0)
+           if (dish.Id == 0)
             {
                 _context.Dish.Add(dish);
             }

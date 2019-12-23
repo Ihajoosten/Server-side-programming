@@ -18,7 +18,7 @@ namespace Infrastructure.Cook
 
         public IQueryable<Meal> Meal => _context.Meal;
 
-        public async void CreateMeal(Meal meal, Dish[] dishes)
+        public void CreateMeal(Meal meal, Dish[] dishes)
         {
             if (meal == null) throw new OperationCanceledException();
 
@@ -30,8 +30,8 @@ namespace Infrastructure.Cook
                     {
                         meal.Dishes.Add(item);
                     }
-                    await _context.AddAsync(meal);
-                    await _context.SaveChangesAsync();
+                    _context.AddAsync(meal);
+                    _context.SaveChangesAsync();
                 }
                 catch (Exception)
                 {
@@ -40,12 +40,12 @@ namespace Infrastructure.Cook
             }
         }
 
-        public async void DeleteMeal(Meal meal)
+        public void DeleteMeal(Meal meal)
         {
             if (meal == null) throw new NullReferenceException();
             var entry = _context.Meal.FirstOrDefault(m => m.Id == meal.Id);
             _context.Meal.Remove(entry);
-            await _context.SaveChangesAsync();
+            _context.SaveChangesAsync();
         }
 
         public Meal GetMealById(int? id)
@@ -56,11 +56,11 @@ namespace Infrastructure.Cook
 
         public List<Meal> GetMeals() => _context.Meal.ToList();
 
-        public async void UpdateMeal(Meal meal)
+        public void UpdateMeal(Meal meal)
         {
             if (meal == null) throw new NullReferenceException();
             _context.Meal.Update(meal);
-            await _context.SaveChangesAsync();
+            _context.SaveChangesAsync();
         }
     }
 }

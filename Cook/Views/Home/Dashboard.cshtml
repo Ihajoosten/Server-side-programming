@@ -21,7 +21,7 @@
     <header>
         <div class="container">
             <div class="row">
-                <div class="col-sm-8 offset-sm-2">
+                <div class="col-md-8 offset-sm-2">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a></li>
                     </ol>
@@ -29,6 +29,11 @@
             </div>
         </div>
     </header>
+    @{
+        var menus = ViewBag.Menus.Count;
+        var meals = ViewBag.Meals.Count;
+        var dishes = ViewBag.Dishes.Count;
+    }
 
         <div class="container">
             <div class="row offset-md-2">
@@ -38,17 +43,14 @@
                     <a asp-controller="Meals" asp-action="Index">Meals</a>
                     <a asp-controller="Dishes" asp-action="Index">Dishes</a>
                 </div>
-                <div class="col-md-7 content">
-                    <h3>Responsive Sidebar Example</h3>
-                    <p>This example use media queries to transform the sidebar to a top navigation bar when the screen size is 700px or less.</p>
-                    <p>We have also added a media query for screens that are 400px or less, which will vertically stack and center the navigation links.</p>
-                    <h4>Resize the browser window to see the effect.</h4>
-                    <br />
+                <div class="col-md-7 content text-center">
                     <hr />
-                    <h3>Responsive Sidebar Example</h3>
-                    <p>This example use media queries to transform the sidebar to a top navigation bar when the screen size is 700px or less.</p>
-                    <p>We have also added a media query for screens that are 400px or less, which will vertically stack and center the navigation links.</p>
-                    <h4>Resize the browser window to see the effect.</h4>
+                    <h5>Menus <p class="badge badge-pill badge-warning">@menus</p></h5>
+                    <hr />
+                    <h5>Meals <p class="badge badge-pill badge-warning">@meals</p></h5>
+                    <hr />
+                    <h5>Dishes <p class="badge badge-pill badge-warning">@dishes</p></h5>
+                    <hr />
                 </div>
             </div>
         </div>
