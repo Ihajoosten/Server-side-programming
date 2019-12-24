@@ -1,0 +1,64 @@
+﻿body {
+    background-color: #f1f1f1;
+    color: #343a40;
+}
+
+nav {
+    background-color: #1f1f1f;
+}
+
+li a {
+    list-style: none !important;
+}
+
+    li a:hover {
+        list-style: none !important;
+        text-decoration: none;
+        color: #fff !important;
+        border-bottom: 3px solid #ffa500;
+        opacity: 0.25;
+        transition: 0.3s;
+    }
+
+header {
+    padding: 156px 0 100px;
+}
+
+section {
+    padding: 150px 0;
+}
+
+section#landing::after {
+    content: "";
+    background: url("../../img/carousel_item_2.jpg");
+    opacity: 0.25;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+    zoom: 0.8;
+}
+
+p {
+    font-size: 25px !important;
+}
+
+button.orderBtn {
+    background-color: #ffa500;
+    color: #fff;
+}
+
+    button.orderBtn:hover {
+        opacity: 0.8;
+        color: #ffa500;
+        background-color: #343a40;
+    }
+
+footer {
+    bottom: 0px;
+    position: fixed;
+    width: 100%;
+    background-color: #1f1f1f;
+}

@@ -26,12 +26,12 @@ namespace Infrastructure.Cook
             {
                 try
                 {
+                    _context.Add(meal);
                     foreach (Dish item in dishes)
                     {
-                        meal.Dishes.Add(item);
+                        _context.Add(new MealDishes { Meal = meal, Dish = item});
                     }
-                    _context.AddAsync(meal);
-                    _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
                 catch (Exception)
                 {

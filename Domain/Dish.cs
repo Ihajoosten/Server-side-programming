@@ -19,7 +19,6 @@ namespace Domain
         [Required]
         public string Description { get; set; }
 
-        //[Required]
         public byte[] Image { get; set; }
 
         [Required]

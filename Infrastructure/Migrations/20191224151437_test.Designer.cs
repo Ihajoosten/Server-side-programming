@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(CookDbContext))]
-    [Migration("20191215205558_Initial")]
-    partial class Initial
+    [Migration("20191224151437_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,56 +20,6 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Domain.Cook", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ConcurrencyStamp");
-
-                    b.Property<string>("Email")
-                        .IsRequired();
-
-                    b.Property<bool>("EmailConfirmed");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired();
-
-                    b.Property<string>("LastName")
-                        .IsRequired();
-
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NormalizedEmail");
-
-                    b.Property<string>("NormalizedUserName");
-
-                    b.Property<string>("Password")
-                        .IsRequired();
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired();
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Cook");
-                });
 
             modelBuilder.Entity("Domain.Dish", b =>
                 {
@@ -81,8 +31,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Property<byte[]>("Image");
-
-                    b.Property<int?>("MealId");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -97,8 +45,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MealId");
-
                     b.ToTable("Dish");
                 });
 
@@ -108,19 +54,28 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CookId");
-
                     b.Property<DateTime>("DateValid");
 
                     b.Property<int?>("MenuId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CookId");
-
                     b.HasIndex("MenuId");
 
                     b.ToTable("Meal");
+                });
+
+            modelBuilder.Entity("Domain.MealDishes", b =>
+                {
+                    b.Property<int>("DishId");
+
+                    b.Property<int>("MealId");
+
+                    b.HasKey("DishId", "MealId");
+
+                    b.HasIndex("MealId");
+
+                    b.ToTable("MealDish");
                 });
 
             modelBuilder.Entity("Domain.Menu", b =>
@@ -138,23 +93,24 @@ namespace Infrastructure.Migrations
                     b.ToTable("Menu");
                 });
 
-            modelBuilder.Entity("Domain.Dish", b =>
-                {
-                    b.HasOne("Domain.Meal")
-                        .WithMany("Dishes")
-                        .HasForeignKey("MealId");
-                });
-
             modelBuilder.Entity("Domain.Meal", b =>
                 {
-                    b.HasOne("Domain.Cook", "Cook")
-                        .WithMany()
-                        .HasForeignKey("CookId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Domain.Menu")
                         .WithMany("Meals")
                         .HasForeignKey("MenuId");
+                });
+
+            modelBuilder.Entity("Domain.MealDishes", b =>
+                {
+                    b.HasOne("Domain.Dish", "Dish")
+                        .WithMany()
+                        .HasForeignKey("DishId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Domain.Meal", "Meal")
+                        .WithMany("Dishes")
+                        .HasForeignKey("MealId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -15,10 +15,9 @@ namespace Domain
         public DateTime DateValid { get; set; }
 
         [Required]
-        [Column("MealDishes")]
-        public ICollection<Dish> Dishes { get; set; } = new List<Dish>();
+        public ICollection<MealDishes> Dishes { get; set; } = new List<MealDishes>();
 
-        [Required]
-        public Cook Cook { get; set; }
+        //[Required]
+        //public Cook Cook { get; set; }
     }
 }
