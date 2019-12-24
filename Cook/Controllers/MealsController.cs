@@ -26,9 +26,33 @@ namespace Cook.Controllers
         }
 
         // GET: Meals
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Meal.ToListAsync());
+            //List<Dish> selectedDishes = new List<Dish>();
+            //foreach (var dish in selectedDishes)
+            //{
+            //    var optionalDish = _dishService.Dish.Where(d => d.Id == dish.Id).First();
+            //    if (optionalDish != null) selectedDishes.Add(optionalDish);
+            //}
+
+            List<MealDishes> mealDishes = new List<MealDishes>();
+            List<Dish> allDishes = new List<Dish>();
+
+            var dishes = _context.MealDish.ToList();
+            var x = _dishService.GetDishes();
+
+            foreach (var item in dishes)
+            {
+                mealDishes.Add(item);
+            }
+            foreach (var item in x)
+            {
+                allDishes.Add(item);
+            }
+
+            ViewBag.MealDishes = mealDishes;
+            ViewBag.Dishes = allDishes;
+            return View(_mealService.GetMeals());
         }
 
         // GET: Meals/Details/5
@@ -56,7 +80,7 @@ namespace Cook.Controllers
             List<Dish> mains = new List<Dish>();
             List<Dish> desserts = new List<Dish>();
             var types = new List<String>();
-            
+
             foreach (DishType type in Enum.GetValues(typeof(DishType)))
             {
                 types.Add(type.ToString());

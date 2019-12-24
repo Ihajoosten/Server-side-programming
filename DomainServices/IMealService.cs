@@ -24,5 +24,8 @@ namespace DomainServices
 
         // As a Cook I want to delete incorrect Meals
         void DeleteMeal(Meal meal);
+
+        // As a Cook I want to get all dishes for a meal
+        IEnumerable<Dish> GetMealDishes(Meal meal);
     }
 }

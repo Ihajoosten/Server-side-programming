@@ -62,5 +62,10 @@ namespace Infrastructure.Cook
             _context.Meal.Update(meal);
             _context.SaveChangesAsync();
         }
+
+        public IEnumerable<Dish> GetMealDishes(Meal meal)
+        {
+            return _context.MealDish.Where(md => md.MealId == meal.Id).Select(d => d.Dish);
+        }
     }
 }

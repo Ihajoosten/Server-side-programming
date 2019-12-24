@@ -40,29 +40,44 @@
 
     <div class="container">
         <div class="row offset-md-2">
-            <div class="col-md-10 content">
+            <div class="col-md-11 content">
                 <a asp-controller="Meals" asp-action="Create"><button class="btn btn-outline-warning text-center">+ New Meal</button></a>
                 <div class="row mt-4">
-                    @for (int i = 0; i < 4; i++)
+                    @foreach (var item in Model)
                     {
-                        <div class="col-md-4 card-header-pills mr-1 mb-3">
+                        <div class="col-md-5 card-header-pills m-1 mb-3">
                             <div class="card-body text-black-50">
-                                <h6 class="card-title text-white-50">Date valid</h6>
-                                @if (@i < 3)
-                                {
-                                    <span><p class="badge badge-pill badge-warning card-text"><i class="fas fa-exclamation-triangle" style="margin-right:5px;"></i>@i/3 meals</p></span>
-                                }
-                                else
-                                {
-                                    <span><p class="badge badge-pill badge-warning card-text"><i class="fas fa-check-circle" style="margin-right:5px;"></i>@i/3 meals</p></span>
+                                @*<div class="row">
+                                    <div class="col-md">*@
+                                        <h6 class="card-title text-white-50 text-right">@item.DateValid.ToString("dd MMM yyyy")</h6>
+                                        @if (item.Dishes.Count < 3)
+                                        {
+                                            <span><p cclass="card-text text-right" style="color: #ffa500; font-size: 12px"><i class="fas fa-exclamation-triangle" style="margin-right:5px;"></i>@item.Dishes.Count/3 meals</p></span>
+                                        }
+                                        else
+                                        {
+                                            <span><p class="card-text text-right" style="color: #ffa500; font-size: 12px"><i class="fas fa-check-circle" style="margin-right:5px;"></i>@item.Dishes.Count/3 meals</p></span>
 
-                                }
-                                <ol class="text-white-50 mt-2">
-                                    @for (int y = 0; y < i; y++)
-                                    {
-                                        <li>Dish Name</li>
-                                    }
-                                </ol>
+                                        }
+                                    @*</div>*@
+                                    @*<div class="col-md">*@
+                                        <ul class="text-white-50 mt-2" style="font-size: 12px;">
+                                            @foreach (var mealDish in ViewBag.MealDishes)
+                                            {
+                                                @if (mealDish.MealId == item.Id)
+                                                {
+                                                    @foreach (var dish in ViewBag.Dishes)
+                                                    {
+                                                        @if (dish.Id == mealDish.DishId)
+                                                        {
+                                                            <li style="list-style: none;">- @dish.Name</li>
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        </ul>
+                                    @*</div>
+                                </div>*@
                                 <div class="text-center mt-4">
                                     <a asp-action="Edit"><button id="dishButton" class="btn btn-sm btn-outline-warning text-center">Edit</button></a>
                                     <a asp-action="Delete"><button id="dishButton" class="btn btn-sm btn-outline-danger text-center">Delete</button></a>
