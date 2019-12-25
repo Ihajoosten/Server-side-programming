@@ -15,6 +15,7 @@ namespace Infrastructure.Cook
         public DbSet<Meal> Meal { get; set; }
         public DbSet<MealDishes> MealDish { get; set; }
         public DbSet<Menu> Menu { get; set; }
+        public DbSet<MenuMeals> MenuMeal { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,6 +23,7 @@ namespace Infrastructure.Cook
             modelBuilder.Entity<Meal>();
             modelBuilder.Entity<MealDishes>().HasKey(md => new { md.DishId, md.MealId });
             modelBuilder.Entity<Menu>();
+            modelBuilder.Entity<MenuMeals>().HasKey(mm => new { mm.MenuId, mm.MealId });
 
         }
     }

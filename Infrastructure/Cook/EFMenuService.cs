@@ -15,7 +15,11 @@ namespace Infrastructure.Cook
 
         public IQueryable<Menu> Menu => _context.Menu;
 
-        public async void CreateMenu(Menu menu, Meal[] meals)
+        public IQueryable<MenuMeals> MenuMeal => _context.MenuMeal;
+
+        public List<MenuMeals> GetAllMenuMeals() => _context.MenuMeal.ToList();
+
+        public void CreateMenu(Menu menu, Meal[] meals)
         {
             if (menu == null) throw new OperationCanceledException();
 
@@ -23,12 +27,12 @@ namespace Infrastructure.Cook
             {
                 try
                 {
+                    _context.Add(menu);
                     foreach (Meal item in meals)
                     {
-                        menu.Meals.Add(item);
+                        _context.Add(new MenuMeals { Menu = menu, Meal = item });
                     }
-                    await _context.AddAsync(menu);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
                 catch (Exception)
                 {
@@ -37,12 +41,12 @@ namespace Infrastructure.Cook
             }
         }
 
-        public async void DeleteMenu(Menu menu)
+        public void DeleteMenu(Menu menu)
         {
             if (menu == null) throw new NullReferenceException();
             var entry = _context.Menu.FirstOrDefault(m => m.Id == menu.Id);
             _context.Menu.Remove(entry);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
         public Menu GetMenuById(int? id)
@@ -53,11 +57,11 @@ namespace Infrastructure.Cook
 
         public List<Menu> GetMenus() => _context.Menu.ToList();
 
-        public async void UpdateMenu(Menu menu)
+        public void UpdateMenu(Menu menu)
         {
             if (menu == null) throw new NullReferenceException();
             _context.Menu.Update(menu);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
     }
 }

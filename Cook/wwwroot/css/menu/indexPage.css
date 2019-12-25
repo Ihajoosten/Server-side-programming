@@ -21,6 +21,19 @@ ol li a {
         transition: 0.75s;
     }
 
+.card-img-top {
+    border: 1px solid orange;
+}
+
+.card-body {
+    background-color: #1f1f1f;
+    border: 1px solid orange;
+}
+
+button#dishButton.btn-sm {
+    width: 75px;
+}
+
 .middle {
     position: absolute;
     top: 50%;
@@ -46,11 +59,10 @@ div#buttons {
 p#notification {
     position: absolute;
     text-align: right;
-    margin-left: 70%;
+    margin-left: 71%;
     margin-top: -25px;
-    background-color: rgba(255, 255, 0, 0.75);
+    background-color: rgba(255, 255, 0, 0.7);
     color: #fff;
-    font-size: 11px;
-    padding: 4.75px;
-
+    font-size: 10px;
+    padding: 4px;
 }

@@ -10,6 +10,8 @@ namespace DomainServices
     {
         IQueryable<Meal> Meal { get; }
 
+        IQueryable<MealDishes> MealDish { get; }
+
         // As a Cook I want to get a Meal by ID to see the details
         Meal GetMealById(int? id);
 
@@ -20,12 +22,12 @@ namespace DomainServices
         void CreateMeal(Meal meal, Dish[] dishes);
 
         // As a Cook I want to update an existing Meal
-        void UpdateMeal(Meal meal);
+        void UpdateMeal(Meal meal, Dish[] dishes);
 
         // As a Cook I want to delete incorrect Meals
         void DeleteMeal(Meal meal);
 
         // As a Cook I want to get all dishes for a meal
-        IEnumerable<Dish> GetMealDishes(Meal meal);
+        List<MealDishes> GetAllMealDishes();
     }
 }

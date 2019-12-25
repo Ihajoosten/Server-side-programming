@@ -1,4 +1,8 @@
-﻿ol.breadcrumb {
+﻿header {
+    padding: 110px 0 30px 0;
+}
+
+ol.breadcrumb {
     padding: 0.25rem;
     background-color: orange;
 }

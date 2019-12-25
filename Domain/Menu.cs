@@ -19,6 +19,6 @@ namespace Domain
         public int Year { get; set; }
 
         [Required]
-        public ICollection<Meal> Meals { get; set; } = new List<Meal>();
+        public ICollection<MenuMeals> Meals { get; set; } = new List<MenuMeals>();
     }
 }

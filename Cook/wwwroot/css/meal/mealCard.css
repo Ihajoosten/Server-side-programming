@@ -1,0 +1,17 @@
+﻿.edit-btn {
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    right: 330px;
+    top: -15px;
+    background-color: #ffa500;
+}
+
+.delete-btn {
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    right: 290px;
+    top: -15px;
+    background-color: #hhd000;
+}

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- Custom styles for this template -->
     <link href="~/css/landing.css" rel="stylesheet">
-    <link href="~/css/menu/index.css" rel="stylesheet" />
+    <link href="~/css/menu/indexPage.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
 </head>
 <body>
@@ -43,30 +43,23 @@
             <div class="col-md-10 content">
                 <a asp-controller="Menus" asp-action="Create"><button class="btn btn-outline-warning text-center">+ New Menu</button></a>
                 <div class="row mt-4">
-                    @for (int i = 0; i < 8; i++)
+                    @foreach (var item in Model)
                     {
-                        <div class="col-md-4 card-header-pills mr-1 mb-3">
-                            <div class="card-body text-black-50">
-                                <h6 class="card-title text-white-50">Week Nr</h6>
-                                <h6 class="card-title text-white-50">Year</h6>
-                                @if (@i < 7)
-                                {
-                                    <span><p class="badge badge-pill badge-warning card-text"><i class="fas fa-exclamation-triangle" style="margin-right:5px;"></i>@i/7 meals</p></span>
-                                }
-                                else
-                                {
-                                    <span><p class="badge badge-pill badge-warning card-text"><i class="fas fa-check-circle" style="margin-right:5px;"></i>@i/7 meals</p></span>
+                        <div class="card text-white border-warning bg-transparent p-1 text-center col-md-5 m-2">
 
+                            <div class="card-body">
+                                @if (item.Meals.Count < 7)
+                                {
+                                    <p id="notification" class="card-text text-right"><i class="fas fa-exclamation-triangle" style="margin-right:5px;"></i>@item.Meals.Count/7 meals</p>
                                 }
-                                <ol class="text-white-50 mt-2">
-                                    @for (int y = 0; y < i; y++)
-                                    {
-                                        <li>Meals Name</li>
-                                    }
-                                </ol>
-                                <div class="text-center mt-4">
-                                    <a asp-action="Edit"><button id="dishButton" class="btn btn-sm btn-outline-warning text-center">Edit</button></a>
-                                    <a asp-action="Delete"><button id="dishButton" class="btn btn-sm btn-outline-danger text-center">Delete</button></a>
+
+                                <p class="card-title" style="font-size: 20px;"><i>Week @item.Week - @item.Year</i></p>
+                            </div>
+                            <div class="middle">
+                                <div id="buttons">
+                                    <a asp-action="Details" asp-route-id="@item.Id"><button class="btn btn-sm btn-outline-primary"><i class="fas fa-info-circle"></i></button></a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id"><button class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></button></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id"><button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt  "></i></button></a>
                                 </div>
                             </div>
                         </div>

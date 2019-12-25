@@ -11,12 +11,14 @@ namespace Infrastructure.Cook
     {
         protected readonly CookDbContext _context;
 
-        public EFMealService(CookDbContext context)
-        {
-            _context = context;
-        }
+        public EFMealService(CookDbContext context) => _context = context;
+        
 
         public IQueryable<Meal> Meal => _context.Meal;
+
+        public IQueryable<MealDishes> MealDish => _context.MealDish;
+
+        public List<MealDishes> GetAllMealDishes() => _context.MealDish.ToList();
 
         public void CreateMeal(Meal meal, Dish[] dishes)
         {
@@ -56,16 +58,28 @@ namespace Infrastructure.Cook
 
         public List<Meal> GetMeals() => _context.Meal.ToList();
 
-        public void UpdateMeal(Meal meal)
+        public void UpdateMeal(Meal meal, Dish[] dishes)
         {
             if (meal == null) throw new NullReferenceException();
-            _context.Meal.Update(meal);
-            _context.SaveChangesAsync();
-        }
 
-        public IEnumerable<Dish> GetMealDishes(Meal meal)
-        {
-            return _context.MealDish.Where(md => md.MealId == meal.Id).Select(d => d.Dish);
+            if (dishes.Length == 3)
+            {
+                try
+                {
+                    _context.Meal.Update(meal);
+                    foreach (Dish item in dishes)
+                    {
+                        _context.MealDish.Update(new MealDishes{ Dish = item, Meal = meal});
+                    }
+
+                }
+                catch (Exception)
+                {
+                    throw new Exception();
+                }
+            }
+
+            _context.SaveChangesAsync();
         }
     }
 }

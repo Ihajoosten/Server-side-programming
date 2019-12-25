@@ -1,40 +1,104 @@
-﻿@model Domain.Meal
+﻿@model EditMealModel
 
 @{
     Layout = null;
 }
 
+
 <!DOCTYPE html>
+<html lang="en">
 
-<html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Luc Joosten">
+    <title>Edit Meal</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Custom styles for this template -->
+    <link href="~/css/landing.css" rel="stylesheet">
+    <link href="~/css/meal/create.css" rel="stylesheet" />
 </head>
-<body>
 
-<h4>Meal</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="DateValid" class="control-label"></label>
-                <input asp-for="DateValid" class="form-control" />
-                <span asp-validation-for="DateValid" class="text-danger"></span>
+<body id="page-top">
+
+    <!-- Navigation -->
+    @await Html.PartialAsync("_NavbarPartial")
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a asp-area="" asp-controller="Meals" asp-action="Index">Meals</a></li>
+                        <li class="breadcrumb-item">Create</li>
+
+                    </ol>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </header>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <h3 class="text-left mb-5">New Meal</h3>
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row text-left">
+                            <div class="col-lg-4 form-group">
+                                <label asp-for="DateForMeal" class="control-label"></label>
+                                <input id="createDishInput" asp-for="DateForMeal" class="form-control" placeholder="Name" />
+                                <span asp-validation-for="DateForMeal" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- STARTER -->
+                            <div class="col-lg">
+                                <label class="control-label">Starter</label>
+                                <select asp-for="StarterId" class="form-control">
+                                    @foreach (var opt in ViewBag.Starters)
+                                    {
+                                        <option value="@opt.Id">@opt.Id : @opt.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <!-- MAIN -->
+                            <div class="col-lg">
+                                <label class="control-label">Main</label>
+                                <select asp-for="MainId" class="form-control">
+                                    @foreach (var opt in ViewBag.Mains)
+                                    {
+                                        <option value="@opt.Id">@opt.Id : @opt.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <!-- DESSERT -->
+                            <div class="col-lg">
+                                <label class="control-label">Dessert</label>
+                                <select asp-for="DessertId" class="form-control">
+                                    @foreach (var opt in ViewBag.Desserts)
+                                    {
+                                        <option value="@opt.Id">@opt.Id : @opt.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row text-right">
+                            <div class="col-1 form-group text-center mt-4 mr-5">
+                                <input type="submit" value="Create" class="btn btn-outline-warning" />
+                            </div>
+                            <div class="col-1 form-group text-center mt-4">
+                                <button class="btn btn-outline-secondary" asp-action="Index">Back</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+        </div>
+    </section>
+    <!-- Footer -->
+    @await Html.PartialAsync("_FooterPartial")
 </body>
 </html>

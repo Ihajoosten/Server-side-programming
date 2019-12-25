@@ -11,6 +11,8 @@ namespace DomainServices
 
         IQueryable<Menu> Menu { get; }
 
+        IQueryable<MenuMeals> MenuMeal { get; }
+
         // As a Cook I want to get a Menu by ID to see the details
         Menu GetMenuById(int? id);
 
@@ -25,5 +27,8 @@ namespace DomainServices
 
         // As a Cook I want to delete incorrect Menus
         void DeleteMenu(Menu menu);
+
+        // As a Cook I want to get all meals for a menu
+        List<MenuMeals> GetAllMenuMeals();
     }
 }

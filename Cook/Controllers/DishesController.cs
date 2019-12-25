@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Domain;
-using Infrastructure.Cook;
 using DomainServices;
 using Microsoft.AspNetCore.Http;
 using System.IO;
@@ -24,67 +21,7 @@ namespace Cook.Controllers
 
         // GET: Dishes
         public ViewResult Index() => View(_service.Dish.ToList());
-       
-
-        // GET: Dishes/Details/5
-        public ViewResult Details(int? id)
-        {
-            var types = new List<SelectListItem>
-            {
-                new SelectListItem
-                {
-                    Text = "Select Type",
-                    Value = ""
-                }
-            };
-            foreach (DishType type in Enum.GetValues(typeof(DishType)))
-            {
-                types.Add(new SelectListItem { Text = Enum.GetName(typeof(DishType), type), Value = type.ToString() });
-            }
-            ViewBag.Types = types;
-
-            var restrictions = new List<SelectListItem>
-            {
-                new SelectListItem
-                {
-                    Text = "Select Restrictions",
-                    Value = ""
-                }
-            };
-            foreach (DietRestriction restriction in Enum.GetValues(typeof(DietRestriction)))
-            {
-                restrictions.Add(new SelectListItem { Text = Enum.GetName(typeof(DietRestriction), restriction), Value = restriction.ToString() });
-            }
-            ViewBag.Restrictions = restrictions;
-
-            var sizes = new List<SelectListItem>
-            {
-                new SelectListItem
-                {
-                    Text = "Select Size",
-                    Value = ""
-                }
-            };
-            foreach (DishSize size in Enum.GetValues(typeof(DishSize)))
-            {
-                sizes.Add(new SelectListItem { Text = Enum.GetName(typeof(DishSize), size), Value = size.ToString() });
-            }
-            ViewBag.Sizes = sizes;
-
-            if (id == null)
-            {
-                throw new KeyNotFoundException();
-            }
-
-            var dish = _service.Dish
-           .FirstOrDefault(m => m.Id == id);
-            if (dish == null)
-            {
-                throw new NullReferenceException();
-            }
-            return View(dish);
-        }
-
+                      
         // GET: Dishes/Create
         public ViewResult Create()
         {

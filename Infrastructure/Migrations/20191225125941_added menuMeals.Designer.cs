@@ -4,14 +4,16 @@ using Infrastructure.Cook;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(CookDbContext))]
-    partial class CookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191225125941_added menuMeals")]
+    partial class addedmenuMeals
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +56,11 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("DateValid");
 
+                    b.Property<int?>("MenuId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("MenuId");
 
                     b.ToTable("Meal");
                 });
@@ -100,6 +106,13 @@ namespace Infrastructure.Migrations
                     b.ToTable("MenuMeal");
                 });
 
+            modelBuilder.Entity("Domain.Meal", b =>
+                {
+                    b.HasOne("Domain.Menu")
+                        .WithMany("Meals")
+                        .HasForeignKey("MenuId");
+                });
+
             modelBuilder.Entity("Domain.MealDishes", b =>
                 {
                     b.HasOne("Domain.Dish", "Dish")
@@ -121,7 +134,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Menu", "Menu")
-                        .WithMany("Meals")
+                        .WithMany()
                         .HasForeignKey("MenuId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
