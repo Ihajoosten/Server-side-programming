@@ -21,34 +21,33 @@ ol li a {
         transition: 0.75s;
     }
 
-.middle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 100%;
-    width: 100%;
-    opacity: 0;
-    transition: .5s ease;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    background-color: #222;
+.card-img-top {
+    border: 1px solid orange;
 }
 
-div#buttons {
-    margin-top: 30px;
+.card-body {
+    background-color: #1f1f1f;
+    border: 1px solid orange;
 }
 
-
-.card:hover .middle {
-    opacity: 0.9;
-}
-
-p#notification {
+p#dishType {
     position: absolute;
     text-align: right;
     top: 0px;
-    right: 0px;
+    right: 15px;
     color: #fff;
+    background-color: #ffa500;
+    font-size: 11px;
+    padding: 4.75px;
+}
+
+p#dishPrice {
+    position: absolute;
+    text-align: right;
+    top: 22.5px;
+    right: 15px;
+    color: #fff;
+    background-color: #0094ff;
     font-size: 11px;
     padding: 4.75px;
 }

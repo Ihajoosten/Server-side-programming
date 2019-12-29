@@ -1,0 +1,4 @@
+
+-	Meerdere dieetbeperkingen opslaan in database en kiezen
+-	Meal aanmaken ondanks er 1 of meerdere dishes missen
+-	

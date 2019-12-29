@@ -1,5 +1,6 @@
 ﻿using Domain;
 using DomainServices;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,6 @@ namespace Infrastructure.Cook
         protected readonly CookDbContext _context;
 
         public EFMealService(CookDbContext context) => _context = context;
-        
 
         public IQueryable<Meal> Meal => _context.Meal;
 
@@ -31,7 +31,7 @@ namespace Infrastructure.Cook
                     _context.Add(meal);
                     foreach (Dish item in dishes)
                     {
-                        _context.Add(new MealDishes { Meal = meal, Dish = item});
+                        _context.Add(new MealDishes { Meal = meal, Dish = item });
                     }
                     _context.SaveChanges();
                 }
@@ -66,12 +66,23 @@ namespace Infrastructure.Cook
             {
                 try
                 {
-                    _context.Meal.Update(meal);
-                    foreach (Dish item in dishes)
-                    {
-                        _context.MealDish.Update(new MealDishes{ Dish = item, Meal = meal});
-                    }
 
+                    //foreach (var item in _context.MealDish.ToList())
+                    //{
+                    //    if (item.MealId == meal.Id)
+                    //    {
+                    //        _context.MealDish.Remove(item);
+                    //    }
+                    //}
+
+                    //_context.Meal.Update(meal);
+
+                    //foreach (var dish in dishes)
+                    //{
+                    //    _context.MealDish.Add(new MealDishes { Dish = dish, Meal = meal });
+                    //}
+
+                    _context.SaveChanges();
                 }
                 catch (Exception)
                 {

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- Custom styles for this template -->
     <link href="~/css/landing.css" rel="stylesheet">
-    <link href="~/css/meal/index.css" rel="stylesheet" />
+    <link href="~/css/meal/indexPage.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
 </head>
 <body>
@@ -38,7 +38,7 @@
         </div>
     </header>
 
-    <!--Meal List-->
+    <!-- Meal List-->
     <div class="container">
         <div class="row offset-md-2">
             <div class="col-md-11 content">
@@ -51,10 +51,10 @@
                         <div class="card-body">
                             @if (item.Dishes.Count < 3)
                             {
-                                <p id="notification" class="card-text text-right"><i class="fas fa-exclamation-triangle" style="margin-right:5px;"></i>@item.Dishes.Count/3 dishes</p>
+                                <p id="notification" class="badge badge-warning card-text text-right"><i class="fas fa-exclamation-triangle" style="margin-right:5px;"></i>@item.Dishes.Count/3 dishes</p>
                             }
                            
-                            <p class="card-title" style="font-size: 20px;"><i>@item.DateValid.ToString("dd MMM yyyy")</i></p>
+                            <p class="card-title" style="font-size: 20px;"><i>@item.DateValid.ToString("d MMM yyyy")</i></p>
                         </div>
                         <div class="middle">
                             <div id="buttons">

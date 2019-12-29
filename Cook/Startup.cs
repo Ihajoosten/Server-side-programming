@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Cook;
 using DomainServices;
+using Infrastructure.Identity;
 
 namespace Cook
 {
@@ -39,9 +40,18 @@ namespace Cook
             services.AddDbContext<CookDbContext>(options =>
                options.UseSqlServer(Configuration["Cook:ConnectionString"]));
 
+            services.AddDbContext<LoginDbContext>(options =>
+              options.UseSqlServer(Configuration["Login:Identity"]));
+
+            services.AddDefaultIdentity<Domain.Cook>()
+                .AddEntityFrameworkStores<LoginDbContext>();
+
             services.AddTransient<IDishService, EFDishService>();
             services.AddTransient<IMealService, EFMealService>();
             services.AddTransient<IMenuService, EFMenuService>();
+
+            services.AddTransient<ICookService, EFCookService>();
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

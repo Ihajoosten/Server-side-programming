@@ -52,3 +52,7 @@ p#notification {
     font-size: 11px;
     padding: 4.75px;
 }
+
+hr {
+    background-color: #ffa500;
+}

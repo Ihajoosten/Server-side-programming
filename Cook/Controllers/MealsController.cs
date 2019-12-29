@@ -93,6 +93,7 @@ namespace Cook.Controllers
             }
 
             var meal = _mealService.GetMealById(id);
+            var mealDishes = _mealService.MealDish.Select(md => md.MealId == id);
             if (meal == null)
             {
                 throw new KeyNotFoundException();
@@ -117,7 +118,33 @@ namespace Cook.Controllers
             ViewBag.Mains = mains;
             ViewBag.Desserts = desserts;
 
-            return View(meal);
+            List<MealDishes> mealDish = new List<MealDishes>();
+
+            foreach (var item in _mealService.GetAllMealDishes())
+            {
+                if (item.MealId == id) mealDish.Add(item);
+            }
+
+            Dish starter = null;
+            Dish mainer = null;
+            Dish dessert = null;
+
+            foreach (var item in mealDish)
+            {
+                if (item.Dish.Type.ToString() == types[0]) starter = _dishService.GetDishById(item.DishId);
+                if (item.Dish.Type.ToString() == types[1]) mainer = _dishService.GetDishById(item.DishId);
+                if (item.Dish.Type.ToString() == types[2]) dessert = _dishService.GetDishById(item.DishId);
+            }
+
+            EditMealModel model = new EditMealModel()
+            {
+                DateForMeal = meal.DateValid,
+                StarterId = starter.Id,
+                MainId = mainer.Id,
+                DessertId = dessert.Id
+            };
+
+            return View(model);
         }
 
         // POST: Meals/Edit/5
@@ -154,18 +181,22 @@ namespace Cook.Controllers
                 types.Add(type.ToString());
             }
 
+            var mealDishes = new List<Dish>();
+
             foreach (var item in _mealService.GetAllMealDishes())
             {
                 if (item.MealId == id)
                 {
                     foreach (var dish in _dishService.GetDishes())
                     {
-                        if (item.DishId == dish.Id && dish.Type.ToString() == types[0]) ViewBag.Starter = dish;
-                        else if (item.DishId == dish.Id && dish.Type.ToString() == types[1]) ViewBag.Main = dish;
-                        else if (item.DishId == dish.Id && dish.Type.ToString() == types[2]) ViewBag.Dessert = dish;
+                        if (item.DishId == dish.Id && dish.Type.ToString() == types[0]) mealDishes.Add(dish);
+                        else if (item.DishId == dish.Id && dish.Type.ToString() == types[1]) mealDishes.Add(dish);
+                        else if (item.DishId == dish.Id && dish.Type.ToString() == types[2]) mealDishes.Add(dish);
                     }
                 }
             }
+
+            ViewBag.MealDishes = mealDishes;
 
             var meal = _mealService.Meal.FirstOrDefault(m => m.Id == id);
 
@@ -189,6 +220,30 @@ namespace Cook.Controllers
         private bool MealExists(int id)
         {
             return _mealService.Meal.Any(e => e.Id == id);
+        }
+
+        public IActionResult Details(int? id)
+        {
+            List<MealDishes> mealDishes = new List<MealDishes>();
+            List<Dish> allDishes = new List<Dish>();
+
+            var dishes = _mealService.MealDish.ToList();
+            var x = _dishService.GetDishes();
+
+            foreach (var item in dishes)
+            {
+                mealDishes.Add(item);
+            }
+            foreach (var item in x)
+            {
+                allDishes.Add(item);
+            }
+
+            ViewBag.MealDishes = mealDishes;
+            ViewBag.Dishes = allDishes;
+
+            var meal = _mealService.GetMealById(id);
+            return View(meal);
         }
     }
 }

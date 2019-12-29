@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Migrations.CookDb
 {
-    public partial class test : Migration
+    public partial class changedMODELS : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,6 +28,19 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Meal",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DateValid = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Meal", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Menu",
                 columns: table => new
                 {
@@ -39,26 +52,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Menu", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Meal",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DateValid = table.Column<DateTime>(nullable: false),
-                    MenuId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Meal", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Meal_Menu_MenuId",
-                        column: x => x.MenuId,
-                        principalTable: "Menu",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,14 +78,38 @@ namespace Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Meal_MenuId",
-                table: "Meal",
-                column: "MenuId");
+            migrationBuilder.CreateTable(
+                name: "MenuMeal",
+                columns: table => new
+                {
+                    MenuId = table.Column<int>(nullable: false),
+                    MealId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MenuMeal", x => new { x.MenuId, x.MealId });
+                    table.ForeignKey(
+                        name: "FK_MenuMeal_Meal_MealId",
+                        column: x => x.MealId,
+                        principalTable: "Meal",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MenuMeal_Menu_MenuId",
+                        column: x => x.MenuId,
+                        principalTable: "Menu",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_MealDish_MealId",
                 table: "MealDish",
+                column: "MealId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MenuMeal_MealId",
+                table: "MenuMeal",
                 column: "MealId");
         }
 
@@ -100,6 +117,9 @@ namespace Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "MealDish");
+
+            migrationBuilder.DropTable(
+                name: "MenuMeal");
 
             migrationBuilder.DropTable(
                 name: "Dish");

@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -25,20 +25,14 @@ namespace Cook.Controllers
 
         public IActionResult Index()
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Dashboard", "Home");
+            }
             return View();
         }
 
-        public IActionResult Login()
-        {
-            return View("Login");
-        }
-
-        public IActionResult Register()
-        {
-            return View("Register");
-        }
-
-        public IActionResult Dashboard()
+        public ViewResult Dashboard()
         {
             List<Menu> menus = _menuService.GetMenus();
             List<Meal> meals = _mealService.GetMeals();
@@ -49,7 +43,7 @@ namespace Cook.Controllers
             return View("Dashboard");
         }
 
-        public IActionResult Privacy()
+        public ViewResult Privacy()
         {
             return View();
         }

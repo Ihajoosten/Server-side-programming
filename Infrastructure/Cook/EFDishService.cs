@@ -20,7 +20,7 @@ namespace Infrastructure.Cook
 
         public void CreateDish(Dish dish)
         {
-           if (dish.Id == 0)
+            if (dish.Id == 0)
             {
                 _context.Dish.Add(dish);
             }

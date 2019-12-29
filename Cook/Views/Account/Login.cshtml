@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Cook.Models.Account.LoginViewModel
+@{
     ViewData["Title"] = "Login";
     Layout = null;
 }
@@ -29,12 +30,13 @@
             <div class="row">
                 <div class="col-sm-4 mx-auto m-5">
                     <h3 class="text-center mb-3">Login Cook</h3>
-                    <form>
-                        <input id="input-login" class="form-control m-2" type="text" name="username" placeholder="E-mail Address" required>
-                        <input id="input-login" class="form-control m-2" type="password" name="password" placeholder="Password" required>
-                        <input class="m-2" type="checkbox" id="chk1"><label for="chk1">Remeber me</label>
+                    <form method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <input id="input-login" asp-for="Email" class="form-control m-2" type="text" placeholder="E-mail Address" required>
+                        <input id="input-login" asp-for="Password" class="form-control m-2" type="password" name="password" placeholder="Password" required>
+                        <input asp-for="RememberMe" class="m-2" type="checkbox" id="chk1"><label for="chk1">Remeber me</label>
                         <div class="form-button text-center">
-                            <a asp-controller="Home" asp-action="Dashboard">
+                            <a asp-controller="Account" asp-action="Login">
                                 <button type="submit" class="btn btn-outline-warning col m-2 mb-2">Login</button>
                             </a>
                         </div>
