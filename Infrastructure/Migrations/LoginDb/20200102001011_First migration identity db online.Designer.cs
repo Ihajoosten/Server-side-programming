@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Migrations.LoginDb
 {
     [DbContext(typeof(LoginDbContext))]
-    [Migration("20191229151128_changed MODELS")]
-    partial class changedMODELS
+    [Migration("20200102001011_First migration identity db online")]
+    partial class Firstmigrationidentitydbonline
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

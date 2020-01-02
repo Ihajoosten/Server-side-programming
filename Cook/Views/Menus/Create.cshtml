@@ -1,4 +1,5 @@
-﻿@model Domain.Menu
+﻿@model Cook.Models.Menu.CreateMenuViewModel
+@using Cook.Extensions
 
 @{
     Layout = null;
@@ -7,38 +8,99 @@
 <!DOCTYPE html>
 
 <html>
+<html lang="en">
+
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Luc Joosten">
+    <title>Create Menu</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Custom styles for this template -->
+    <link href="~/css/landing.css" rel="stylesheet">
+    <link href="~/css/meal/create.css" rel="stylesheet" />
 </head>
-<body>
+<body id="page-top">
 
-<h4>Menu</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Week" class="control-label"></label>
-                <input asp-for="Week" class="form-control" />
-                <span asp-validation-for="Week" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" />
-                <span asp-validation-for="Year" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+    <!-- Navigation -->
+    @await Html.PartialAsync("_NavbarPartial")
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a asp-area="" asp-controller="Menus" asp-action="Index">Menus</a></li>
+                        <li class="breadcrumb-item">Create</li>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <h3 class="text-left mb-3">New Menu</h3>
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row text-left">
+                            <div class="col-lg-4 form-group">
+                                <label asp-for="Week" class="control-label"></label>
+                                <input id="createDishInput" asp-for="Week" value="Week" class="form-control" placeholder="Week" />
+                                <span asp-validation-for="Week" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label asp-for="Year" class="control-label"></label>
+                                <input id="createDishInput" asp-for="Year" class="form-control" placeholder="Year" />
+                                <span asp-validation-for="Year" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            @for (var i = 0; i < ViewBag.Dictionary.Count; i++)
+                            {
+                                var day = ViewBag.Dictionary[i];
+                                <div class="col-lg-4 mt-2">
+                                    <label class="control-label">@Enum.Parse(typeof(DayOfWeek), "" + i)</label>
+                                    <select asp-for="Days[i]" class="form-control">
+                                        @foreach (var meal in day)
+                                        {
+                                            var matchingDishes = new List<Domain.Dish>();
+                                            foreach (var mealDish in ViewBag.MealDishes)
+                                            {
+                                                if (mealDish.MealId == meal.Id)
+                                                {
+                                                    var dish = ((List<Domain.Dish>)ViewBag.Dishes).Find(d => d.Id == mealDish.DishId);
+                                                    matchingDishes.Add(dish);
+                                                }
+                                            }
+                                            <option value="@meal.Id">
+                                                @String.Join(", ", matchingDishes)
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+                        </div>
+                        <div class="row text-right">
+                            <div class="col-1 form-group text-center mt-4 mr-5">
+                                <input type="submit" value="Create" class="btn btn-outline-warning" />
+                            </div>
+                            <div class="col-1 form-group text-center mt-4">
+                                <button class="btn btn-outline-secondary" asp-action="Index">Back</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    @await Html.PartialAsync("_FooterPartial")
 
 </body>
 </html>

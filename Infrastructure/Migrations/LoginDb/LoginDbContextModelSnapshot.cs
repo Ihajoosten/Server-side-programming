@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Migrations.LoginDb
 {
     [DbContext(typeof(LoginDbContext))]
     partial class LoginDbContextModelSnapshot : ModelSnapshot

@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Migrations.LoginDb
 {
-    public partial class changedMODELS : Migration
+    public partial class Firstmigrationidentitydbonline : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Infrastructure.Identity;
 
 namespace Client
 {
@@ -34,7 +35,11 @@ namespace Client
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-     
+            services.AddDbContext<LoginDbContext>(options =>
+                     options.UseSqlServer(Configuration["Login:Identity"]));
+
+            services.AddDefaultIdentity<Domain.Client>()
+                .AddEntityFrameworkStores<LoginDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

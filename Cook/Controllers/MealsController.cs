@@ -138,6 +138,7 @@ namespace Cook.Controllers
 
             EditMealModel model = new EditMealModel()
             {
+                Id = meal.Id,
                 DateForMeal = meal.DateValid,
                 StarterId = starter.Id,
                 MainId = mainer.Id,
@@ -154,11 +155,13 @@ namespace Cook.Controllers
         {
             if (ModelState.IsValid)
             {
-                Meal meal = new Meal() { DateValid = model.DateForMeal };
+                Meal meal = new Meal() { Id = model.Id, DateValid = model.DateForMeal };
                 Dish start = _dishService.Dish.First(d => d.Id == model.StarterId);
                 Dish main = _dishService.Dish.First(d => d.Id == model.MainId);
                 Dish dessert = _dishService.Dish.First(d => d.Id == model.DessertId);
                 var dishes = new Dish[] { start, main, dessert };
+
+
                 _mealService.UpdateMeal(meal, dishes);
 
                 return RedirectToAction(nameof(Index));

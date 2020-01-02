@@ -17,7 +17,5 @@ namespace Domain
         [Required]
         public ICollection<MealDishes> Dishes { get; set; } = new List<MealDishes>();
 
-        //[Required]
-        //public Cook Cook { get; set; }
     }
 }

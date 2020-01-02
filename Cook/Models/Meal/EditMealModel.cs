@@ -8,6 +8,8 @@ namespace Cook.Models
 {
     public class EditMealModel
     {
+        public int Id { get; set; }
+
         [Required]
         [DataType(DataType.Date)]
         public DateTime DateForMeal { get; set; }

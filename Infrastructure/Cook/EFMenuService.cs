@@ -1,5 +1,6 @@
 ﻿using Domain;
 using DomainServices;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,25 @@ namespace Infrastructure.Cook
             return _context.Menu.FirstOrDefault(m => m.Id == id);
         }
 
-        public List<Menu> GetMenus() => _context.Menu.ToList();
+        public List<Menu> GetMenus()
+        {
+            var menus = _context.Menu
+               .Include(m => m.Meals)
+               .ToList();
+            menus.ForEach(m =>
+            {
+                var updatedMeals = new List<MenuMeals>();
+                for (var i = 0; i < m.Meals.Count; i++)
+                {
+                    var localMeal = m.Meals.ToList()[i];
+                    localMeal.Menu = null;
+                    updatedMeals.Add(localMeal);
+                }
+                m.Meals = updatedMeals;
+            });
+
+            return menus;
+        }
 
         public void UpdateMenu(Menu menu)
         {

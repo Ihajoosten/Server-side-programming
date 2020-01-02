@@ -7,18 +7,6 @@ nav {
     background-color: #1f1f1f;
 }
 
-li a {
-    list-style: none !important;
-}
-
-    li a:hover {
-        list-style: none !important;
-        text-decoration: none;
-        color: #fff !important;
-        border-bottom: 3px solid #ffa500;
-        opacity: 0.25;
-        transition: 0.3s;
-    }
 
 header {
     padding: 156px 0 100px;

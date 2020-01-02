@@ -4,16 +4,14 @@ using Infrastructure.Cook;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Infrastructure.Migrations.CookDb
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(CookDbContext))]
-    [Migration("20191229151530_changed MODELS")]
-    partial class changedMODELS
+    partial class CookDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

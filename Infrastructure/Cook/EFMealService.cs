@@ -47,7 +47,7 @@ namespace Infrastructure.Cook
             if (meal == null) throw new NullReferenceException();
             var entry = _context.Meal.FirstOrDefault(m => m.Id == meal.Id);
             _context.Meal.Remove(entry);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
         public Meal GetMealById(int? id)
@@ -56,7 +56,31 @@ namespace Infrastructure.Cook
             return _context.Meal.FirstOrDefault(m => m.Id == id);
         }
 
-        public List<Meal> GetMeals() => _context.Meal.ToList();
+        public Dish GetDish(int? id)
+        {
+            if (id == null) throw new NullReferenceException();
+            return _context.Dish.FirstOrDefault(d => d.Id == id);
+        }
+
+        public List<Meal> GetMeals()
+        {
+            var meals = _context.Meal
+                .Include(m => m.Dishes)
+                .ToList();
+            meals.ForEach(m =>
+            {
+                var updatedDishes = new List<MealDishes>();
+                for (var i = 0; i < m.Dishes.Count; i++)
+                {
+                    var localDish = m.Dishes.ToList()[i];
+                    localDish.Meal = null;
+                    updatedDishes.Add(localDish);
+                }
+                m.Dishes = updatedDishes;
+            });
+
+            return meals;
+        }
 
         public void UpdateMeal(Meal meal, Dish[] dishes)
         {
@@ -64,24 +88,21 @@ namespace Infrastructure.Cook
 
             if (dishes.Length == 3)
             {
+                IEnumerable<MealDishes> mealDishes = _context.MealDish.Where(md => md.MealId == meal.Id);
+
+                mealDishes.ToList().ForEach(md =>
+                {
+                    md.Dish = GetDish(md.DishId);
+                    md.Meal = GetMealById(md.MealId);
+                    _context.MealDish.Remove(md);
+                });
+
                 try
                 {
-
-                    //foreach (var item in _context.MealDish.ToList())
-                    //{
-                    //    if (item.MealId == meal.Id)
-                    //    {
-                    //        _context.MealDish.Remove(item);
-                    //    }
-                    //}
-
-                    //_context.Meal.Update(meal);
-
-                    //foreach (var dish in dishes)
-                    //{
-                    //    _context.MealDish.Add(new MealDishes { Dish = dish, Meal = meal });
-                    //}
-
+                    foreach (Dish dish in dishes)
+                    {
+                        _context.Add(new MealDishes { Dish = dish, Meal = meal });
+                    }
                     _context.SaveChanges();
                 }
                 catch (Exception)
@@ -89,8 +110,6 @@ namespace Infrastructure.Cook
                     throw new Exception();
                 }
             }
-
-            _context.SaveChangesAsync();
         }
     }
 }

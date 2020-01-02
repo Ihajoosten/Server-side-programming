@@ -1,4 +1,5 @@
 ﻿@model Domain.Menu
+@using Cook.Extensions
 
 @{
     Layout = null;
@@ -31,37 +32,44 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item"><a asp-area="" asp-controller="Menus" asp-action="Index">Menus</a></li>
-                        <li class="breadcrumb-item">Index</li>
+                        <li class="breadcrumb-item">Details</li>
 
                     </ol>
                 </div>
             </div>
         </div>
     </header>
-    <div class="container">
+    <div class="container mb-5">
         <div class="row">
             <div class="col-md-8 offset-md-2 text-center">
-                <h4>Menu - Week @Model.Week, @Model.Year</h4>
+                <h4>Menu - Week @Model.Week - @Model.Year</h4>
                 <hr />
                 <ul class="text-white-50 mt-2" style="font-size: 12px;">
-                    @foreach (var menuMeal in ViewBag.MenuMeals)
-                    {
-                        @if (menuMeal.MenuId == Model.Id)
+                    <div class="row">
+                        @foreach (var menuMeal in ViewBag.MenuMeals)
                         {
-                            @foreach (var meal in ViewBag.Meals)
+                            @if (menuMeal.MenuId == Model.Id)
                             {
-                                @if (meal.Id == menuMeal.MealId)
+                                @foreach (var meal in ViewBag.Meals)
                                 {
-                                    <li style="list-style: none;">- @meal.DateValid</li>
+                                    @if (meal.Id == menuMeal.MealId)
+                                    {
+                                        <div class="card text-white border-warning bg-transparent p-1 text-center col-md-5 m-2">
+                                            <div class="card-body">
+                                                <p class="card-title" style="font-size: 20px;"><i>@meal.DateValid.ToString("d MMM yyyy")</i></p>
+                                            </div>
+                                        </div>
+                                    }
                                 }
                             }
                         }
-                    }
+                    </div>
                 </ul>
-                <div>
-                    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+                <form class="mb-4" asp-action="Edit">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="submit" value="Edit" class="btn btn-warning" /> |
                     <a asp-action="Index">Back to List</a>
-                </div>
+                </form>
             </div>
         </div>
     </div>

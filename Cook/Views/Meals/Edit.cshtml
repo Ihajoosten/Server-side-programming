@@ -42,13 +42,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 mx-auto">
-                    <h3 class="text-left mb-5">Edit Meal @Model.DateForMeal.ToString("d MMM yyyy")</h3>
+                    <h3 class="text-left mb-5">Edit Meal - @Model.DateForMeal.ToString("d MMM yyyy")</h3>
                     <form asp-action="Edit" method="post">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="row text-left">
                             <div class="col-lg-4 form-group">
                                 <label asp-for="DateForMeal" class="control-label"></label>
-                                <input id="createDishInput" asp-for="DateForMeal" class="form-control" placeholder="Name" />
+                                <input id="createDishInput" asp-for="DateForMeal" class="form-control" placeholder="Name" disabled />
                                 <span asp-validation-for="DateForMeal" class="text-danger"></span>
                             </div>
                         </div>

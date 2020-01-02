@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Infrastructure.Migrations.CookDb
+namespace Infrastructure.Migrations
 {
-    public partial class changedMODELS : Migration
+    public partial class FirstmigrationonlinedbCook : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
