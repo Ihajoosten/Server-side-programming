@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Identity;
+using DomainServices;
 
 namespace Client
 {
@@ -40,6 +41,8 @@ namespace Client
 
             services.AddDefaultIdentity<Domain.Client>()
                 .AddEntityFrameworkStores<LoginDbContext>();
+
+            services.AddTransient<IClientService, EFClientService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

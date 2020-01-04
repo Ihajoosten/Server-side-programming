@@ -9,6 +9,9 @@ namespace Domain
     {
         public Client() { }
 
+        [Key]
+        public int Id { get; set; }
+
         [Required]
         [DataType(DataType.Date)]
         public DateTime Birthday { get; set; }
@@ -27,5 +30,11 @@ namespace Domain
         
         [Required]
         public string PostalCode { get; set; }
+
+        public bool Salt { get; set; }
+
+        public bool Diabetes { get; set; }
+
+        public bool Gluten { get; set; }
     }
 }

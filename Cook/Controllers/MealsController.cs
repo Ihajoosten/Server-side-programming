@@ -136,7 +136,7 @@ namespace Cook.Controllers
                 if (item.Dish.Type.ToString() == types[2]) dessert = _dishService.GetDishById(item.DishId);
             }
 
-            EditMealModel model = new EditMealModel()
+                EditMealModel model = new EditMealModel()
             {
                 Id = meal.Id,
                 DateForMeal = meal.DateValid,

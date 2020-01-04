@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Client.Models.Account;
-using Microsoft.AspNetCore.Http;
+using DomainServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +13,13 @@ namespace Client.Controllers
     {
         private readonly UserManager<Domain.Client> _userManager;
         private readonly SignInManager<Domain.Client> _signInManager;
+        private readonly IClientService _service;
 
-        public AccountController(UserManager<Domain.Client> userManager, SignInManager<Domain.Client> signInManager)
+        public AccountController(UserManager<Domain.Client> userManager, SignInManager<Domain.Client> signInManager, IClientService service)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _service = service;
         }
 
         public async Task<IActionResult> Logout(string returnUrl = null)
@@ -85,7 +87,10 @@ namespace Client.Controllers
                     Street = model.Street,
                     HouseNumber = model.HouseNumber,
                     Addition = model.Addition,
-                    PostalCode = model.PostalCode
+                    PostalCode = model.PostalCode,
+                    Gluten = model.Gluten,
+                    Diabetes = model.Diabetes,
+                    Salt = model.Salt
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -100,6 +105,52 @@ namespace Client.Controllers
                 }
             }
             return View(model);
+        }
+
+        public async Task<IActionResult> Update()
+        {
+            var client = await _userManager.FindByEmailAsync("lucjoosten1234@outlook.com");
+            return View(client);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(Domain.Client client)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get the existing student from the db
+                var user = await _userManager.FindByEmailAsync(client.Email);
+
+                user.FirstName = client.FirstName;
+                user.LastName = client.LastName;
+                user.PhoneNumber = client.PhoneNumber;
+                user.Birthday = client.Birthday;
+                user.PostalCode = client.PostalCode;
+                user.Street = client.Street;
+                user.City = client.City;
+                user.Addition = client.Addition;
+                user.HouseNumber = client.HouseNumber;
+                user.Password = client.Password;
+                user.ConfirmPassword = client.ConfirmPassword;
+                user.Gluten = client.Gluten;
+                user.Diabetes = client.Diabetes;
+                user.Salt = client.Salt;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+
+            return View(client);
         }
     }
 }

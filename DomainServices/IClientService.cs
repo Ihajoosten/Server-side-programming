@@ -11,17 +11,9 @@ namespace DomainServices
 
         IQueryable<Client> Client { get; }
 
-        // As a Client I need to fetch my data to see account details
-        Client GetClientById(int? id);
-
-        // As a new Client I want to register myself
-        void CreateClient(Client client);
-
         // As a Client I want to update my data if needed
-        void UpdateClient(int? id);
+        void UpdateClient(Client client);
 
-        // As a Client I want to delete my account if needed
-        void DeleteClient(int? id);
-
+        Client GetClient(int? id);
     }
 }

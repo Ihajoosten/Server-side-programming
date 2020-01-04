@@ -123,22 +123,18 @@ namespace Cook.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(CreateMenuViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                Menu menu = new Menu() { Week = model.Week, Year = model.Year };
-                Meal monday = _mealService.GetMeals().First(m => m.Id == model.Days[1]);
-                Meal tuesday = _mealService.GetMeals().First(m => m.Id == model.Days[2]);
-                Meal wednesday = _mealService.GetMeals().First(m => m.Id == model.Days[3]);
-                Meal thursday = _mealService.GetMeals().First(m => m.Id == model.Days[4]);
-                Meal friday = _mealService.GetMeals().First(m => m.Id == model.Days[5]);
-                Meal saturday = _mealService.GetMeals().First(m => m.Id == model.Days[6]);
-                Meal sunday = _mealService.GetMeals().First(m => m.Id == model.Days[0]);
+            Menu menu = new Menu() { Week = model.Week, Year = model.Year };
+            Meal monday = _mealService.GetMeals().First(m => m.Id == model.Days[1]);
+            Meal tuesday = _mealService.GetMeals().First(m => m.Id == model.Days[2]);
+            Meal wednesday = _mealService.GetMeals().First(m => m.Id == model.Days[3]);
+            Meal thursday = _mealService.GetMeals().First(m => m.Id == model.Days[4]);
+            Meal friday = _mealService.GetMeals().First(m => m.Id == model.Days[5]);
+            Meal saturday = _mealService.GetMeals().First(m => m.Id == model.Days[6]);
+            Meal sunday = _mealService.GetMeals().First(m => m.Id == model.Days[0]);
 
-                var meals = new Meal[] { monday, tuesday, wednesday, thursday, friday, saturday, sunday };
-                _menuService.CreateMenu(menu, meals);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(model);
+            var meals = new Meal[] { monday, tuesday, wednesday, thursday, friday, saturday, sunday };
+            _menuService.CreateMenu(menu, meals);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Menus/Edit/5

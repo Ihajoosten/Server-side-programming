@@ -43,7 +43,5 @@ namespace Domain
         {
             return Name;
         }
-
-
     }
 }

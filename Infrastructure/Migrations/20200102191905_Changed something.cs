@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class FirstmigrationonlinedbCook : Migration
+    public partial class Changedsomething : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

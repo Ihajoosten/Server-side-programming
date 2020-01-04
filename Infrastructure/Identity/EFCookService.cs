@@ -13,9 +13,5 @@ namespace Infrastructure.Identity
 
         public IQueryable<Domain.Cook> Cook => _context.Cook;
 
-        public void CreateCook(Domain.Cook cook)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(CookDbContext))]
-    [Migration("20200102000607_First migration online db Cook")]
-    partial class FirstmigrationonlinedbCook
+    [Migration("20200102191905_Changed something")]
+    partial class Changedsomething
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

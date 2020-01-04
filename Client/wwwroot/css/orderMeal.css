@@ -1,0 +1,17 @@
+﻿section {
+    padding: 150px 0;
+}
+
+    section#order::after {
+        content: "";
+        background: url("../img/carousel_item_1.jpg");
+        opacity: 0.4;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;
+        zoom: 0.8;
+        image-rendering: optimizeQuality;
+    }
