@@ -11,7 +11,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Client.Extentsions.Meal;
-using Client.Models.Order;
 
 namespace Client.Controllers
 {
@@ -37,7 +36,7 @@ namespace Client.Controllers
         }
 
         /** WERKT **/
-        public ViewResult ChooseWeek() => View();
+        public IActionResult ChooseWeek() => View();
 
         /** WERKT **/
         [HttpPost]
@@ -56,7 +55,7 @@ namespace Client.Controllers
         }
 
         /** WERKT **/
-        public async Task<ViewResult> Order()
+        public async Task<IActionResult> Order()
         {
             // Fetching Dishes into local JArray
             JArray dishArray = await DishMethods.GetDishes();
@@ -72,6 +71,8 @@ namespace Client.Controllers
 
             var meals = await MealMethods.GetAllWeekMeals(startDate);
 
+            Debug.WriteLine("Meals COUNT ------------------> " + meals.Count());
+
             foreach (var meal in meals)
             {
                 var day = meal.DateValid.DayOfWeek;
@@ -79,32 +80,32 @@ namespace Client.Controllers
             }
 
             List<MealDishes> mealDishes = new List<MealDishes>();
-
+    
             var dishes = _mealService.MealDish.ToList();
 
             foreach (var item in dishes)
             {
                 mealDishes.Add(item);
             }
-
-            ViewBag.MealDishes = mealDishes;
-            ViewBag.Dishes = allDishes;
-            ViewBag.Dictionary = dict;
-            return View();
+           
+            if (!User.Identity.IsAuthenticated)
+            {
+                ViewBag.MealDishes = mealDishes;
+                ViewBag.Dishes = allDishes;
+                ViewBag.Dictionary = dict;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Order(OrderMealViewModel model)
         {
-
-            foreach (var item in model.DayMeals)
-            {
-                Debug.WriteLine("----------KEY---------> " + item.Key.ToString() + " " + "----------VALUE-------> " + item.Value.ToString());
-            }
             // posting new order and redirect to order detail with details of the meal dishes when state is valid
-            //RedirectToAction("OrderDetail", "Order");
-            //return View(model);
+            RedirectToAction("OrderDetail", "Order");
             return View(model);
         }
 

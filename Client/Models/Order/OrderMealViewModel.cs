@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace Client.Models.Order
+﻿namespace Client.Controllers
 {
     public class OrderMealViewModel
     {
-        public Dictionary<int, KeyValuePair<int, int>> DayMeals { get; set; } = new Dictionary<int, KeyValuePair<int, int>>();
     }
 }
