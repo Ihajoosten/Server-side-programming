@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Identity;
 using DomainServices;
+using Infrastructure.Cook;
 
 namespace Client
 {
@@ -36,13 +37,21 @@ namespace Client
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<CookDbContext>(options =>
+                     options.UseSqlServer(Configuration["Cook:ConnectionString"]));
+
             services.AddDbContext<LoginDbContext>(options =>
                      options.UseSqlServer(Configuration["Login:Identity"]));
 
-            services.AddDefaultIdentity<Domain.Client>()
-                .AddEntityFrameworkStores<LoginDbContext>();
+            services.AddIdentity<Domain.AbstractUser, IdentityRole>()
+            .AddEntityFrameworkStores<LoginDbContext>();
 
-            services.AddTransient<IClientService, EFClientService>();
+            services.AddTransient<IMealService, EFMealService>();
+            services.AddTransient<IDishService, EFDishService>();
+
+            services.Configure<CookieTempDataProviderOptions>(options => {
+                options.Cookie.IsEssential = true;
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

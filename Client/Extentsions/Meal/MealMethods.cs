@@ -2,11 +2,32 @@
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using System.Globalization;
+using Domain;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Client.Extentsions.Dish
+namespace Client.Extentsions.Meal
 {
     public static class MealMethods
     {
+
+        public async static Task<IEnumerable<Domain.Meal>> GetAllWeekMeals(this DateTime date)
+        {
+            // Fetching Dishes into local JArray
+            JArray mealArray = await GetMeals();
+            // Converting JArray items to Collection object of given type
+            List<Domain.Meal> allMeals = mealArray.ToObject<List<Domain.Meal>>();
+
+            return allMeals.Where(m => Week(m.DateValid) == Week(date));
+        }
+
+        public static int Week(this DateTime date)
+        {
+            GregorianCalendar cal = new GregorianCalendar(GregorianCalendarTypes.Localized);
+            return cal.GetWeekOfYear(date, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+        }
+
         // Now define your asynchronous method which will retrieve all your pokemon.
         public static async Task<JArray> GetMeals()
         {

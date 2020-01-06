@@ -12,10 +12,11 @@
     <meta name="description" content="">
     <meta name="author" content="Luc Joosten">
     <title>Easy Meal - Order Detail</title>
+    <link rel="icon" href="~/img/website_icon.jpg">
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- Custom styles for this template -->
-    <link href="~/css/orderMeal.css" rel="stylesheet" />
+    <link href="~/css/order/orderDetail.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet">
 </head>
 
@@ -25,9 +26,9 @@
     @await Html.PartialAsync("_NavbarPartial")
 
     <section id="order">
-        <div class="container p-5">
+        <div class="container ">
             <div class="row">
-                <div class="col-8 offset-md-2 p-5 bg-white rounded shadow mb-5">
+                <div id="detailForm" class="col-sm-8 offset-sm-2 p-sm-5 bg-white rounded shadow mb-5">
                     <h2><span>Order details</span></h2>
                     <span>4 meal(s)</span>
                     <div class="mt-4">

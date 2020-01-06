@@ -11,9 +11,6 @@ namespace DomainServices
 
         IQueryable<Client> Client { get; }
 
-        // As a Client I want to update my data if needed
-        void UpdateClient(Client client);
 
-        Client GetClient(int? id);
     }
 }

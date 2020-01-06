@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Domain;
 using System.Threading.Tasks;
 using Client.Models.Account;
-using DomainServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,15 +8,15 @@ namespace Client.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<Domain.Client> _userManager;
-        private readonly SignInManager<Domain.Client> _signInManager;
-        private readonly IClientService _service;
+        private readonly UserManager<AbstractUser> _userManager;
+        private readonly SignInManager<AbstractUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<Domain.Client> userManager, SignInManager<Domain.Client> signInManager, IClientService service)
+        public AccountController(UserManager<AbstractUser> userManager, SignInManager<AbstractUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _service = service;
+            _roleManager = roleManager;
         }
 
         public async Task<IActionResult> Logout(string returnUrl = null)
@@ -48,14 +45,22 @@ namespace Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-
-                if (result.Succeeded)
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (await _userManager.IsInRoleAsync(user, "Client"))
                 {
-                    return RedirectToAction("Dashboard", "Home");
-                }
+                    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
 
-                ModelState.AddModelError(string.Empty, "Invalid Login!");
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Dashboard", "Home");
+                    }
+
+                    ModelState.AddModelError(string.Empty, "Invalid Login!");
+                }
+                else
+                {
+                    RedirectToAction("Register", "Account");
+                }
             }
 
             return View(model);
@@ -90,12 +95,27 @@ namespace Client.Controllers
                     PostalCode = model.PostalCode,
                     Gluten = model.Gluten,
                     Diabetes = model.Diabetes,
-                    Salt = model.Salt
+                    Salt = model.Salt,
+                    
+                    
                 };
+
+                var roleExist = _roleManager.RoleExistsAsync("Client").Result;
+                if (!roleExist)
+                {
+                    //create the roles and seed them to the database
+                    IdentityRole Client = new IdentityRole()
+                    {
+                        Name = "Client"
+                    };
+                    await _roleManager.CreateAsync(Client);
+                }
+
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "Client");
                     return RedirectToAction("Login", "Account");
                 }
 
@@ -105,52 +125,6 @@ namespace Client.Controllers
                 }
             }
             return View(model);
-        }
-
-        public async Task<IActionResult> Update()
-        {
-            var client = await _userManager.FindByEmailAsync("lucjoosten1234@outlook.com");
-            return View(client);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(Domain.Client client)
-        {
-            if (ModelState.IsValid)
-            {
-                // Get the existing student from the db
-                var user = await _userManager.FindByEmailAsync(client.Email);
-
-                user.FirstName = client.FirstName;
-                user.LastName = client.LastName;
-                user.PhoneNumber = client.PhoneNumber;
-                user.Birthday = client.Birthday;
-                user.PostalCode = client.PostalCode;
-                user.Street = client.Street;
-                user.City = client.City;
-                user.Addition = client.Addition;
-                user.HouseNumber = client.HouseNumber;
-                user.Password = client.Password;
-                user.ConfirmPassword = client.ConfirmPassword;
-                user.Gluten = client.Gluten;
-                user.Diabetes = client.Diabetes;
-                user.Salt = client.Salt;
-
-                var result = await _userManager.UpdateAsync(user);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-            }
-
-            return View(client);
         }
     }
 }

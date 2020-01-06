@@ -1,5 +1,10 @@
-﻿@{
+﻿@model Client.Models.Order.OrderMealViewModel
+@using Client.Models.Order;
+@using Client.Extentsions.Meal;
+
+@{
     Layout = null;
+    var start = 1; /*MealMethods.Week(DateTime.Parse(TempData["start"].ToString()));*/
 }
 
 
@@ -12,10 +17,11 @@
     <meta name="description" content="">
     <meta name="author" content="Luc Joosten">
     <title>Easy Meal - Order step</title>
+    <link rel="icon" href="~/img/website_icon.jpg">
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- Custom styles for this template -->
-    <link href="~/css/orderMeal.css" rel="stylesheet" />
+    <link href="~/css/order/ordermeal.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet">
 </head>
 
@@ -24,31 +30,61 @@
     <!-- Navigation -->
     @await Html.PartialAsync("_NavbarPartial")
 
-    <section id="order">
-        <div class="container text-center">
+    <section id="order" class="text-black-50 text-center">
+        <div class="container">
             <div class="row">
-                <div class="col-md-8 mx-auto">
-                    <label><h2 class="text-black-50">Order meals for week 1</h2></label>
+                <div class="col-md-6 mx-auto">
+                    <label><h1 class="text-black-50">Order meals for week @start</h1></label>
                     <br />
                     <hr />
-                    <div class="input-daterange input-group" id="datepicker">
-                        <div class="row m-2">
-                            @for (int i = 0; i < 7; i++)
+                    <div id="detailForm" class="row" style="height: 400px; overflow-y: auto;">
+                        <form asp-action="Order" method="post">
+                            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+                            @for (var i = 0; i < ViewBag.Dictionary.Count; i++)
                             {
-                                <div class="col-lg-4 mt-3">
+                                var day = ViewBag.Dictionary[i];
+                                <div class="col-md-4 mt-2">
                                     <label class="control-label">@Enum.Parse(typeof(DayOfWeek), "" + i)</label>
-                                    <select class="form-control">
-                                        <option>Dish, Dish, Dish</option>
+                                    <select asp-for="DayMeals[i].Value" class="form-control">
+                                        @foreach (var meal in day)
+                                        {
+                                            var matchingDishes = new List<Domain.Dish>();
+                                            foreach (var mealDish in ViewBag.MealDishes)
+                                            {
+                                                if (mealDish.MealId == meal.Id)
+                                                {
+                                                    var dish = ((List<Domain.Dish>)ViewBag.Dishes).Find(d => d.Id == mealDish.DishId);
+                                                    matchingDishes.Add(dish);
+                                                }
+                                            }
+                                            var smallMeal = new Dictionary<int, int>();
+                                            smallMeal.Add(meal.Id, 0);
+                                            var mediumMeal = new Dictionary<int, int>();
+                                            mediumMeal.Add(meal.Id, 1);
+                                            var largeMeal = new Dictionary<int, int>();
+                                            largeMeal.Add(meal.Id, 2);
+
+                                            <option value="@smallMeal">
+                                                @String.Join(", ", matchingDishes) - Small
+                                            </option>
+                                            <option value="@mediumMeal">
+                                                @String.Join(", ", matchingDishes) - Medium
+                                            </option>
+                                            <option value="@largeMeal">
+                                                @String.Join(", ", matchingDishes) - Large
+                                            </option>
+                                        }
                                     </select>
                                 </div>
                             }
-                        </div>
-                        <div class="row m-2 mt-3">
-                            <div class="col-md">
-                                <a asp-controller="Order" asp-action="Order"><button class="btn btn-success">Save Menu</button></a>
+                            <div class="row m-2 mt-3">
+                                <div class="col-md">
+                                    <button class="btn btn-sm btn-success" type="submit">Save Menu</button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
+
                 </div>
             </div>
         </div>

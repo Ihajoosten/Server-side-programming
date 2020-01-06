@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Infrastructure.Client
 {
-    class ClientDbContext
+    public class ClientDbContext
     {
     }
 }

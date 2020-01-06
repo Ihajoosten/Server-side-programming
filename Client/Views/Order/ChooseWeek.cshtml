@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Client.Models.Account.ChooseWeekViewModel
+@{
     Layout = null;
 }
 
@@ -12,10 +13,11 @@
     <meta name="description" content="">
     <meta name="author" content="Luc Joosten">
     <title>Easy Meal - Choose week</title>
+    <link rel="icon" href="~/img/website_icon.jpg">
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- Custom styles for this template -->
-    <link href="~/css/orderMeal.css" rel="stylesheet" />
+    <link href="~/css/order/chooseWeek.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet">
 </head>
 
@@ -33,26 +35,25 @@
                     <hr />
 
                     <div class="input-daterange input-group" id="datepicker">
-                        <div class="row">
-                            <div class="form-group col">
-                                <label>From</label>
-                                <input type="date" class="input-sm form-control" name="end" />
+                        <form method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label>From</label>
+                                    <input asp-for="Start" class="input-sm form-control" name="Start" />
+                                </div>
+                                <div class="form-group col">
+                                    <label>To</label>
+                                    <input asp-for="End" class="input-sm form-control" name="End" />
+                                </div>
                             </div>
-                            <div class="form-group col">
-                                <label>To</label>
-                                <input type="date" class="input-sm form-control" name="end" />
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <a asp-controller="Order" asp-action="ChooseWeek"><button type="submit" class="btn btn-success">Next</button></a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <a asp-controller="Order" asp-action="Order"><button class="btn btn-success">Next</button></a>
-                            </div>
-                        </div>
-                        
+                        </form>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
@@ -60,7 +61,5 @@
 
     <!-- Footer -->
     @await Html.PartialAsync("_FooterPartial")
-
-    <script src="~/js/site.js"></script>
 </body>
 </html>

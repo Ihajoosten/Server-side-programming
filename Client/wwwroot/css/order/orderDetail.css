@@ -1,0 +1,40 @@
+﻿section {
+    padding: 100px 0 0 0;
+}
+
+    section#order::after {
+        content: "";
+        background: url("../../img/userinfo_cover.jpg");
+        opacity: 0.4;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: 100%;
+        position: absolute;
+        z-index: -1;
+        zoom: 0.8;
+        image-rendering: optimizeQuality;
+    }
+
+#detailForm {
+    height: 450px;
+    overflow-y: auto;
+}
+
+#detailForm::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+    #detailForm::-webkit-scrollbar {
+        width: 12px;
+        background-color: #F5F5F5;
+    }
+
+    #detailForm::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color: #ffa500;
+    }

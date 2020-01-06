@@ -43,15 +43,12 @@ namespace Cook
             services.AddDbContext<LoginDbContext>(options =>
               options.UseSqlServer(Configuration["Login:Identity"]));
 
-            services.AddDefaultIdentity<Domain.Cook>()
+            services.AddIdentity<Domain.AbstractUser, IdentityRole>()
                 .AddEntityFrameworkStores<LoginDbContext>();
 
             services.AddTransient<IDishService, EFDishService>();
             services.AddTransient<IMealService, EFMealService>();
             services.AddTransient<IMenuService, EFMenuService>();
-
-            services.AddTransient<ICookService, EFCookService>();
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
