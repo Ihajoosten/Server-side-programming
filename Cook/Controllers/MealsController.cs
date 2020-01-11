@@ -125,9 +125,9 @@ namespace Cook.Controllers
                 if (item.MealId == id) mealDish.Add(item);
             }
 
-            Dish starter = null;
-            Dish mainer = null;
-            Dish dessert = null;
+            Dish starter = new Dish();
+            Dish mainer = new Dish();
+            Dish dessert = new Dish();
 
             foreach (var item in mealDish)
             {
@@ -136,7 +136,12 @@ namespace Cook.Controllers
                 if (item.Dish.Type.ToString() == types[2]) dessert = _dishService.GetDishById(item.DishId);
             }
 
-                EditMealModel model = new EditMealModel()
+            if (starter == null) starter.Id = 0;
+            if (mainer == null) mainer.Id = 0;
+            if (dessert == null) dessert.Id = 0;
+
+
+            EditMealModel model = new EditMealModel()
             {
                 Id = meal.Id,
                 DateForMeal = meal.DateValid,
