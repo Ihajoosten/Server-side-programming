@@ -5,10 +5,18 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Models
+namespace API_level_3.Models
 {
     public class MealViewModel
     {
+        private MealViewModel mealViewModel;
+
+        public MealViewModel(MealViewModel mealViewModel)
+        {
+            this.mealViewModel = mealViewModel;
+        }
+
+        public MealViewModel() { }
 
         public int Id { get; set; }
 

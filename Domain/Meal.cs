@@ -7,6 +7,13 @@ namespace Domain
 {
     public class Meal
     {
+        private Meal meal;
+
+        public Meal()
+        {
+
+        }
+
         [Key]
         public int Id { get; set; }
 

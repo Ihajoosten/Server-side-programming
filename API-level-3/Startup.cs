@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 
-namespace API
+namespace API_level_3
 {
     public class Startup
     {
@@ -32,10 +32,15 @@ namespace API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Easy Meal API Level 2", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Easy Meal API Level 3", Version = "v1" });
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvcCore().AddJsonFormatters(
+                    options =>
+                    {
+                        options.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                        options.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,15 +57,15 @@ namespace API
             }
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
+            //app.UseSwagger();
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Easy Meal API V1");
-                c.RoutePrefix = string.Empty;
-            });
+            //// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            //// specifying the Swagger JSON endpoint.
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Easy Meal API V1");
+            //    c.RoutePrefix = string.Empty;
+            //});
 
             app.UseHttpsRedirection();
             app.UseMvc();
