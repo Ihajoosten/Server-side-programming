@@ -4,7 +4,8 @@
 
     section#order::after {
         content: "";
-        background: url("../../img/carousel_item_3.jpg");
+        background: url("../../img/carousel_item_3.jpg") top left no-repeat;
+        background-size: cover;
         opacity: 0.4;
         top: 0;
         left: 0;

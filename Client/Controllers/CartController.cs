@@ -12,23 +12,28 @@ namespace Client.Controllers
 {
     public class CartController : Controller
     {
-        private readonly Cart _cart;
+        //private readonly Cart _cart;
 
-        public CartController(Cart cart)
+        //public CartController(Cart cart)
+        //{
+        //    _cart = cart;
+        //}
+        //public async Task<RedirectToActionResult> AddToCart(int id, DayOfWeek dayOfWeek)
+        //{
+        //    var result = await MealMethods.GetMealById(id);
+
+        //    Meal meal = result.ToObject<Meal>();
+
+        //    if (meal != null)
+        //    {
+        //        _cart.AddItem(meal, dayOfWeek);
+        //    }
+        //    return RedirectToAction("Index", "Cart");
+        //}
+
+        public IActionResult Cart()
         {
-            _cart = cart;
-        }
-        public async Task<RedirectToActionResult> AddToCart(int id, DayOfWeek dayOfWeek)
-        {
-            var result = await MealMethods.GetMealById(id);
-
-            Meal meal = result.ToObject<Meal>();
-
-            if (meal != null)
-            {
-                _cart.AddItem(meal, dayOfWeek);
-            }
-            return RedirectToAction("Index", "Cart");
+            return View("Cart");
         }
 
         //public ViewResult Index(string returnUrl)

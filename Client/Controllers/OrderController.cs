@@ -11,14 +11,20 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Client.Extentsions.Meal;
+using System.Globalization;
 
 namespace Client.Controllers
 {
     public class OrderController : Controller
     {
         private readonly IMealService _mealService;
+        private readonly IDishService _dishService;
 
-        public OrderController(IMealService service) => _mealService = service;
+        public OrderController(IMealService service, IDishService dishService)
+        {
+            _mealService = service;
+            _dishService = dishService;
+        }
 
 
         public IActionResult Checkout()
@@ -46,12 +52,14 @@ namespace Client.Controllers
         }
 
         /** WERKT **/
-        public async Task<IActionResult> Order()
+        public IActionResult Order()
         {
-            // Fetching Dishes into local JArray
-            JArray dishArray = await DishMethods.GetDishes();
-            // Converting JArray items to Collection object of given type
-            List<Dish> allDishes = dishArray.ToObject<List<Dish>>();
+            //// Fetching Dishes into local JArray
+            //JArray dishArray = await DishMethods.GetDishes();
+            //// Converting JArray items to Collection object of given type
+            //List<Dish> allDishes = dishArray.ToObject<List<Dish>>();
+
+            var allDishes = _dishService.GetDishes();
 
             Dictionary<int, List<Meal>> dict = new Dictionary<int, List<Meal>>();
 
@@ -60,7 +68,9 @@ namespace Client.Controllers
 
             DateTime startDate = DateTime.Parse(TempData["start"].ToString());
 
-            var meals = await MealMethods.GetAllWeekMeals(startDate);
+            //var meals = MealMethods.GetAllWeekMeals(startDate);
+
+            var meals = GetAllWeekMeals(startDate);
 
             foreach (var meal in meals)
             {
@@ -69,14 +79,14 @@ namespace Client.Controllers
             }
 
             List<MealDishes> mealDishes = new List<MealDishes>();
-    
+
             var dishes = _mealService.MealDish.ToList();
 
             foreach (var item in dishes)
             {
                 mealDishes.Add(item);
             }
-           
+
             if (!User.Identity.IsAuthenticated)
             {
                 ViewBag.MealDishes = mealDishes;
@@ -98,6 +108,17 @@ namespace Client.Controllers
             return View(model);
         }
 
+        public IEnumerable<Meal> GetAllWeekMeals(DateTime date)
+        {
+            return _mealService.Meal.Where(m => Week(m.DateValid) == Week(date));
+        }
 
+        public int Week(DateTime date)
+        {
+            GregorianCalendar cal = new GregorianCalendar(GregorianCalendarTypes.Localized);
+            return cal.GetWeekOfYear(date, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+        }
     }
+
+   
 }

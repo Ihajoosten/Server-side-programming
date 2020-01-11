@@ -11,7 +11,6 @@ namespace Client.Extentsions.Meal
 {
     public static class MealMethods
     {
-
         public async static Task<IEnumerable<Domain.Meal>> GetAllWeekMeals(this DateTime date)
         {
             // Fetching Dishes into local JArray
