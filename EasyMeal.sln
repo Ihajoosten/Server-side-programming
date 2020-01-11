@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices", "DomainSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{B28E7A3F-A921-4B2E-8675-88D11DA08803}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{2CF381B6-3DAE-442E-AF4A-7082432969C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API-level-2", "API\API-level-2.csproj", "{2CF381B6-3DAE-442E-AF4A-7082432969C4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{976038DB-7DC4-4DF6-9A43-A99561075BCE}"
 EndProject

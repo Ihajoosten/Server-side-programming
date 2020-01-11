@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Domain;
 using DomainServices;
-using API.Models;
+using API_level_2.Models;
 
-namespace API.Controllers
+namespace API_level_2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

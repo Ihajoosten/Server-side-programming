@@ -52,7 +52,7 @@ namespace Infrastructure.Cook
         public Dish GetDishById(int? id)
         {
             if (id == null) throw new KeyNotFoundException();
-            var dish = _context.Dish.SingleOrDefault(d => d.Id == id);
+            var dish = _context.Dish.FirstOrDefault(d => d.Id == id);
             return dish;
         }
 
