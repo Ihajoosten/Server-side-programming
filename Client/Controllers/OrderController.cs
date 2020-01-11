@@ -66,12 +66,18 @@ namespace Client.Controllers
             foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
                 dict.Add((int)day, new List<Meal>());
 
+            // Parsing the given dates through TempData
             DateTime startDate = DateTime.Parse(TempData["start"].ToString());
+            DateTime endDate = DateTime.Parse(TempData["end"].ToString());
 
             //var meals = MealMethods.GetAllWeekMeals(startDate);
 
-            var meals = GetAllWeekMeals(startDate);
+            IEnumerable<Meal> meals = new List<Meal>();
 
+            // To check if the begin date / end date is in the same week
+            if (Week(startDate) == Week(endDate)) meals = GetAllWeekMeals(startDate);
+
+            // For each meal in retrieved meals add it to the dictionary by specific day of week
             foreach (var meal in meals)
             {
                 var day = meal.DateValid.DayOfWeek;

@@ -36,7 +36,6 @@ namespace Infrastructure.Cook
                     entry.Restriction = dish.Restriction;
                     entry.Size = dish.Size;
                     entry.Type = dish.Type;
-                    //entry.Cook = dish.Cook;
                 }
             }
             _context.SaveChanges();

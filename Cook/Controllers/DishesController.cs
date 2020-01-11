@@ -53,19 +53,6 @@ namespace Cook.Controllers
             }
             ViewBag.Restrictions = restrictions;
 
-            var sizes = new List<SelectListItem>
-            {
-                new SelectListItem
-                {
-                    Text = "Select Size",
-                    Value = ""
-                }
-            };
-            foreach (DishSize size in Enum.GetValues(typeof(DishSize)))
-            {
-                sizes.Add(new SelectListItem { Text = Enum.GetName(typeof(DishSize), size), Value = size.ToString() });
-            }
-            ViewBag.Sizes = sizes;
             return View(new Dish());
         }
 
@@ -123,20 +110,6 @@ namespace Cook.Controllers
                 restrictions.Add(new SelectListItem { Text = Enum.GetName(typeof(DietRestriction), restriction), Value = restriction.ToString() });
             }
             ViewBag.Restrictions = restrictions;
-
-            var sizes = new List<SelectListItem>
-            {
-                new SelectListItem
-                {
-                    Text = "Select Size",
-                    Value = ""
-                }
-            };
-            foreach (DishSize size in Enum.GetValues(typeof(DishSize)))
-            {
-                sizes.Add(new SelectListItem { Text = Enum.GetName(typeof(DishSize), size), Value = size.ToString() });
-            }
-            ViewBag.Sizes = sizes;
 
             if (id == null)
             {
