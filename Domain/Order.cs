@@ -25,8 +25,8 @@ namespace Domain
         //[Display(Name = "Dish Size")]
         //public DishSize Size { get; set; }
 
-        //[Required]
-        //[DataType(DataType.Date)]
-        //public DateTime OrderDate { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime OrderDate { get; set; } = DateTime.Now.Date;
     }
 }
