@@ -10,7 +10,7 @@ namespace Infrastructure.Cook
 {
     public class EFMealService : IMealService
     {
-        protected readonly CookDbContext _context;
+        private readonly CookDbContext _context;
 
         public EFMealService(CookDbContext context) => _context = context;
 

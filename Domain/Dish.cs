@@ -34,7 +34,7 @@ namespace Domain
 
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = true)]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
         //[Required]
         //public Cook Cook { get; set; }

@@ -9,7 +9,7 @@ namespace Infrastructure.Cook
 {
     public class EFDishService : IDishService
     {
-        protected readonly CookDbContext _context;
+        private readonly CookDbContext _context;
 
         public EFDishService(CookDbContext context)
         {

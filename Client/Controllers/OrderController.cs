@@ -20,17 +20,8 @@ namespace Client.Controllers
 
         public OrderController(IMealService service) => _mealService = service;
 
-        public IActionResult OrderDetail()
-        {
-            return View();
-        }
 
         public IActionResult Checkout()
-        {
-            return View();
-        }
-
-        public IActionResult ConfirmCheckOut()
         {
             return View();
         }
@@ -70,8 +61,6 @@ namespace Client.Controllers
             DateTime startDate = DateTime.Parse(TempData["start"].ToString());
 
             var meals = await MealMethods.GetAllWeekMeals(startDate);
-
-            Debug.WriteLine("Meals COUNT ------------------> " + meals.Count());
 
             foreach (var meal in meals)
             {

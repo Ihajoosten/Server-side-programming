@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="DomainServices.IClientService">
+    <Position X="1" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>IClientService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DomainServices.IDishService">
+    <Position X="2.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAQAAAIAAAAIAAAAAIAAAAAAAAACAAAAA=</HashCode>
+      <FileName>IDishService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DomainServices.IMealService">
+    <Position X="4.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAACAgAAAAQgAAAQAAAAABAgAAA=</HashCode>
+      <FileName>IMealService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DomainServices.IMenuService">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAgAAAAAAAAAAAAAAAABAAAIAAIAAAAAAAQAACA=</HashCode>
+      <FileName>IMenuService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DomainServices.IOrderService">
+    <Position X="2.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAQAAAAAQAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IOrderService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

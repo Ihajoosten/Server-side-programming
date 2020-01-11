@@ -54,6 +54,7 @@
                                                     matchingDishes.Add(dish);
                                                 }
                                             }
+                                            <option selected value="@null">None</option>
                                             <option selected value="@meal.Id">
                                                 @String.Join(", ", matchingDishes)
                                             </option>
