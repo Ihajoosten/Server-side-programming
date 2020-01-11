@@ -53,7 +53,7 @@ namespace Cook.Controllers
             }
             ViewBag.Restrictions = restrictions;
 
-            return View(new Dish());
+            return View();
         }
 
         // POST: Dishes/Create

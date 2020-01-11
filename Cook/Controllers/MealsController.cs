@@ -20,12 +20,12 @@ namespace Cook.Controllers
         }
 
         // GET: Meals
-        public IActionResult Index()
+        public ViewResult Index()
         {
             List<MealDishes> mealDishes = new List<MealDishes>();
             List<Dish> allDishes = new List<Dish>();
 
-            var dishes = _mealService.MealDish.ToList();
+            var dishes = _mealService.GetAllMealDishes();
             var x = _dishService.GetDishes();
 
             foreach (var item in dishes)
@@ -43,7 +43,7 @@ namespace Cook.Controllers
         }
 
         // GET: Meals/Create
-        public IActionResult Create()
+        public ViewResult Create()
         {
             List<Dish> starters = new List<Dish>();
             List<Dish> mains = new List<Dish>();
