@@ -18,12 +18,10 @@ namespace Client.Controllers
     public class OrderController : Controller
     {
         private readonly IMealService _mealService;
-        private readonly IDishService _dishService;
 
-        public OrderController(IMealService service, IDishService dishService)
+        public OrderController(IMealService service)
         {
             _mealService = service;
-            _dishService = dishService;
         }
 
 
@@ -52,14 +50,13 @@ namespace Client.Controllers
         }
 
         /** WERKT **/
-        public IActionResult Order()
+        public async Task<IActionResult> Order()
         {
-            //// Fetching Dishes into local JArray
-            //JArray dishArray = await DishMethods.GetDishes();
-            //// Converting JArray items to Collection object of given type
-            //List<Dish> allDishes = dishArray.ToObject<List<Dish>>();
+            // Fetching Dishes into local JArray
+            JArray dishArray = await DishMethods.GetDishes();
+            // Converting JArray items to Collection object of given type
+            List<Dish> allDishes = dishArray.ToObject<List<Dish>>();
 
-            var allDishes = _dishService.GetDishes();
 
             Dictionary<int, List<Meal>> dict = new Dictionary<int, List<Meal>>();
 
@@ -70,12 +67,9 @@ namespace Client.Controllers
             DateTime startDate = DateTime.Parse(TempData["start"].ToString());
             DateTime endDate = DateTime.Parse(TempData["end"].ToString());
 
-            //var meals = MealMethods.GetAllWeekMeals(startDate);
-
-            IEnumerable<Meal> meals = new List<Meal>();
-
+            IEnumerable<Meal> meals = null;
             // To check if the begin date / end date is in the same week
-            if (Week(startDate) == Week(endDate)) meals = GetAllWeekMeals(startDate);
+            if (Week(startDate) == Week(endDate)) meals = (IEnumerable<Meal>) await MealMethods.GetAllWeekMeals(startDate);
 
             // For each meal in retrieved meals add it to the dictionary by specific day of week
             foreach (var meal in meals)
