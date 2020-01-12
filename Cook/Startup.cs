@@ -46,6 +46,7 @@ namespace Cook
             services.AddIdentity<Domain.AbstractUser, IdentityRole>()
                 .AddEntityFrameworkStores<LoginDbContext>();
 
+            services.AddTransient<IAbstractUser, EFAbstractUser>();
             services.AddTransient<IDishService, EFDishService>();
             services.AddTransient<IMealService, EFMealService>();
             services.AddTransient<IMenuService, EFMenuService>();

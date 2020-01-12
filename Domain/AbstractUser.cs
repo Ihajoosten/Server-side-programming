@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain
 {
@@ -20,6 +21,5 @@ namespace Domain
         [Required(ErrorMessage = "Confrimation password is required")]
         [Compare("Password", ErrorMessage = "The password does not match")]
         public string ConfirmPassword { get; set; }
-
     }
 }

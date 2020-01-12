@@ -17,29 +17,7 @@ namespace Infrastructure.Client
 
         public void CreateClient(Domain.Client client)
         {
-            if (client != null)
-            {
-                _context.Client.Add(client);
-            }
-            else
-            {
-                Domain.Client entry = _context.Client.FirstOrDefault(c => c.Email == client.Email);
-                if (entry != null)
-                {
-                    entry.FirstName = client.FirstName;
-                    entry.LastName = client.LastName;
-                    entry.Email = client.Email;
-                    entry.Birthday = client.Birthday;
-                    entry.City = client.City;
-                    entry.Street = client.Street;
-                    entry.HouseNumber = client.HouseNumber;
-                    entry.Addition = client.Addition;
-                    entry.PostalCode = client.PostalCode;
-                    entry.Gluten = client.Gluten;
-                    entry.Diabetes = client.Diabetes;
-                    entry.Salt = client.Salt;
-                };
-            }
+            _context.Client.Add(client);
             _context.SaveChanges();
         }
     }

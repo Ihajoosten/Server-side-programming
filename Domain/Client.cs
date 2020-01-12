@@ -3,9 +3,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class Client : AbstractUser
+    public class Client
     {
         public Client() { }
+
+        [Key]
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "Your firstname is required")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Your last name is required")]
+        public string LastName { get; set; }
+
+        [Required(ErrorMessage = "Your email is required")]
+        public string Email { get; set; }
 
         [Required(ErrorMessage = "Your birthday is required")]
         [DataType(DataType.Date)]

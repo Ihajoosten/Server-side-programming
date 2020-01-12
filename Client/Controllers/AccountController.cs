@@ -4,10 +4,6 @@ using Client.Models.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using DomainServices;
-using System.Security.Claims;
-using Infrastructure.Identity;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace Client.Controllers
 {
@@ -16,12 +12,12 @@ namespace Client.Controllers
         private readonly UserManager<AbstractUser> _userManager;
         private readonly SignInManager<AbstractUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IAbstractUser _abstractUserService;
         private readonly IClientService _clientService;
-        private readonly LoginDbContext _context;
 
-        public AccountController(LoginDbContext context, IClientService service, UserManager<AbstractUser> userManager, SignInManager<AbstractUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(IAbstractUser userService, IClientService service, UserManager<AbstractUser> userManager, SignInManager<AbstractUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
-            _context = context;
+            _abstractUserService = userService;
             _clientService = service;
             _userManager = userManager;
             _signInManager = signInManager;
@@ -54,7 +50,7 @@ namespace Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                var allUsers = _context.GetUsers;
+                var allUsers = _abstractUserService.GetUsers();
 
                 AbstractUser getUser = new AbstractUser();
 
@@ -117,6 +113,8 @@ namespace Client.Controllers
                     Salt = model.Salt
                 };
 
+                _clientService.CreateClient(client);
+
                 var user = new AbstractUser
                 {
                     FirstName = model.FirstName,
@@ -138,7 +136,6 @@ namespace Client.Controllers
                     await _roleManager.CreateAsync(Client);
                 }
 
-                _clientService.CreateClient(client);
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)

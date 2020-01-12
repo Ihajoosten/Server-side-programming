@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Domain;
 using Infrastructure.Identity;
+using DomainServices;
 
 namespace Cook.Controllers
 {
@@ -12,11 +13,11 @@ namespace Cook.Controllers
         private readonly UserManager<AbstractUser> _userManager;
         private readonly SignInManager<AbstractUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly LoginDbContext _context;
+        private readonly IAbstractUser _abstractUserService;
 
-        public AccountController(LoginDbContext context, UserManager<AbstractUser> userManager, SignInManager<AbstractUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(IAbstractUser abstractUser, UserManager<AbstractUser> userManager, SignInManager<AbstractUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
-            _context = context;
+            _abstractUserService = abstractUser;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
@@ -48,7 +49,7 @@ namespace Cook.Controllers
         {
             if (ModelState.IsValid)
             {
-                var allUsers = _context.GetUsers;
+                var allUsers = _abstractUserService.GetUsers();
 
                 AbstractUser getUser = new AbstractUser();
 

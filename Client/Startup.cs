@@ -50,6 +50,7 @@ namespace Client
             services.AddIdentity<Domain.AbstractUser, IdentityRole>()
           .AddEntityFrameworkStores<LoginDbContext>();
 
+            services.AddTransient<IAbstractUser, EFAbstractUser>();
             services.AddTransient<IClientService, EFClientService>();
             services.AddTransient<IMealService, EFMealService>();
             services.AddTransient<IDishService, EFDishService>();
