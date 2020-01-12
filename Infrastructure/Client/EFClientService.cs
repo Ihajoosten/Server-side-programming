@@ -20,5 +20,17 @@ namespace Infrastructure.Client
             _context.Client.Add(client);
             _context.SaveChanges();
         }
+
+        public void UpdateClient(Domain.Client client)
+        {
+            _context.Client.Update(client);
+            _context.SaveChanges();
+        }
+
+        public Domain.Client GetClientByEmail(string email)
+        {
+            Domain.Client returnClient = _context.Client.FirstOrDefault(cl => cl.Email == email);
+            return returnClient;
+        }
     }
 }

@@ -13,6 +13,8 @@ namespace DomainServices
 
         void CreateClient(Client client);
 
+        void UpdateClient(Client client);
 
+        Domain.Client GetClientByEmail(string client);
     }
 }

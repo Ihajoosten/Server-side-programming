@@ -1,4 +1,4 @@
-﻿@model Domain.Client
+﻿@model Client.Models.Account.UpdateViewModel
 
 @{
     Layout = null;
@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="col-sm-5 mx-auto m-4">
                     <h3 class="text-center mb-3">Update account</h3>
-                    <form method="post">
+                    <form asp-action="Edit" method="post">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="row">
                             <input id="input-register" asp-for="FirstName" class="col form-control m-2" type="text" name="FirstName" placeholder="First Name">
@@ -39,7 +39,7 @@
                         </div>
                         <div class="row">
 
-                            <input id="input-register" asp-for="Email" class="col form-control m-2" disabled type="email" name="Email" placeholder="E-mail">
+                            <input id="input-register" asp-for="Email" class="col form-control m-2" type="email" name="Email" placeholder="E-mail">
                             <input id="input-register" asp-for="Birthday" class="col form-control m-2" name="Birthday">
                         </div>
 
@@ -53,6 +53,11 @@
                             <input id="input-register" asp-for="Addition" class="col-3 form-control m-2" type="text" name="Addition" placeholder="Addition">
                             <input id="input-register" asp-for="PostalCode" class="col form-control m-2" type="text" name="PostalCode" placeholder="Postal code">
                         </div>
+                        <div class="row">
+
+                            <input id="input-register" asp-for="Password" class="form-control m-2" type="password" name="Password" placeholder="Password">
+                            <input id="input-register" asp-for="ConfirmPassword" class="form-control m-2" type="password" name="ConfirmPassword" placeholder="Confirm password">
+                        </div>
 
                         <div class="row">
                             <div class="col">
@@ -61,11 +66,11 @@
                             </div>
                             <div class="col">
                                 <label>Saltless diet</label>
-                                <input type="checkbox" asp-for="Salt" name="Gluten" />
+                                <input type="checkbox" asp-for="Salt" name="Salt" />
                             </div>
                             <div class="col">
                                 <label>Diabetes diet</label>
-                                <input type="checkbox" asp-for="Diabetes" name="Gluten" />
+                                <input type="checkbox" asp-for="Diabetes" name="Diabetes" />
                             </div>
                         </div>
 

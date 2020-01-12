@@ -12,5 +12,6 @@ namespace DomainServices
 
         List<AbstractUser> GetUsers();
 
+        AbstractUser GetUserByEmail(string email);
     }
 }

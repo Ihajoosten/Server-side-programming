@@ -24,12 +24,19 @@
                 }
                 else
                 {
+                    <li>Hello <span class="mr-2">@User.Identity.Name</span></li>
+
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li class="nav-item">
                                 <a asp-area="" asp-controller="Account" asp-action="Update">
                                     <button style="color: #ffa500" class="btn js-scroll-trigger m-1">Update</button>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Invoice" asp-action="Index">
+                                    <button style="color: #ffa500" class="btn js-scroll-trigger m-1">Invoices</button>
                                 </a>
                             </li>
                             <li class="divider"></li>

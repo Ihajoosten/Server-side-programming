@@ -16,6 +16,12 @@ namespace Infrastructure.Identity
         public IQueryable<AbstractUser> User => _context.User;
 
         public List<AbstractUser> GetUsers() => _context.User.ToList();
-       
+
+        public AbstractUser GetUserByEmail(string email)
+        {
+            AbstractUser user = _context.User.FirstOrDefault(cl => cl.Email == email);
+            return user;
+        }
+
     }
 }

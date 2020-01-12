@@ -4,6 +4,8 @@ using Client.Models.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using DomainServices;
+using System.Linq;
+using System.Diagnostics;
 
 namespace Client.Controllers
 {
@@ -37,6 +39,97 @@ namespace Client.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult Update()
+        {
+            // Retrieve Identity user
+            var allUsers = _abstractUserService.GetUsers();
+
+            AbstractUser getUser = new AbstractUser();
+
+            foreach (var item in allUsers)
+            {
+                if (item.Email == User.Identity.Name) getUser = item;
+            }
+
+            // Retrieve Client user
+            Domain.Client client = _clientService.Client.FirstOrDefault(c => c.Email == getUser.Email);
+
+            // Arrage return model
+            UpdateViewModel model = new UpdateViewModel()
+            {
+                FirstName = client.FirstName,
+                LastName = client.LastName,
+                Email = client.Email,
+                Birthday = client.Birthday,
+                City = client.City,
+                Street = client.Street,
+                HouseNumber = client.HouseNumber,
+                Addition = client.Addition,
+                PostalCode = client.PostalCode,
+                Gluten = client.Gluten,
+                Diabetes = client.Diabetes,
+                Salt = client.Salt,
+                Password = getUser.Password,
+                ConfirmPassword = getUser.ConfirmPassword
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Retrieve Identity user
+                var user = _abstractUserService.GetUserByEmail(User.Identity.Name);
+
+                if (user == null) ModelState.AddModelError(string.Empty, "Dit email is nog niet bekend in het systeem dus uw account kan niet worden geupdate");
+
+                // Retrieve Client user
+                var client = _clientService.GetClientByEmail(User.Identity.Name);
+
+                if (client == null) ModelState.AddModelError(string.Empty, "Dit email is nog niet bekend in het systeem dus uw account kan niet worden geupdate");
+
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.ConfirmPassword = model.ConfirmPassword;
+                user.UserName = model.Email;
+                user.Email = model.Email;
+
+                client.FirstName = model.FirstName;
+                client.LastName = model.LastName;
+                client.Email = model.Email;
+                client.Birthday = model.Birthday;
+                client.City = model.City;
+                client.Street = model.Street;
+                client.HouseNumber = model.HouseNumber;
+                client.Addition = model.Addition;
+                client.PostalCode = model.PostalCode;
+                client.Gluten = model.Gluten;
+                client.Diabetes = model.Diabetes;
+                client.Salt = model.Salt;
+
+                var x = await _userManager.ChangePasswordAsync(user, user.Password, model.Password);
+
+                if (x.Succeeded) user.Password = model.Password;
+
+
+                var result = await _userManager.UpdateAsync(user);
+                _clientService.UpdateClient(client);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError(string.Empty, "Failed to update your account!");
+
+            }
+            return View(model);
+        }
+
         // LOGIN Account
         [HttpGet]
         public IActionResult Login()
@@ -50,27 +143,21 @@ namespace Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                var allUsers = _abstractUserService.GetUsers();
+                AbstractUser user = _abstractUserService.GetUserByEmail(model.Email);
 
-                AbstractUser getUser = new AbstractUser();
-
-                foreach (var item in allUsers)
+                if (await _userManager.IsInRoleAsync(user, "Client"))
                 {
-                    if (item.Email == model.Email) getUser = item;
-                }
 
-                if (await _userManager.IsInRoleAsync(getUser, "Client"))
-                {
-                    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                    var result = await _signInManager.PasswordSignInAsync(user, model.Password, true, false);
 
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index", "Home");
                     }
+                    ModelState.AddModelError(string.Empty, "Your password or email does not match");
 
-                    ModelState.AddModelError(string.Empty, "Invalid Login!");
                 }
-                else if (await _userManager.IsInRoleAsync(getUser, "Cook"))
+                else if (await _userManager.IsInRoleAsync(user, "Cook"))
                 {
                     var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
 
