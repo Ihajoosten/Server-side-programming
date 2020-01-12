@@ -42,28 +42,28 @@ namespace API_level_2.Controllers
 
         // POST api/Dish
         [HttpPost]
-        public IActionResult CreateDish(Dish dish)
+        public IActionResult CreateDish()
         {
             throw new NotImplementedException();
         }
 
         // PUT api/Dish
         [HttpPut]
-        public IActionResult UpdateDish(Dish dish)
+        public IActionResult UpdateDish()
         {
             throw new NotImplementedException();
         }
 
         // PUT api/Dish/{id}
         [HttpPut("{id}")]
-        public IActionResult UpdateDishById(int id, Dish dish)
+        public IActionResult UpdateDishById(int id)
         {
             throw new NotImplementedException();
         }
 
         // DELETE api/Dish
         [HttpDelete]
-        public IActionResult DeleteDish(Dish dish)
+        public IActionResult DeleteDish()
         {
             throw new NotImplementedException();
         }

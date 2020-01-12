@@ -9,6 +9,8 @@ namespace Infrastructure.Cook
 
         public CookDbContext(DbContextOptions<CookDbContext> options) : base(options) { }
 
+        public CookDbContext() { }
+
         public DbSet<Dish> Dish { get; set; }
         public DbSet<Meal> Meal { get; set; }
         public DbSet<MealDishes> MealDish { get; set; }

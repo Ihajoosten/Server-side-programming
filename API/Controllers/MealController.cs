@@ -80,28 +80,42 @@ namespace API_level_2.Controllers
 
         // PUT: api/Meal
         [HttpPut]
-        public ActionResult UpdateMeal(Meal meal)
+        public ActionResult UpdateMeal()
         {
             throw new NotImplementedException();
         }
 
         // PUT: api/Meal/5
         [HttpPut("{id}")]
-        public IActionResult UpdateMealById(int id, Meal meal)
+        public IActionResult UpdateMealById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        // PATCH: api/Meal
+        [HttpPatch]
+        public ActionResult UpdatePatchMeal()
+        {
+            throw new NotImplementedException();
+        }
+
+        // PATCH: api/Meal/5
+        [HttpPatch("{id}")]
+        public IActionResult UpdatePatchMealById(int id)
         {
             throw new NotImplementedException();
         }
 
         // POST: api/Meal
         [HttpPost]
-        public ActionResult PostMeal(Meal meal)
+        public ActionResult PostMeal()
         {
             throw new NotImplementedException();
         }
 
         // DELETE: api/Meal
         [HttpDelete]
-        public ActionResult DeleteMeal(Meal meal)
+        public ActionResult DeleteMeal()
         {
             throw new NotImplementedException();
         }

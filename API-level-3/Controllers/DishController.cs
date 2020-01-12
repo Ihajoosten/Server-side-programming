@@ -64,42 +64,42 @@ namespace API_level_3.Controllers
 
         // POST api/Dish
         [HttpPost]
-        public IActionResult CreateDish(Dish dish)
+        public IActionResult CreateDish()
         {
             throw new NotImplementedException();
         }
 
         // PUT api/Dish
         [HttpPut]
-        public IActionResult PutUpdateDish(Dish dish)
+        public IActionResult PutUpdateDish()
         {
             throw new NotImplementedException();
         }
 
         // PATCH api/Dish/{id}
         [HttpPatch("{id}")]
-        public IActionResult PatchUpdateDishById(int id, Dish dish)
+        public IActionResult PatchUpdateDishById(int id)
         {
             throw new NotImplementedException();
         }
 
         // PATCH api/Dish
         [HttpPatch]
-        public IActionResult PatchUpdateDish(Dish dish)
+        public IActionResult PatchUpdateDish()
         {
             throw new NotImplementedException();
         }
 
         // PUT api/Dish/{id}
         [HttpPut("{id}")]
-        public IActionResult PutUpdateDishById(int id, Dish dish)
+        public IActionResult PutUpdateDishById(int id)
         {
             throw new NotImplementedException();
         }
 
         // DELETE api/Dish
         [HttpDelete]
-        public IActionResult DeleteDish(Dish dish)
+        public IActionResult DeleteDish()
         {
             throw new NotImplementedException();
         }
