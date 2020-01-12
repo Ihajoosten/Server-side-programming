@@ -15,7 +15,7 @@ namespace Infrastructure.Identity
 
         public DbSet<AbstractUser> User { get; set; }
 
-        public List<AbstractUser> getUsers => User.ToList();
+        public List<AbstractUser> GetUsers => User.ToList();
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

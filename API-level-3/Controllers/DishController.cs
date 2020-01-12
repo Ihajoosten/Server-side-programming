@@ -71,14 +71,28 @@ namespace API_level_3.Controllers
 
         // PUT api/Dish
         [HttpPut]
-        public IActionResult UpdateDish(Dish dish)
+        public IActionResult PutUpdateDish(Dish dish)
+        {
+            throw new NotImplementedException();
+        }
+
+        // PATCH api/Dish/{id}
+        [HttpPatch("{id}")]
+        public IActionResult PatchUpdateDishById(int id, Dish dish)
+        {
+            throw new NotImplementedException();
+        }
+
+        // PATCH api/Dish
+        [HttpPatch]
+        public IActionResult PatchUpdateDish(Dish dish)
         {
             throw new NotImplementedException();
         }
 
         // PUT api/Dish/{id}
         [HttpPut("{id}")]
-        public IActionResult UpdateDishById(int id, Dish dish)
+        public IActionResult PutUpdateDishById(int id, Dish dish)
         {
             throw new NotImplementedException();
         }

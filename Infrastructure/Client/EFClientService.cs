@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Client
 {
@@ -16,13 +17,13 @@ namespace Infrastructure.Client
 
         public void CreateClient(Domain.Client client)
         {
-            if (client == null)
+            if (client != null)
             {
                 _context.Client.Add(client);
             }
             else
             {
-                Domain.Client entry = _context.Client.FirstOrDefault(p => p.Email == client.Email);
+                Domain.Client entry = _context.Client.FirstOrDefault(c => c.Email == client.Email);
                 if (entry != null)
                 {
                     entry.FirstName = client.FirstName;

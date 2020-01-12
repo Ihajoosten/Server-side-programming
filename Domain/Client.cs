@@ -7,23 +7,22 @@ namespace Domain
     {
         public Client() { }
 
-        [Required]
+        [Required(ErrorMessage = "Your birthday is required")]
         [DataType(DataType.Date)]
         public DateTime Birthday { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Your city code is required")]
         public string City { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Your street code is required")]
         public string Street { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Your housenumber is required")]
         public int HouseNumber { get; set; }
       
-        [Required]
         public string Addition { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "Your postal code is required")]
         public string PostalCode { get; set; }
 
         public bool Salt { get; set; }

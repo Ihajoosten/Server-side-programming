@@ -16,8 +16,8 @@ namespace Client.Controllers
         private readonly UserManager<AbstractUser> _userManager;
         private readonly SignInManager<AbstractUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private IClientService _clientService;
-        private LoginDbContext _context;
+        private readonly IClientService _clientService;
+        private readonly LoginDbContext _context;
 
         public AccountController(LoginDbContext context, IClientService service, UserManager<AbstractUser> userManager, SignInManager<AbstractUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
@@ -54,7 +54,7 @@ namespace Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                var allUsers = _context.getUsers;
+                var allUsers = _context.GetUsers;
 
                 AbstractUser getUser = new AbstractUser();
 
@@ -101,21 +101,21 @@ namespace Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var client = new Domain.Client
-                //{
-                //    FirstName = model.FirstName,
-                //    LastName = model.LastName,
-                //    Email = model.Email,
-                //    Birthday = model.Birthday,
-                //    City = model.City,
-                //    Street = model.Street,
-                //    HouseNumber = model.HouseNumber,
-                //    Addition = model.Addition,
-                //    PostalCode = model.PostalCode,
-                //    Gluten = model.Gluten,
-                //    Diabetes = model.Diabetes,
-                //    Salt = model.Salt                    
-                //};
+                var client = new Domain.Client
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    Birthday = model.Birthday,
+                    City = model.City,
+                    Street = model.Street,
+                    HouseNumber = model.HouseNumber,
+                    Addition = model.Addition,
+                    PostalCode = model.PostalCode,
+                    Gluten = model.Gluten,
+                    Diabetes = model.Diabetes,
+                    Salt = model.Salt
+                };
 
                 var user = new AbstractUser
                 {
@@ -138,8 +138,8 @@ namespace Client.Controllers
                     await _roleManager.CreateAsync(Client);
                 }
 
+                _clientService.CreateClient(client);
                 var result = await _userManager.CreateAsync(user, model.Password);
-                //_clientService.CreateClient(client);
 
                 if (result.Succeeded)
                 {

@@ -48,7 +48,7 @@ namespace Cook.Controllers
         {
             if (ModelState.IsValid)
             {
-                var allUsers = _context.getUsers;
+                var allUsers = _context.GetUsers;
 
                 AbstractUser getUser = new AbstractUser();
 

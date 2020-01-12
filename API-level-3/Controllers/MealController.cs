@@ -123,14 +123,28 @@ namespace API_level_3.Controllers
 
         // PUT: api/Meal
         [HttpPut]
-        public ActionResult UpdateMeal(Meal meal)
+        public ActionResult PutUpdateMeal(Meal meal)
         {
             throw new NotImplementedException();
         }
 
         // PUT: api/Meal/5
         [HttpPut("{id}")]
-        public IActionResult UpdateMealById(int id, Meal meal)
+        public IActionResult PutUpdateMealById(int id, Meal meal)
+        {
+            throw new NotImplementedException();
+        }
+
+        // PATCH: api/Meal
+        [HttpPatch]
+        public ActionResult PatchUpdateMeal(Meal meal)
+        {
+            throw new NotImplementedException();
+        }
+
+        // PATCH: api/Meal/5
+        [HttpPatch("{id}")]
+        public IActionResult PatchUpdateMealById(int id, Meal meal)
         {
             throw new NotImplementedException();
         }
