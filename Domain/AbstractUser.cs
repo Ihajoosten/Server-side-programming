@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public abstract class AbstractUser : IdentityUser
+    public class AbstractUser : IdentityUser
     {
         [Required]
         public string FirstName { get; set; }

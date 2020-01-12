@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(LoginDbContext))]
-    [Migration("20200111104833_ok")]
-    partial class ok
+    [Migration("20200112020212_client init 2")]
+    partial class clientinit2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,9 +32,6 @@ namespace Infrastructure.Migrations
                         .IsConcurrencyToken();
 
                     b.Property<string>("ConfirmPassword");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -84,8 +81,6 @@ namespace Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("AbstractUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -196,42 +191,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Domain.Client", b =>
-                {
-                    b.HasBaseType("Domain.AbstractUser");
-
-                    b.Property<string>("Addition")
-                        .IsRequired();
-
-                    b.Property<DateTime>("Birthday");
-
-                    b.Property<string>("City")
-                        .IsRequired();
-
-                    b.Property<bool>("Diabetes");
-
-                    b.Property<bool>("Gluten");
-
-                    b.Property<int>("HouseNumber");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired();
-
-                    b.Property<bool>("Salt");
-
-                    b.Property<string>("Street")
-                        .IsRequired();
-
-                    b.HasDiscriminator().HasValue("Client");
-                });
-
-            modelBuilder.Entity("Domain.Cook", b =>
-                {
-                    b.HasBaseType("Domain.AbstractUser");
-
-                    b.HasDiscriminator().HasValue("Cook");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

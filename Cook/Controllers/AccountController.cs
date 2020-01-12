@@ -3,6 +3,7 @@ using Cook.Models.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Domain;
+using Infrastructure.Identity;
 
 namespace Cook.Controllers
 {
@@ -11,9 +12,11 @@ namespace Cook.Controllers
         private readonly UserManager<AbstractUser> _userManager;
         private readonly SignInManager<AbstractUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly LoginDbContext _context;
 
-        public AccountController(UserManager<AbstractUser> userManager, SignInManager<AbstractUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(LoginDbContext context, UserManager<AbstractUser> userManager, SignInManager<AbstractUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
+            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
@@ -45,14 +48,35 @@ namespace Cook.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                var allUsers = _context.getUsers;
 
-                if (result.Succeeded)
+                AbstractUser getUser = new AbstractUser();
+
+                foreach (var item in allUsers)
                 {
-                    return RedirectToAction("Dashboard", "Home");
+                    if (item.Email == model.Email) getUser = item;
                 }
 
-                ModelState.AddModelError(string.Empty, "Invalid Login!");
+                if (await _userManager.IsInRoleAsync(getUser, "Cook"))
+                {
+                    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Dashboard", "Home");
+                    }
+
+                    ModelState.AddModelError(string.Empty, "Invalid Login!");
+                }
+                else if (await _userManager.IsInRoleAsync(getUser, "Client"))
+                {
+                    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+
+                    if (result.Succeeded)
+                    {
+                        ModelState.AddModelError(string.Empty, "You are not authorized to visit this website");
+                    }
+                }
             }
 
             return View(model);
@@ -71,7 +95,7 @@ namespace Cook.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new Domain.Cook
+                var user = new AbstractUser
                 {
                     FirstName = model.FirstName,
                     LastName = model.LastName,

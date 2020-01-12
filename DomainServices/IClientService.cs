@@ -11,6 +11,8 @@ namespace DomainServices
 
         IQueryable<Client> Client { get; }
 
+        void CreateClient(Client client);
+
 
     }
 }

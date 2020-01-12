@@ -38,7 +38,7 @@ namespace Cook
             });
 
             services.AddDbContext<CookDbContext>(options =>
-               options.UseSqlServer(Configuration["Cook:ConnectionString"]));
+           options.UseSqlServer(Configuration["Cook:ConnectionString"]));
 
             services.AddDbContext<LoginDbContext>(options =>
               options.UseSqlServer(Configuration["Login:Identity"]));

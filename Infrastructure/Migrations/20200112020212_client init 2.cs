@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class changes : Migration
+    public partial class clientinit2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,17 +44,7 @@ namespace Infrastructure.Migrations
                     LastName = table.Column<string>(nullable: false),
                     Email = table.Column<string>(maxLength: 256, nullable: false),
                     Password = table.Column<string>(nullable: true),
-                    ConfirmPassword = table.Column<string>(nullable: true),
-                    Discriminator = table.Column<string>(nullable: false),
-                    Birthday = table.Column<DateTime>(nullable: true),
-                    City = table.Column<string>(nullable: true),
-                    Street = table.Column<string>(nullable: true),
-                    HouseNumber = table.Column<int>(nullable: true),
-                    Addition = table.Column<string>(nullable: true),
-                    PostalCode = table.Column<string>(nullable: true),
-                    Salt = table.Column<bool>(nullable: true),
-                    Diabetes = table.Column<bool>(nullable: true),
-                    Gluten = table.Column<bool>(nullable: true)
+                    ConfirmPassword = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
