@@ -147,6 +147,7 @@ namespace Tests.Cook.Services
                 Assert.Equal(7.99, context.Dish.FirstOrDefault(d => d.Id == dish.Id).Price);
             }
 
+
         }
 
         [Fact]
@@ -178,7 +179,6 @@ namespace Tests.Cook.Services
                 }
                 var getDish = service.GetDishById(dish.Id);
                 Assert.Equal(dish, getDish);
-
             }
         }
     }

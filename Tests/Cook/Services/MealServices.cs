@@ -14,7 +14,7 @@ namespace Tests.Cook.Services
 
         public static Meal meal = new Meal()
         {
-            DateValid = DateTime.Now.Date            
+            DateValid = DateTime.Now.Date
         };
 
         public static Dish dish = new Dish()
@@ -77,7 +77,7 @@ namespace Tests.Cook.Services
             var meals = service.GetMeals();
 
             Assert.Equal(meals.Count, context.Meal.Count());
-        }
+       }
 
         [Fact]
         public void GetMealById()
@@ -138,8 +138,35 @@ namespace Tests.Cook.Services
                 var mealDishes = service.GetAllMealDishes().Count();
                 Assert.NotNull(getMeal);
                 Assert.Equal(3, mealDishes);
-
             }
         }
+
+        //[Fact]
+        //public void DeleteMeal()
+        //{
+        //    var options = new DbContextOptionsBuilder<CookDbContext>()
+        //        .UseInMemoryDatabase(databaseName: "CookTest")
+        //        .Options;
+
+        //    // Run the test against one instance of the context
+        //    using (var context = new CookDbContext(options))
+        //    {
+        //        var service = new EFMealService(context);
+
+        //        meal.Dishes.Add(new MealDishes { Meal = meal, Dish = dish });
+        //        meal.Dishes.Add(new MealDishes { Meal = meal, Dish = dish2 });
+        //        meal.Dishes.Add(new MealDishes { Meal = meal, Dish = dish3 });
+
+        //        service.DeleteMeal(meal);
+        //    }
+
+        //    // Use a separate instance of the context to verify correct data was saved to database
+        //    using (var context = new CookDbContext(options))
+        //    {
+        //        var service = new EFMealService(context);
+        //        bool mealBool = service.GetMeals().Count() == 0 ? true : false;
+        //        Assert.True(mealBool);
+        //    }
+        //}
     }
 }

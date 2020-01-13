@@ -7,8 +7,6 @@ namespace Domain
 {
     public class Meal
     {
-        private Meal meal;
-
         public Meal()
         {
 
