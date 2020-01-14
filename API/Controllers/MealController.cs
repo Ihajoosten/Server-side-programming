@@ -82,49 +82,49 @@ namespace API_level_2.Controllers
         [HttpPut]
         public ActionResult UpdateMeal()
         {
-            throw new NotImplementedException();
+            return BadRequest("You are not allowed to modify");
         }
 
         // PUT: api/Meal/5
         [HttpPut("{id}")]
         public IActionResult UpdateMealById(int id)
         {
-            throw new NotImplementedException();
+            return BadRequest("You are not allowed to modify");
         }
 
         // PATCH: api/Meal
         [HttpPatch]
         public ActionResult UpdatePatchMeal()
         {
-            throw new NotImplementedException();
+            return BadRequest("You are not allowed to modify");
         }
 
         // PATCH: api/Meal/5
         [HttpPatch("{id}")]
         public IActionResult UpdatePatchMealById(int id)
         {
-            throw new NotImplementedException();
+            return BadRequest("You are not allowed to modify");
         }
 
         // POST: api/Meal
         [HttpPost]
         public ActionResult PostMeal()
         {
-            throw new NotImplementedException();
+            return BadRequest("You are not allowed to modify");
         }
 
         // DELETE: api/Meal
         [HttpDelete]
         public ActionResult DeleteMeal()
         {
-            throw new NotImplementedException();
+            return BadRequest("You are not allowed to modify");
         }
 
         // DELETE: api/Meal/5
         [HttpDelete("{id}")]
         public ActionResult DeleteMealById(int id)
         {
-            throw new NotImplementedException();
+            return BadRequest("You are not allowed to modify");
         }
 
 

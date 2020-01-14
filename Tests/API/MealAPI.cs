@@ -66,7 +66,7 @@ namespace Tests.API
             // Assert
             Assert.True(!response.IsSuccessStatusCode);
             Assert.NotEqual(HttpStatusCode.NotFound, response.StatusCode);
-            Assert.Equal(HttpStatusCode.UnsupportedMediaType, response.StatusCode);
+            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace Tests.API
             // Assert
             Assert.True(!response.IsSuccessStatusCode);
             Assert.NotEqual(HttpStatusCode.NotFound, response.StatusCode);
-            Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
+            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [Fact]
@@ -98,12 +98,12 @@ namespace Tests.API
             // Assert
             Assert.True(!response.IsSuccessStatusCode);
             Assert.NotEqual(HttpStatusCode.NotFound, response.StatusCode);
-            Assert.Equal(HttpStatusCode.UnsupportedMediaType, response.StatusCode);
+            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [Theory]
-        [InlineData(1)]
-        public async Task Get_Meal_By_Id_1_Is_OK(int? id = 1)
+        [InlineData(7)]
+        public async Task Get_Meal_By_Id_1_Is_OK(int? id = 7)
         {
             // Arrange
             var apiClient = new HttpClient();
@@ -117,8 +117,8 @@ namespace Tests.API
         }
 
         [Theory]
-        [InlineData(1)]
-        public async Task Get_Meal_By_Id_Status_200(int? id = 1)
+        [InlineData(7)]
+        public async Task Get_Meal_By_Id_Status_200(int? id = 7)
         {
             // Arrange
             var apiClient = new HttpClient();
