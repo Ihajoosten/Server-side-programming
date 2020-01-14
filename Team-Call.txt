@@ -1,3 +1,0 @@
-
--	Meerdere dieetbeperkingen opslaan in database en kiezen
--	Meals op basis van jaar en week (menus)

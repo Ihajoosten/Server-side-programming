@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using DomainServices;
 using System.Linq;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Client.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<AbstractUser> _userManager;
@@ -26,6 +28,7 @@ namespace Client.Controllers
             _roleManager = roleManager;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Logout(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
@@ -38,6 +41,7 @@ namespace Client.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+
 
         [HttpGet]
         public IActionResult Update()
@@ -132,6 +136,7 @@ namespace Client.Controllers
 
         // LOGIN Account
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View("Login");
@@ -139,6 +144,7 @@ namespace Client.Controllers
 
         // POST login account
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -173,6 +179,7 @@ namespace Client.Controllers
 
 
         // REGISTER Account
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
@@ -180,6 +187,7 @@ namespace Client.Controllers
 
         // POST register account
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)

@@ -19,6 +19,9 @@ namespace Domain
         public List<Meal> OrderMeals { get; set; } = new List<Meal>();
 
         [Required]
+        public double TotalPrice { get; set; }
+
+        [Required]
         [DataType(DataType.Date)]
         public DateTime OrderDate { get; set; } = DateTime.Now.Date;
     }

@@ -1,8 +1,9 @@
-﻿@using Client.Extentsions.Meal;
+﻿@model Client.Models.Order.OrderMealViewModel
+@using Client.Extentsions.Meal;
 
 @{
     Layout = null;
-    var start = MealMethods.Week(DateTime.Parse(TempData["start"].ToString()));
+    var start = MealMethods.Week(DateTime.Parse("2020-01-13"));
 }
 
 
@@ -36,38 +37,41 @@
                     <br />
                     <hr />
                     <div class="input-daterange input-group" id="datepicker">
-                        <div class="row m-2">
-                            @for (var i = 0; i < ViewBag.Dictionary.Count; i++)
-                            {
-                                var day = ViewBag.Dictionary[i];
-                                <div class="col-lg-4 mt-2">
-                                    <label class="control-label">@Enum.Parse(typeof(DayOfWeek), "" + i)</label>
-                                    <select class="form-control">
-                                        @foreach (var meal in day)
-                                        {
-                                            var matchingDishes = new List<Domain.Dish>();
-                                            foreach (var mealDish in ViewBag.MealDishes)
+                        <form asp-action="Order" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="row m-2">
+                                @for (var i = 0; i < ViewBag.Dictionary.Count; i++)
+                                {
+                                    var day = ViewBag.Dictionary[i];
+                                    <div class="col-lg-4 mt-2">
+                                        <label class="control-label">@Enum.Parse(typeof(DayOfWeek), "" + i)</label>
+                                        <select class="form-control" asp-for="DayMeals[i]">
+                                            <option selected value="0">-- None --</option>
+                                            @foreach (var meal in day)
                                             {
-                                                if (mealDish.MealId == meal.Id)
+                                                var matchingDishes = new List<Domain.Dish>();
+                                                foreach (var mealDish in ViewBag.MealDishes)
                                                 {
-                                                    var dish = ((List<Domain.Dish>)ViewBag.Dishes).Find(d => d.Id == mealDish.DishId);
-                                                    matchingDishes.Add(dish);
+                                                    if (mealDish.MealId == meal.Id)
+                                                    {
+                                                        var dish = ((List<Domain.Dish>)ViewBag.Dishes).Find(d => d.Id == mealDish.DishId);
+                                                        matchingDishes.Add(dish);
+                                                    }
                                                 }
+                                                <option selected value="@meal.Id">
+                                                    @String.Join(", ", matchingDishes)
+                                                </option>
                                             }
-                                            <option selected value="@null">None</option>
-                                            <option selected value="@meal.Id">
-                                                @String.Join(", ", matchingDishes)
-                                            </option>
-                                        }
-                                    </select>
-                                </div>
-                            }
-                        </div>
-                        <div class="row m-2 mt-3">
-                            <div class="col-md">
-                                <a asp-controller="Order" asp-action="Order"><button class="btn btn-success">Add to cart</button></a>
+                                        </select>
+                                    </div>
+                                }
                             </div>
-                        </div>
+                            <div class="row m-2 mt-3">
+                                <div class="col-md">
+                                    <button class="btn btn-success" type="submit">Add to cart</button></a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

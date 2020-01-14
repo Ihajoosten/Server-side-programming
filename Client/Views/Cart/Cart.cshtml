@@ -1,4 +1,5 @@
 ﻿@using Domain.Extensions;
+@model Client.Models.Cart.CartViewModel
 
 @{
     Layout = null;
@@ -33,18 +34,21 @@
             <div class="row">
                 <div id="detailForm" class="col-sm-8 offset-sm-2 p-sm-5 bg-white rounded shadow mb-5">
                     <h2><span>Cart summary</span></h2>
-                    <span>4 meal(s)</span>
+                    <span>@Model.Cart.Lines.Count() meal(s)</span>
                     <div class="mt-4">
-                        @for (int x = 0; x < 3; x++)
+                        @for (int x = 0; x < Model.Cart.Lines.Count(); x++)
                         {
-                            <span><b>Monday</b></span>
+                            <span><b>@Model.Cart.Lines[x].Meal.DateValid.ToString("dd MMM yyyy")</b></span>
                             <div class="p-2">
-                                @for (int i = 0; i < 3; i++)
+                                @foreach (var item in Model.Cart.Lines)
                                 {
+                                    @foreach (var dish in item.Meal.Dishes)
+                                    {
+                                        <label>@dish.Dish.Name</label>
+                                    }
                                     <div class="col mb-3">
                                         <div style="border-bottom: 1px solid">
                                             <label style="width: 100%">
-                                                Chicken Coktail
                                                 <span style="display:inline; padding-left:40px;">size:
                                                     <select class="form-control-sm">
                                                         <option value="0">Small (-20%)</option>
@@ -83,7 +87,7 @@
 
                     </div>
                     <div class="col text-right mt-2">
-                        <a asp-controller="Order" asp-action="Delivery"><button class="btn btn-sm btn-success">Procceed to checkout</button></a>
+                        <a asp-controller="Order" asp-action="Checkout"><button class="btn btn-sm btn-success">Procceed to checkout</button></a>
                     </div>
                 </div>
             </div>
