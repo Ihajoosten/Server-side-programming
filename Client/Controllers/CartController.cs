@@ -15,64 +15,65 @@ namespace Client.Controllers
     public class CartController : Controller
     {
         private Cart _cart;
+        private readonly IMealService _mealService;
+        private readonly IDishService _dishService;
 
-        public CartController(Cart cart)
+        public CartController(Cart cart, IMealService service, IDishService dishService)
         {
             _cart = cart;
-
+            _mealService = service;
+            _dishService = dishService;
         }
 
-        //public ViewResult Cart()
-        //{
-        //    return View();
-        //}
 
-        public ViewResult Cart(string returnUrl)
+        public ViewResult Cart()
         {
-            var dict = TempData["dict"];
-            
-            Debug.WriteLine("-------------- Dict ------------------------> " + dict);
+            ViewBag.Dishes = _dishService.GetDishes();
             return View(new CartViewModel
             {
-                Cart = GetCart(),
-                ReturnUrl = "/Cart/Cart"
+                Cart = _cart,
+                ReturnUrl = "Cart/Cart/"
             });
         }
 
-        public RedirectToActionResult AddToCart(Meal meal, DayOfWeek dayOfWeek)
+        //public IActionResult Checkout()
+        //{
+        //    if (_cart.IsValid())
+        //    {
+        //        return View();
+        //    }
+        //    ModelState.AddModelError(string.Empty, "You need to order at least 4 meals between monday and friday!");
+
+        //    return;
+        //}
+
+
+        public RedirectToActionResult AddToCart(int mealId, string returnUrl)
         {
+            Meal meal = _mealService.GetMealById(mealId);
             if (meal != null)
             {
-                _cart.AddItem(meal, dayOfWeek);
+                _cart.AddItem(meal, meal.DateValid.DayOfWeek);
                 SaveCart(_cart);
             }
             return RedirectToAction("Cart", "Cart");
         }
 
-        //public RedirectToActionResult RemoveFromCart(int mealId,
-        //    string returnUrl)
-        //{
-        //    Meal meal = _mealService.Meal
-        //        .FirstOrDefault(p => p.Id == mealId);
-        //    if (meal != null)
-        //    {
-        //        Cart cart = GetCart();
-        //        cart.RemoveLine(meal);
-        //        SaveCart(cart);
-        //    }
-        //    return RedirectToAction("Index", new { returnUrl });
-        //}
-
-
-        private Cart GetCart()
+        public RedirectToActionResult RemoveFromCart(int mealId,
+            string returnUrl)
         {
-            Cart cart = HttpContext.Session.GetJson<Cart>("Cart") ?? new Cart();
-            return cart;
+            Meal meal = _mealService.GetMealById(mealId);
+            if (meal != null)
+            {
+                Cart cart = GetCart();
+                cart.RemoveLine(meal);
+                SaveCart(cart);
+            }
+            return RedirectToAction("Cart", "Cart");
         }
 
-        private void SaveCart(Cart cart)
-        {
-            HttpContext.Session.SetJson("Cart", cart);
-        }
+
+        private Cart GetCart() { Cart cart = HttpContext.Session.GetJson<Cart>("Cart") ?? new Cart(); return cart; }
+        private void SaveCart(Cart cart) { HttpContext.Session.SetJson("Cart", cart); }
     }
 }

@@ -29,7 +29,7 @@ namespace Client
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = context => false;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
@@ -55,13 +55,13 @@ namespace Client
             services.AddTransient<IMealService, EFMealService>();
             services.AddTransient<IDishService, EFDishService>();
 
-           
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddScoped(sp => SessionCart.GetCart(sp));
+            services.AddScoped<Cart>(sp => SessionCart.GetCart(sp)); 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSession();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddMemoryCache();
+            services.AddSession();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -81,9 +81,9 @@ namespace Client
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseSession();
             
             app.UseAuthentication();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

@@ -11,15 +11,15 @@ namespace Client.Extentsions.Meal
 {
     public static class MealMethods
     {
-        //public static IEnumerable<Domain.Meal> GetAllWeekMeals(this DateTime date)
-        //{
-        //    //// Fetching Dishes into local JArray
-        //    //JArray mealArray = await GetMeals();
-        //    //// Converting JArray items to Collection object of given type
-        //    //List<Domain.Meal> allMeals = mealArray.ToObject<List<Domain.Meal>>();
+        public async static Task<IEnumerable<Domain.Meal>> GetAllWeekMeals(this DateTime date)
+        {
+            // Fetching Dishes into local JArray
+            JArray mealArray = await GetMeals();
+            // Converting JArray items to Collection object of given type
+            List<Domain.Meal> allMeals = mealArray.ToObject<List<Domain.Meal>>();
 
-        //    return allMeals.Where(m => Week(m.DateValid) == Week(date));
-        //}
+            return allMeals.Where(m => Week(m.DateValid) == Week(date));
+        }
 
         public static int Week(this DateTime date)
         {

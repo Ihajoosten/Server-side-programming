@@ -3,6 +3,8 @@
 
 @{
     Layout = null;
+    var totalPrice = 0.0;
+    var matchingDishes = new List<Domain.Dish>();
 }
 
 
@@ -36,29 +38,46 @@
                     <h2><span>Cart summary</span></h2>
                     <span>@Model.Cart.Lines.Count() meal(s)</span>
                     <div class="mt-4">
-                        @for (int x = 0; x < Model.Cart.Lines.Count(); x++)
+                        @foreach (var cartItem in Model.Cart.Lines)
                         {
-                            <span><b>@Model.Cart.Lines[x].Meal.DateValid.ToString("dd MMM yyyy")</b></span>
+                            <span><b>@cartItem.Meal.DateValid.ToString("ddd d MMM yyyy")</b></span>
                             <div class="p-2">
-                                @foreach (var item in Model.Cart.Lines)
+                                @foreach (var mealDish in cartItem.Meal.Dishes)
                                 {
-                                    @foreach (var dish in item.Meal.Dishes)
+                                    if (mealDish.MealId == cartItem.Meal.Id)
                                     {
-                                        <label>@dish.Dish.Name</label>
+                                        var dish = ((List<Domain.Dish>)ViewBag.Dishes).Find(d => d.Id == mealDish.DishId);
+                                        matchingDishes.Add(dish);
                                     }
+                                }
+
+                                @foreach (var dish in matchingDishes)
+                                {
+                                    totalPrice = totalPrice + DishMethods.GetDishPrice(dish);
                                     <div class="col mb-3">
                                         <div style="border-bottom: 1px solid">
                                             <label style="width: 100%">
-                                                <span style="display:inline; padding-left:40px;">size:
-                                                    <select class="form-control-sm">
+                                                @dish.Name <br />
+                                                <b><i>@dish.Type</i></b>
+
+                                                @if (dish.Type != Domain.DishType.Main)
+                                                {
+                                                    <span style="display: inline; float: right; padding-left: 15px"><button class="btn btn-sm"><i style="color: red;" class="fas fa-trash"></i></button></span>
+                                                    <span style="display: inline; float: right">€ @DishMethods.GetDishPrice(dish)</span>
+                                                }
+                                                else
+                                                {
+                                                    <span style="display: inline; float: right; margin-right: 45px;">€ @DishMethods.GetDishPrice(dish)</span>
+                                                }
+                                                <span style="display:inline; padding-left:0px;">
+
+                                                    <select style="display: inline; float: right; margin-right:10px;" class="form-control-sm">
                                                         <option value="0">Small (-20%)</option>
-                                                        <option value="1">Medium (+- 0%)</option>
+                                                        <option selected value="1" tabindex="0">Medium (+- 0%)</option>
                                                         <option value="2">Large (+ 20%)</option>
                                                     </select>
                                                 </span>
-                                                <span style="display: inline; float: right; padding-left: 15px"><button class="btn btn-sm"><i style="color: red;" class="fas fa-trash"></i></button></span>
                                                 <!-- Show dish price based on size (+- 20%) -->
-                                                <span style="display: inline; float: right">€ 7.99</span>
                                             </label>
                                         </div>
                                     </div>
@@ -71,7 +90,7 @@
                         <div class="p-2">
                             <label style="width: 100%">
                                 <!-- Get toal order price not including discounts -->
-                                Total: <span style="display: inline; float: right">€ 307.99</span>
+                                Total: <span style="display: inline; float: right">€ @totalPrice</span>
                             </label>
                             <label style="width: 100%">
                                 <!-- Check if it is the clients birthday -->
@@ -80,7 +99,7 @@
                             <div class="mt-3">
                                 <label style="width: 100%">
                                     <!-- Get total order price including discounts -->
-                                    <b>Sub-total:<span style="display: inline; float: right">€ 307.99</span></b>
+                                    <b>Sub-total:<span style="display: inline; float: right">€ @totalPrice</span></b>
                                 </label>
                             </div>
                         </div>
