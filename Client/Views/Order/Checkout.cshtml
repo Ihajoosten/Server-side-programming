@@ -1,4 +1,4 @@
-﻿@model Client.Models.Account.RegisterViewModel
+﻿@model Domain.Order
 
 @{
     Layout = null;
@@ -32,8 +32,9 @@
             <div class="row">
                 <div class="col-md-8 mx-auto m-4">
                     <h3 class="text-left text-black-50 mb-3">Check out order</h3>
-                    <form method="post">
-                        <div asp-validation-summary="All" class="text-danger"></div>
+                    <form asp-action="Checkout" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger"></div>
+                        @*
                         <div class="row">
                             <input id="input-register" asp-for="FirstName" class="col-sm form-control m-2" type="text" name="FirstName" placeholder="First Name">
                             <input id="input-register" asp-for="LastName" class="col-sm form-control m-2" type="text" name="LastName" placeholder="Last Name">
@@ -47,10 +48,10 @@
                             <input id="input-register" asp-for="HouseNumber" class="col-sm form-control m-2" type="number" name="HouseNumber" placeholder="Housenumber">
                             <input id="input-register" asp-for="Addition" class="col-sm form-control m-2" type="text" name="Addition" placeholder="Addition">
                             <input id="input-register" asp-for="PostalCode" class="col-sm form-control m-2" type="text" name="PostalCode" placeholder="Postal code">
-                        </div>
+                        </div>*@
                       
                         <div class="row form-button text-center">
-                            <a asp-controller="Order" asp-action="CheckOut"><button id="submit" type="submit" class="btn btn-success col m-2 mb-2">Place order</button></a>
+                            <button type="submit" class="btn btn-success btn-sm m-2 mb-2">Place order</button>
                         </div>
                     </form>
                 </div>

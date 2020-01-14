@@ -30,7 +30,7 @@ namespace Domain
 
         [Required]
         [Display(Name = "Dish Size")]
-        public DishSize Size { get; set; }
+        public Dishsize.DishSize Size { get; set; }
 
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = true)]

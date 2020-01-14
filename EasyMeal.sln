@@ -17,12 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cook", "Cook\Cook.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{37CFA9BC-5508-479B-89B1-248AC1862A93}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{58777C29-9DBC-428F-A970-97C4CCC79B04}"
-	ProjectSection(SolutionItems) = preProject
-		Team-Call.txt = Team-Call.txt
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API-level-3", "API-level-3\API-level-3.csproj", "{70909410-7A4D-4A2D-9D0F-FECCEE31291D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API-level-3", "API-level-3\API-level-3.csproj", "{70909410-7A4D-4A2D-9D0F-FECCEE31291D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

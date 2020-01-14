@@ -3,7 +3,7 @@
 
 @{
     Layout = null;
-    var start = MealMethods.Week(DateTime.Parse("2020-01-13"));
+    var start = MealMethods.Week(DateTime.Parse(TempData["start"].ToString()));
 }
 
 
@@ -28,6 +28,7 @@
 
     <!-- Navigation -->
     @await Html.PartialAsync("_NavbarPartial")
+
 
     <section id="order">
         <div class="container text-center">

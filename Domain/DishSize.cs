@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain
+namespace Domain.Dishsize
 {
     public enum DishSize { Small, Medium, Large }
 }

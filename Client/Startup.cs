@@ -33,11 +33,6 @@ namespace Client
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            //services.Configure<CookieTempDataProviderOptions>(options =>
-            //{
-            //    options.Cookie.IsEssential = true;
-            //});
-
             services.AddDbContext<CookDbContext>(options =>
                      options.UseSqlServer(Configuration["Cook:ConnectionString"]));
 
@@ -54,6 +49,7 @@ namespace Client
             services.AddTransient<IClientService, EFClientService>();
             services.AddTransient<IMealService, EFMealService>();
             services.AddTransient<IDishService, EFDishService>();
+            services.AddTransient<IOrderService, EFOrderService>();
 
 
             services.AddScoped<Cart>(sp => SessionCart.GetCart(sp)); 

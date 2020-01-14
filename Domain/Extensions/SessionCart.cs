@@ -31,6 +31,13 @@ namespace Domain.Extensions.Session
             base.RemoveLine(meal);
             Session.SetJson("Cart", this);
         }
+
+        public override void RemoveDishFromMeal(Meal meal, Dish dish)
+        {
+            base.RemoveDishFromMeal(meal, dish);
+            Session.SetJson("Cart", this);
+        }
+
         public override void Clear()
         {
             base.Clear();

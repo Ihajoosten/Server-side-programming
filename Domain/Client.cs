@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain
@@ -42,5 +43,8 @@ namespace Domain
         public bool Diabetes { get; set; }
 
         public bool Gluten { get; set; }
+
+        public List<Order> Orders { get; set; } = new List<Order>();
+
     }
 }

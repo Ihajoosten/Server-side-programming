@@ -1,10 +1,13 @@
-﻿@using Domain.Extensions;
-@model Client.Models.Cart.CartViewModel
+﻿@model Models.Cart.CartViewModel;
+@using Domain.Extensions;
+@using Domain.Dishsize;
+@using Domain;
 
 @{
     Layout = null;
     var totalPrice = 0.0;
     var matchingDishes = new List<Domain.Dish>();
+    var cartitems = Model.Cart.Lines;
 }
 
 
@@ -36,51 +39,66 @@
             <div class="row">
                 <div id="detailForm" class="col-sm-8 offset-sm-2 p-sm-5 bg-white rounded shadow mb-5">
                     <h2><span>Cart summary</span></h2>
-                    <span>@Model.Cart.Lines.Count() meal(s)</span>
+                    <span>@cartitems.Count() meal(s)</span>
                     <div class="mt-4">
-                        @foreach (var cartItem in Model.Cart.Lines)
+                        @for (int i = 0; i < cartitems.Count(); i++)
                         {
-                            <span><b>@cartItem.Meal.DateValid.ToString("ddd d MMM yyyy")</b></span>
+                            <form asp-action="RemoveFromCart" method="post">
+                                <input type="hidden" name="mealId"
+                                       value="@cartitems[i].Meal.Id" />
+                                <button type="submit" class="btn btn-sm">
+                                    <i style="color: red" class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                            <span><b>@cartitems[i].Meal.DateValid.ToString("ddd d MMM yyyy")</b></span>
                             <div class="p-2">
-                                @foreach (var mealDish in cartItem.Meal.Dishes)
+                                @foreach (var mealDish in cartitems[i].Meal.Dishes)
                                 {
-                                    if (mealDish.MealId == cartItem.Meal.Id)
+                                    if (mealDish.MealId == cartitems[i].Meal.Id)
                                     {
                                         var dish = ((List<Domain.Dish>)ViewBag.Dishes).Find(d => d.Id == mealDish.DishId);
-                                        matchingDishes.Add(dish);
-                                    }
-                                }
+                                        totalPrice = totalPrice + DishMethods.GetDishPrice(dish);
+                                        <div class="col mb-3">
+                                            <div style="border-bottom: 1px solid">
+                                                <label style="width: 100%">
+                                                    @dish.Name <br />
+                                                    <b><i>@dish.Type</i></b>
 
-                                @foreach (var dish in matchingDishes)
-                                {
-                                    totalPrice = totalPrice + DishMethods.GetDishPrice(dish);
-                                    <div class="col mb-3">
-                                        <div style="border-bottom: 1px solid">
-                                            <label style="width: 100%">
-                                                @dish.Name <br />
-                                                <b><i>@dish.Type</i></b>
+                                                    @if (dish.Type != Domain.DishType.Main)
+                                                    {
+                                                        <span style="display: inline; float: right; padding-left: 15px">
+                                                            <button class="btn btn-sm">
 
-                                                @if (dish.Type != Domain.DishType.Main)
-                                                {
-                                                    <span style="display: inline; float: right; padding-left: 15px"><button class="btn btn-sm"><i style="color: red;" class="fas fa-trash"></i></button></span>
-                                                    <span style="display: inline; float: right">€ @DishMethods.GetDishPrice(dish)</span>
-                                                }
-                                                else
-                                                {
-                                                    <span style="display: inline; float: right; margin-right: 45px;">€ @DishMethods.GetDishPrice(dish)</span>
-                                                }
-                                                <span style="display:inline; padding-left:0px;">
+                                                                <form asp-action="RemoveDish" method="post">
+                                                                    <input type="hidden" name="mealId"
+                                                                           value="@cartitems[i].Meal.Id" />
+                                                                    <input type="hidden" name="dishId"
+                                                                           value="@dish.Id" />
+                                                                    <button type="submit" class="btn btn-sm">
+                                                                        <i style="color: red" class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                        </span>
+                                                        <span style="display: inline; float: right">€ @DishMethods.GetDishPrice(dish)</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span style="display: inline; float: right; margin-right: 45px;">
+                                                            € @DishMethods.GetDishPrice(dish)
+                                                        </span>
+                                                    }
+                                                    <span style="display:inline; padding-left:0px;">
 
-                                                    <select style="display: inline; float: right; margin-right:10px;" class="form-control-sm">
-                                                        <option value="0">Small (-20%)</option>
-                                                        <option selected value="1" tabindex="0">Medium (+- 0%)</option>
-                                                        <option value="2">Large (+ 20%)</option>
-                                                    </select>
-                                                </span>
-                                                <!-- Show dish price based on size (+- 20%) -->
-                                            </label>
+                                                        <select asp-for="@dish.Size" style="display: inline; float: right; margin-right:10px;" class="form-control-sm">
+                                                            <option value="@DishSize.Small">Small (-20%)</option>
+                                                            <option selected value="@DishSize.Medium" tabindex="0">Medium (+- 0%)</option>
+                                                            <option value="@DishSize.Large">Large (+ 20%)</option>
+                                                        </select>
+                                                    </span>
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
                                 }
                             </div>
                         }
@@ -92,10 +110,6 @@
                                 <!-- Get toal order price not including discounts -->
                                 Total: <span style="display: inline; float: right">€ @totalPrice</span>
                             </label>
-                            <label style="width: 100%">
-                                <!-- Check if it is the clients birthday -->
-                                Birthday: <span style="display: inline; float: right">€ 0</span>
-                            </label>
                             <div class="mt-3">
                                 <label style="width: 100%">
                                     <!-- Get total order price including discounts -->
@@ -106,7 +120,7 @@
 
                     </div>
                     <div class="col text-right mt-2">
-                        <a asp-controller="Order" asp-action="Checkout"><button class="btn btn-sm btn-success">Procceed to checkout</button></a>
+                        <a asp-action="Checkout" asp-controller="Order"><button class="btn btn-sm btn-success">Procceed checkout</button></a>
                     </div>
                 </div>
             </div>

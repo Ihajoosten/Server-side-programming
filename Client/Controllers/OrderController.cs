@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Client.Extentsions.Meal;
 using Microsoft.AspNetCore.Authorization;
 using Client.Models.Order;
+using System.Diagnostics;
 
 namespace Client.Controllers
 {
@@ -18,11 +19,15 @@ namespace Client.Controllers
     public class OrderController : Controller
     {
         private readonly IMealService _mealService;
+        private readonly IClientService _clientService;
+        private readonly IOrderService _orderService;
         private readonly Cart _cart;
 
-        public OrderController(IMealService service, Cart cart)
+        public OrderController(IMealService service, IClientService clientService, IOrderService orderService, Cart cart)
         {
             _mealService = service;
+            _clientService = clientService;
+            _orderService = orderService;
             _cart = cart;
         }
 
@@ -35,9 +40,15 @@ namespace Client.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                TempData["start"] = model.Start;
-                TempData["end"] = model.End;
-                return RedirectToAction("Order", "Order");
+                if (ModelState.IsValid)
+                {
+                    TempData["start"] = model.Start;
+                    TempData["end"] = model.End;
+                    return RedirectToAction("Order", "Order");
+                }
+
+                ModelState.AddModelError(string.Empty, "Please fill in both dates to continue");
+                return View();
             }
             else
             {
@@ -110,27 +121,52 @@ namespace Client.Controllers
                 {
                     foreach (var item in model.DayMeals)
                     {
+
                         foreach (var meal in allMeals)
                         {
                             if (meal.Id == item.Value && item.Value != 0) _cart.AddItem(meal, (DayOfWeek)item.Key);
+
                         }
                     }
-
-                    if (_cart.IsValid())
-                    {
-                        return RedirectToAction("Cart", "Cart");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "You need to order at least 4 meals between monday and friday!");
-                        return RedirectToAction("ChooseWeek", "Order");
-                    }
+                    return RedirectToAction("Cart", "Cart");
                 }
-                return View(model);
+                return RedirectToAction("ChooseWeek", "Order");
             }
             else
             {
                 return RedirectToAction("Login", "Account");
+            }
+        }
+
+        public ViewResult CheckOut()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Checkout(Order order)
+        {
+            if (!_cart.Lines.Any())
+            {
+                ModelState.AddModelError(string.Empty, "Sorry, your shoppingcart is empty!");
+            }
+
+            if (!_cart.IsValid())
+            {
+                ModelState.AddModelError(string.Empty, "You need to order at least 4 meals between monday and friday!");
+            }
+            if (ModelState.IsValid)
+            {
+                Domain.Client client = _clientService.GetClientByEmail(User.Identity.Name);
+                order.Client = client;
+                _orderService.CreateOrder(order);
+                client.Orders.Add(order);
+                _cart.Clear();
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return View(order);
             }
         }
     }

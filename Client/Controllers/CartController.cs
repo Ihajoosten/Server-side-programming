@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Domain.Extensions.Session;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using Client.Models.Cart;
+using Models.Cart;
 using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
 using System;
@@ -36,18 +36,6 @@ namespace Client.Controllers
             });
         }
 
-        //public IActionResult Checkout()
-        //{
-        //    if (_cart.IsValid())
-        //    {
-        //        return View();
-        //    }
-        //    ModelState.AddModelError(string.Empty, "You need to order at least 4 meals between monday and friday!");
-
-        //    return;
-        //}
-
-
         public RedirectToActionResult AddToCart(int mealId, string returnUrl)
         {
             Meal meal = _mealService.GetMealById(mealId);
@@ -59,16 +47,22 @@ namespace Client.Controllers
             return RedirectToAction("Cart", "Cart");
         }
 
-        public RedirectToActionResult RemoveFromCart(int mealId,
-            string returnUrl)
+        public RedirectToActionResult RemoveFromCart(int mealId)
         {
             Meal meal = _mealService.GetMealById(mealId);
             if (meal != null)
             {
-                Cart cart = GetCart();
-                cart.RemoveLine(meal);
-                SaveCart(cart);
+                _cart.RemoveLine(meal);
+                SaveCart(_cart);
             }
+            return RedirectToAction("Cart", "Cart");
+        }
+
+        public RedirectToActionResult RemoveDish(int mealId, int dishId)
+        {
+            Meal meal = _mealService.GetMealById(mealId);
+            Dish dish = _dishService.GetDishById(dishId);
+
             return RedirectToAction("Cart", "Cart");
         }
 
