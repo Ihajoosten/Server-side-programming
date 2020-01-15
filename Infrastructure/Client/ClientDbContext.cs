@@ -16,6 +16,8 @@ namespace Infrastructure.Client
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<MealDishes>().HasKey(md => new { md.DishId, md.MealId });
             modelBuilder.Entity<Domain.Client>();
         }
     }

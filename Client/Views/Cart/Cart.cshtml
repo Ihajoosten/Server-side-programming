@@ -1,6 +1,7 @@
 ﻿@model Models.Cart.CartViewModel;
 @using Domain.Extensions;
 @using Domain.Dishsize;
+@using System.Diagnostics;
 @using Domain;
 
 @{
@@ -50,7 +51,14 @@
                                     <i style="color: red" class="fas fa-trash"></i>
                                 </button>
                             </form>
-                            <span><b>@cartitems[i].Meal.DateValid.ToString("ddd d MMM yyyy")</b></span>
+                            <span style="display:inline;"><b>@cartitems[i].Meal.DateValid.ToString("ddd d MMM yyyy")</b></span>
+                            <span style="display:inline; padding-left:0px;">
+                                <select style="display: inline; float: right; margin-right:10px;" class="form-control-sm">
+                                    <option value="@DishSize.Small">Small (-20%)</option>
+                                    <option selected value="@DishSize.Medium" tabindex="0">Medium (+- 0%)</option>
+                                    <option value="@DishSize.Large">Large (+ 20%)</option>
+                                </select>
+                            </span>
                             <div class="p-2">
                                 @foreach (var mealDish in cartitems[i].Meal.Dishes)
                                 {
@@ -58,17 +66,18 @@
                                     {
                                         var dish = ((List<Domain.Dish>)ViewBag.Dishes).Find(d => d.Id == mealDish.DishId);
                                         totalPrice = totalPrice + DishMethods.GetDishPrice(dish);
-                                        <div class="col mb-3">
+                                        <div class="col mb-3 mt-3">
                                             <div style="border-bottom: 1px solid">
                                                 <label style="width: 100%">
-                                                    @dish.Name <br />
-                                                    <b><i>@dish.Type</i></b>
+                                                    <span><b><i>@dish.Type: </i></b> @dish.Name</span>
 
                                                     @if (dish.Type != Domain.DishType.Main)
                                                     {
-                                                        <span style="display: inline; float: right; padding-left: 15px">
-                                                            <button class="btn btn-sm">
+                                                        if (cartitems[i].Meal.Dishes.Count > 2)
+                                                        {
+                                                            <span style="display: inline; float: right">€ @DishMethods.GetDishPrice(dish)</span>
 
+                                                            <span style="display: inline; float: right; padding-right: 15px">
                                                                 <form asp-action="RemoveDish" method="post">
                                                                     <input type="hidden" name="mealId"
                                                                            value="@cartitems[i].Meal.Id" />
@@ -78,23 +87,19 @@
                                                                         <i style="color: red" class="fas fa-trash"></i>
                                                                     </button>
                                                                 </form>
-                                                        </span>
-                                                        <span style="display: inline; float: right">€ @DishMethods.GetDishPrice(dish)</span>
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span style="display: inline; float: right">€ @DishMethods.GetDishPrice(dish)</span>
+                                                        }
                                                     }
                                                     else
                                                     {
-                                                        <span style="display: inline; float: right; margin-right: 45px;">
+                                                        <span style="display: inline; float: right; margin-right: 0px;">
                                                             € @DishMethods.GetDishPrice(dish)
                                                         </span>
                                                     }
-                                                    <span style="display:inline; padding-left:0px;">
-
-                                                        <select asp-for="@dish.Size" style="display: inline; float: right; margin-right:10px;" class="form-control-sm">
-                                                            <option value="@DishSize.Small">Small (-20%)</option>
-                                                            <option selected value="@DishSize.Medium" tabindex="0">Medium (+- 0%)</option>
-                                                            <option value="@DishSize.Large">Large (+ 20%)</option>
-                                                        </select>
-                                                    </span>
                                                 </label>
                                             </div>
                                         </div>
@@ -129,5 +134,7 @@
 
     <!-- Footer -->
     @await Html.PartialAsync("_FooterPartial")
+
+
 </body>
 </html>

@@ -62,6 +62,11 @@ namespace Client.Controllers
         {
             Meal meal = _mealService.GetMealById(mealId);
             Dish dish = _dishService.GetDishById(dishId);
+            if (meal != null && dish != null)
+            {
+                _cart.RemoveDishFromMeal(meal, dish);
+                SaveCart(_cart);
+            }
 
             return RedirectToAction("Cart", "Cart");
         }

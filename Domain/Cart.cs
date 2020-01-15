@@ -5,6 +5,8 @@ using Domain.Extensions;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using Domain.Dishsize;
 
 namespace Domain
 {
@@ -25,17 +27,14 @@ namespace Domain
         public virtual void RemoveLine(Meal meal) => _lineCollection.RemoveAll(l => l.Meal.Id == meal.Id);
 
         public virtual void RemoveDishFromMeal(Meal meal, Dish dish)
-        {
+        { 
+            var gettingMeal = _lineCollection.Find(m => m.Meal.Id == meal.Id);
+            _lineCollection.Remove(gettingMeal);
 
-            MealDishes mealDishes = new MealDishes
-            {
-                Meal = meal,
-                Dish = dish
-            };
+            var gettingMealDish = gettingMeal.Meal.Dishes.FirstOrDefault(md => md.DishId == dish.Id);
+            gettingMeal.Meal.Dishes.Remove(gettingMealDish);
 
-            var getMeal = _lineCollection.Find(m => m.Meal.Id == meal.Id);
-
-            getMeal.Meal.Dishes.Remove(mealDishes);
+            _lineCollection.Add(new CartLine { Meal = gettingMeal.Meal, DayOfWeek = gettingMeal.DayOfWeek });
         }
 
 

@@ -9,8 +9,6 @@ namespace Infrastructure.Cook
 
         public CookDbContext(DbContextOptions<CookDbContext> options) : base(options) { }
 
-        public CookDbContext() { }
-
         public DbSet<Dish> Dish { get; set; }
         public DbSet<Meal> Meal { get; set; }
         public DbSet<MealDishes> MealDish { get; set; }
@@ -19,6 +17,7 @@ namespace Infrastructure.Cook
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Dish>();
             modelBuilder.Entity<Meal>();
             modelBuilder.Entity<MealDishes>().HasKey(md => new { md.DishId, md.MealId });

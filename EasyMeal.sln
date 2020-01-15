@@ -19,6 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API-level-3", "API-level-3\API-level-3.csproj", "{70909410-7A4D-4A2D-9D0F-FECCEE31291D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{962CECB6-9643-49D5-A4E0-913D6D48B075}"
+	ProjectSection(SolutionItems) = preProject
+		Logins.txt = Logins.txt
+		selectMealSize.txt = selectMealSize.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

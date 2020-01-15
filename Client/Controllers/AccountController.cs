@@ -237,7 +237,7 @@ namespace Client.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, "Client");
 
-                    return RedirectToAction("Login", "Account");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 foreach (var error in result.Errors)

@@ -5,13 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\ClientDb\20200112112731_first migration.cs" />
-    <Compile Remove="Migrations\ClientDb\20200112112731_first migration.Designer.cs" />
-    <Compile Remove="Migrations\ClientDb\20200112115859_second migration.cs" />
-    <Compile Remove="Migrations\ClientDb\20200112115859_second migration.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.6" />

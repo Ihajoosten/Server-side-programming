@@ -20,12 +20,14 @@ namespace Client.Controllers
     {
         private readonly IMealService _mealService;
         private readonly IClientService _clientService;
+        private readonly IDishService _dishService;
         private readonly IOrderService _orderService;
         private readonly Cart _cart;
 
-        public OrderController(IMealService service, IClientService clientService, IOrderService orderService, Cart cart)
+        public OrderController(IMealService service, IDishService dishService , IClientService clientService, IOrderService orderService, Cart cart)
         {
             _mealService = service;
+            _dishService = dishService;
             _clientService = clientService;
             _orderService = orderService;
             _cart = cart;
@@ -57,15 +59,17 @@ namespace Client.Controllers
         }
 
         /** WERKT **/
-        public async Task<IActionResult> Order()
+        public IActionResult Order()
         {
             if (User.Identity.IsAuthenticated)
             {
 
-                // Fetching Dishes into local JArray
-                JArray dishArray = await DishMethods.GetDishes();
-                // Converting JArray items to Collection object of given type
-                List<Dish> allDishes = dishArray.ToObject<List<Dish>>();
+                //// Fetching Dishes into local JArray
+                //JArray dishArray = await DishMethods.GetDishes();
+                //// Converting JArray items to Collection object of given type
+                //List<Dish> allDishes = dishArray.ToObject<List<Dish>>();
+
+                List<Dish> allDishes = _dishService.GetDishes();
 
                 Dictionary<int, List<Meal>> dict = new Dictionary<int, List<Meal>>();
 
@@ -76,29 +80,43 @@ namespace Client.Controllers
                 DateTime startDate = DateTime.Parse(TempData["start"].ToString());
                 DateTime endDate = DateTime.Parse(TempData["end"].ToString());
 
-                IEnumerable<Meal> meals = null;
                 // To check if the begin date / end date is in the same week
-                if (MealMethods.Week(startDate) == MealMethods.Week(endDate)) meals = await MealMethods.GetAllWeekMeals(startDate);
-
-                // For each meal in retrieved meals add it to the dictionary by specific day of week
-                foreach (var meal in meals)
+                if (MealMethods.Week(startDate) != MealMethods.Week(endDate))
                 {
-                    var day = meal.DateValid.DayOfWeek;
-                    dict[(int)day].Add(meal);
+                    ModelState.AddModelError(string.Empty, "The given start date and end date were not in the same week!");
+                    return View();
+                }
+                else if (startDate > endDate)
+                {
+                    ModelState.AddModelError(string.Empty, "You cannot choose an end data that is passed the given startdate!");
+                    return View();
+                }
+                else if (MealMethods.Week(startDate) == MealMethods.Week(endDate))
+                {
+                    // For each meal in retrieved meals add it to the dictionary by specific day of week
+                    foreach (var meal in GetAllWeekMeals(startDate))
+                    {
+                        var day = meal.DateValid.DayOfWeek;
+                        dict[(int)day].Add(meal);
+                    }
+
+                    List<MealDishes> mealDishes = new List<MealDishes>();
+
+                    var dishes = _mealService.MealDish.ToList();
+
+                    foreach (var item in dishes)
+                    {
+                        mealDishes.Add(item);
+                    }
+
+                    ViewBag.MealDishes = mealDishes;
+                    ViewBag.Dishes = allDishes;
+                    ViewBag.Dictionary = dict;
+
+                    return View();
                 }
 
-                List<MealDishes> mealDishes = new List<MealDishes>();
-
-                var dishes = _mealService.MealDish.ToList();
-
-                foreach (var item in dishes)
-                {
-                    mealDishes.Add(item);
-                }
-
-                ViewBag.MealDishes = mealDishes;
-                ViewBag.Dishes = allDishes;
-                ViewBag.Dictionary = dict;
+                ModelState.AddModelError(string.Empty, "Application error: could not load the meals");
                 return View();
             }
             else
@@ -108,14 +126,12 @@ namespace Client.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Order(OrderMealViewModel model)
+        public IActionResult Order(OrderMealViewModel model)
         {
             if (User.Identity.IsAuthenticated)
             {
-                // Fetching Dishes into local JArray
-                JArray mealArray = await MealMethods.GetMeals();
-                // Converting JArray items to Collection object of given type
-                List<Meal> allMeals = mealArray.ToObject<List<Meal>>();
+
+                List<Meal> allMeals = _mealService.GetMeals();
 
                 if (ModelState.IsValid)
                 {
@@ -168,6 +184,13 @@ namespace Client.Controllers
             {
                 return View(order);
             }
+        }
+
+        public IEnumerable<Meal> GetAllWeekMeals(DateTime date)
+        {
+            List<Meal> allMeals = _mealService.GetMeals();
+
+            return allMeals.Where(m => MealMethods.Week(m.DateValid) == MealMethods.Week(date));
         }
     }
 }
