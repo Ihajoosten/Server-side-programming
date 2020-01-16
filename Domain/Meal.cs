@@ -22,5 +22,6 @@ namespace Domain
         [Required]
         public ICollection<MealDishes> Dishes { get; set; } = new List<MealDishes>();
 
+        public List<Dish> MealDishes { get; set; } = new List<Dish>();
     }
 }

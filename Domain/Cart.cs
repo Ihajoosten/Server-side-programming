@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Domain.Extensions;
-using System.Text;
-using Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using Domain.Dishsize;
 
 namespace Domain
 {
@@ -27,7 +22,7 @@ namespace Domain
         public virtual void RemoveLine(Meal meal) => _lineCollection.RemoveAll(l => l.Meal.Id == meal.Id);
 
         public virtual void RemoveDishFromMeal(Meal meal, Dish dish)
-        { 
+        {
             var gettingMeal = _lineCollection.Find(m => m.Meal.Id == meal.Id);
             _lineCollection.Remove(gettingMeal);
 
@@ -41,6 +36,16 @@ namespace Domain
         public virtual void Clear() => _lineCollection.Clear();
 
         public virtual List<CartLine> Lines => _lineCollection;
+
+        public virtual double ComputeTotalValue(List<CartLine> lines)
+        {
+            double price = 0;
+            foreach (var item in lines)
+            {
+                price += MealMethods.GetMealPrice(item.Meal);
+            }
+            return price;
+        }
 
         public bool IsValid()
         {

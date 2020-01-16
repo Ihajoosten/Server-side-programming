@@ -44,7 +44,5 @@ namespace Domain
 
         public bool Gluten { get; set; }
 
-        public List<Order> Orders { get; set; } = new List<Order>();
-
     }
 }

@@ -12,6 +12,8 @@ namespace Domain
         [Key]
         public int Id { get; set; }
 
+        public int ClientId { get; set; }
+
         [Required]
         public Client Client { get; set; }
 
@@ -24,5 +26,19 @@ namespace Domain
         [Required]
         [DataType(DataType.Date)]
         public DateTime OrderDate { get; set; } = DateTime.Now.Date;
+
+        public List<Meal> GetMealsWithMonth(int month)
+        {
+            List<Meal> result = new List<Meal>();
+
+            foreach (Meal meal in OrderMeals)
+            {
+                if (meal.DateValid.Month == month)
+                {
+                    result.Add(meal);
+                }
+            }
+            return result;
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace Client.Controllers
         private readonly IOrderService _orderService;
         private readonly Cart _cart;
 
-        public OrderController(IMealService service, IDishService dishService , IClientService clientService, IOrderService orderService, Cart cart)
+        public OrderController(IMealService service, IDishService dishService, IClientService clientService, IOrderService orderService, Cart cart)
         {
             _mealService = service;
             _dishService = dishService;
@@ -132,18 +132,20 @@ namespace Client.Controllers
             {
 
                 List<Meal> allMeals = _mealService.GetMeals();
+                List<Dish> allDishes = _dishService.GetDishes();
 
                 if (ModelState.IsValid)
                 {
+                    double mealPrice = 0;
                     foreach (var item in model.DayMeals)
                     {
 
                         foreach (var meal in allMeals)
                         {
                             if (meal.Id == item.Value && item.Value != 0) _cart.AddItem(meal, (DayOfWeek)item.Key);
-
                         }
                     }
+                    Debug.WriteLine("Meal price ----------------> " + mealPrice);
                     return RedirectToAction("Cart", "Cart");
                 }
                 return RedirectToAction("ChooseWeek", "Order");
@@ -176,7 +178,7 @@ namespace Client.Controllers
                 Domain.Client client = _clientService.GetClientByEmail(User.Identity.Name);
                 order.Client = client;
                 _orderService.CreateOrder(order);
-                client.Orders.Add(order);
+                //client.Orders.Add(order);
                 _cart.Clear();
                 return RedirectToAction("Index", "Home");
             }
@@ -185,6 +187,8 @@ namespace Client.Controllers
                 return View(order);
             }
         }
+
+
 
         public IEnumerable<Meal> GetAllWeekMeals(DateTime date)
         {
