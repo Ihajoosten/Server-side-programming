@@ -54,7 +54,6 @@ namespace Tests.Cart
         {
             Id = 2,
             DateValid = DateTime.Now.Date,
-            //MealDishes = new List<Dish>() { dish, dish2 }
 
         };
 
@@ -62,7 +61,12 @@ namespace Tests.Cart
         {
             Id = 3,
             DateValid = DateTime.Now.Date,
-            //MealDishes = new List<Dish>() { dish, dish2 }
+        };
+
+        public static Meal meal4 = new Meal
+        {
+            Id = 3,
+            DateValid = DateTime.Now.Date,
         };
 
 
@@ -121,6 +125,72 @@ namespace Tests.Cart
             double price = target.ComputeTotalValue(lines);
 
             Assert.Equal(23.8, price);
+        }
+
+        [Fact]
+        public void Can_Clear_Cart()
+        {
+
+            Domain.Cart target = new Domain.Cart();
+
+            
+            target.AddItem(meal2, DateTime.Now.DayOfWeek);
+            target.AddItem(meal3, DateTime.Now.DayOfWeek);
+
+            target.Clear();
+
+            Assert.Equal(0, target.Lines.Count());
+        }
+
+        [Fact]
+
+        public void Not_4_days_Included()
+        {
+
+            Domain.Cart target = new Domain.Cart();
+
+
+            target.AddItem(meal2, DateTime.Now.DayOfWeek);
+            target.AddItem(meal3, DateTime.Now.DayOfWeek);
+
+            var result = target.IsValid();
+
+            Assert.False(result);
+
+        }
+
+        [Fact]
+
+        public void Not_4_days_Included_With_2_Meals_On_Same_Day()
+        {
+
+            Domain.Cart target = new Domain.Cart();
+
+            target.AddItem(meal2, DateTime.Now.DayOfWeek);
+            target.AddItem(meal3, DateTime.Now.DayOfWeek);
+            target.AddItem(meal1, DateTime.Now.DayOfWeek);
+            target.AddItem(meal3, DateTime.Now.DayOfWeek);
+
+            var result = target.IsValid();
+
+            Assert.False(result);
+
+        }
+
+        public void Has_4_days_Included()
+        {
+
+            Domain.Cart target = new Domain.Cart();
+
+            target.AddItem(meal2, DateTime.Now.DayOfWeek);
+            target.AddItem(meal3, DateTime.Now.DayOfWeek);
+            target.AddItem(meal1, DateTime.Now.DayOfWeek);
+            target.AddItem(meal4, DateTime.Now.DayOfWeek);
+
+            var result = target.IsValid();
+
+            Assert.False(result);
+
         }
     }
 }

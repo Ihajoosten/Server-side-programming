@@ -12,7 +12,7 @@ namespace Infrastructure.Client
 
         public DbSet<Domain.Client> Client { get; set; }
 
-        //public DbSet<Order> Order { get; set; }
+        public DbSet<Order> Order { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

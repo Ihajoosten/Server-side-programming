@@ -1,5 +1,6 @@
 ﻿using Domain;
 using DomainServices;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,21 +10,25 @@ namespace Infrastructure.Client
 {
     public class EFOrderService : IOrderService
     {
-        public IQueryable<Order> Order => throw new NotImplementedException();
+        private readonly ClientDbContext _context;
+
+        public EFOrderService(ClientDbContext context) => _context = context;
+
+        public IQueryable<Order> Order => _context.Order
+            .Include(o => o.OrderMeals);
 
         public void CreateOrder(Order order)
         {
-            throw new NotImplementedException();
+            if (order.Id == 0)
+            {
+                _context.Order.Add(order);
+            }
+            _context.SaveChanges();
         }
 
-        public Order GetOrderById(int? id)
-        {
-            throw new NotImplementedException();
-        }
+        public Order GetOrderById(int? id) => _context.Order.Single(o => o.Id == orderId);
 
-        public List<Order> GetOrders()
-        {
-            throw new NotImplementedException();
-        }
+
+        public List<Order> GetOrders() => _context.Order.ToList();
     }
 }
