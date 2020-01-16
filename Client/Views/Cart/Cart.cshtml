@@ -37,7 +37,7 @@
     <section id="order">
         <div class="container ">
             <div class="row">
-                <div id="detailForm" class="col-sm-8 offset-sm-2 p-sm-5 bg-white rounded shadow mb-5">
+                <div id="detailForm" style="border: 2.25px solid #ffa500; opacity: 0.85;" class="col-sm-8 offset-sm-2 p-sm-5 bg-white rounded shadow mb-5">
                     <h2><span>Cart summary</span></h2>
                     <span>@cartitems.Count() meal(s)</span>
                     <div class="mt-4">
@@ -51,12 +51,8 @@
                                 </button>
                             </form>
                             <span style="display:inline;"><b>@cartitems[i].Meal.DateValid.ToString("ddd d MMM yyyy")</b></span>
-                            <span style="display:inline; padding-left:0px;">
-                                <select style="display: inline; float: right; margin-right:10px;" class="form-control-sm">
-                                    <option value="@DishSize.Small">Small (-20%)</option>
-                                    <option selected value="@DishSize.Medium" tabindex="0">Medium (+- 0%)</option>
-                                    <option value="@DishSize.Large">Large (+ 20%)</option>
-                                </select>
+                            <span style="display:inline; padding-left:0px; padding-right:25px; float: right;">
+                                <b> - Medium</b>
                             </span>
                             <div class="p-2">
                                 @foreach (var mealDish in cartitems[i].Meal.Dishes)

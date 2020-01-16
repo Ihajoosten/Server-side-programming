@@ -1,7 +1,9 @@
-﻿@model Domain.Order
+﻿@model Models.Order.CheckoutViewModel
+@using Domain.Dishsize;
 
 @{
     Layout = null;
+    var cartitems = ViewBag.Lines;
 }
 
 
@@ -29,29 +31,28 @@
 
     <section id="order">
         <div class="container">
-            <div class="row">
-                <div class="col-md-8 mx-auto m-4">
-                    <h3 class="text-left text-black-50 mb-3">Check out order</h3>
+            <div class="row bg-light" style="opacity: 0.8; border: 1.5px solid #ffa500">
+                <div class="col-md mx-auto p-3">
+                    <h3 class="text-center text-black-50 mb-3">Check out order</h3>
                     <form asp-action="Checkout" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger"></div>
-                        @*
-                        <div class="row">
-                            <input id="input-register" asp-for="FirstName" class="col-sm form-control m-2" type="text" name="FirstName" placeholder="First Name">
-                            <input id="input-register" asp-for="LastName" class="col-sm form-control m-2" type="text" name="LastName" placeholder="Last Name">
-                        </div>
-                        <div class="row">
+                        <span class="text-center text-black-50"><h3><b>@cartitems.Count meal(s)</b></h3></span>
+                        <div class="mt-4 text-center">
+                            @for (int i = 0; i < cartitems.Count; i++)
+                            {
+                                <div class="mt-3 text-center">
+                                    <span style="display:inline;"><b>@cartitems[i].Meal.DateValid.ToString("ddd d MMM yyyy")</b></span>
+                                    <select asp-for="CheckoutItems[i + 1]" style="display: inline; margin-left:5%;" class="form-control-sm">
+                                        <option value="@DishSize.Small">Small (-20%)</option>
+                                        <option selected value="@DishSize.Medium" tabindex="0">Medium (+- 0%)</option>
+                                        <option value="@DishSize.Large">Large (+ 20%)</option>
+                                    </select>
+                                </div>
 
-                            <input id="input-register" asp-for="City" class="col-sm form-control m-2" type="text" name="City" placeholder="City">
-                            <input id="input-register" asp-for="Street" class="col-sm form-control m-2" type="text" name="Street" placeholder="Street">
+                            }
                         </div>
-                        <div class="row">
-                            <input id="input-register" asp-for="HouseNumber" class="col-sm form-control m-2" type="number" name="HouseNumber" placeholder="Housenumber">
-                            <input id="input-register" asp-for="Addition" class="col-sm form-control m-2" type="text" name="Addition" placeholder="Addition">
-                            <input id="input-register" asp-for="PostalCode" class="col-sm form-control m-2" type="text" name="PostalCode" placeholder="Postal code">
-                        </div>*@
-                      
-                        <div class="row form-button text-center">
-                            <button type="submit" class="btn btn-success btn-sm m-2 mb-2">Place order</button>
+                        <div class="mt-4 text-center">
+                            <button type="submit" class="btn btn-success m-2 mb-2">Place order</button>
                         </div>
                     </form>
                 </div>

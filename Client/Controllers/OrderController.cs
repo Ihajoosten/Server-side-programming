@@ -1,5 +1,4 @@
-﻿using Client.Extentsions.Dish;
-using Client.Models.Account;
+﻿using Client.Models.Account;
 using Domain;
 using DomainServices;
 using Microsoft.AspNetCore.Mvc;
@@ -7,11 +6,12 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Client.Extentsions.Meal;
 using Microsoft.AspNetCore.Authorization;
 using Client.Models.Order;
 using System.Diagnostics;
+using Domain.Dishsize;
+using Models.Order;
 
 namespace Client.Controllers
 {
@@ -130,9 +130,7 @@ namespace Client.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-
                 List<Meal> allMeals = _mealService.GetMeals();
-                List<Dish> allDishes = _dishService.GetDishes();
 
                 if (ModelState.IsValid)
                 {
@@ -145,7 +143,6 @@ namespace Client.Controllers
                             if (meal.Id == item.Value && item.Value != 0) _cart.AddItem(meal, (DayOfWeek)item.Key);
                         }
                     }
-                    Debug.WriteLine("Meal price ----------------> " + mealPrice);
                     return RedirectToAction("Cart", "Cart");
                 }
                 return RedirectToAction("ChooseWeek", "Order");
@@ -156,14 +153,18 @@ namespace Client.Controllers
             }
         }
 
-        public ViewResult CheckOut()
+        public ViewResult Checkout()
         {
+            ViewBag.Lines = _cart.Lines;
             return View();
         }
 
         [HttpPost]
-        public IActionResult Checkout(Order order)
+        public IActionResult Checkout(CheckoutViewModel model)
         {
+            ViewBag.Lines = _cart.Lines;
+
+
             if (!_cart.Lines.Any())
             {
                 ModelState.AddModelError(string.Empty, "Sorry, your shoppingcart is empty!");
@@ -175,17 +176,78 @@ namespace Client.Controllers
             }
             if (ModelState.IsValid)
             {
+                Dictionary<Meal, DishSize> meals = new Dictionary<Meal, DishSize>();
+                foreach (var item in model.CheckoutItems)
+                {
+                    foreach (var lineItem in _cart.Lines)
+                    {
+                        if (item.Key == lineItem.Meal.Id) meals.Add(lineItem.Meal, item.Value);
+                    }
+                }
+
+
+                // Get Curren Client 
                 Domain.Client client = _clientService.GetClientByEmail(User.Identity.Name);
+
+                List<CartLine> lines = _cart.Lines;
+                List<Dish> dishes = _dishService.GetDishes();
+                foreach (var dish in dishes)
+                {
+                    foreach (var meal in lines)
+                    {
+                        foreach (var mealDish in meal.Meal.Dishes)
+                        {
+                            if (mealDish.DishId == dish.Id)
+                            {
+                                meal.Meal.MealDishes.Add(dish);
+                            }
+                        }
+                    }
+                }
+                // Get Total price excluded from discounts
+                double total = _cart.ComputeTotalValue(lines);
+
+                //Check meal sizes to obtain 20 % or decrement 20 % of total price
+                foreach (var item in meals)
+                {
+                    if (item.Value == DishSize.Large) total += (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
+                    if (item.Value == DishSize.Small) total -= (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
+                }
+
+                // Check if one of the cart item is on the clients birthday
+                foreach (var item in lines)
+                {
+                    if (client.Birthday == item.Meal.DateValid) total -= Domain.Extensions.MealMethods.GetMealPrice(item.Meal);
+                }
+
+                //// Check if the client has 15 orders already to give 10% discount
+                var orderList = _orderService.GetOrders();
+                int clientOrders = 0;
+                foreach (var item in orderList)
+                {
+                    if (item.ClientId == client.Id) clientOrders++;
+                }
+
+                bool orderBool = clientOrders % 15 == 0 ? true : false;
+                if (orderBool) total *= 0.9;
+
+                // Setup a new OrderInvoice
+                Order order = new Order
+                {
+                    OrderDate = DateTime.Now.Date,
+                    ClientId = client.Id,
+                    OrderMeals = meals,
+                    TotalPrice = total
+                };
+
                 order.Client = client;
                 _orderService.CreateOrder(order);
-                //client.Orders.Add(order);
+                client.Orders.Add(order);
                 _cart.Clear();
                 return RedirectToAction("Index", "Home");
             }
-            else
-            {
-                return View(order);
-            }
+            return View();
+
         }
 
 

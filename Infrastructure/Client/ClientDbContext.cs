@@ -19,6 +19,7 @@ namespace Infrastructure.Client
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<MealDishes>().HasKey(md => new { md.DishId, md.MealId });
             modelBuilder.Entity<Domain.Client>();
+            modelBuilder.Entity<Order>();
         }
     }
 }

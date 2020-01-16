@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Domain.Dishsize;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Domain
@@ -18,7 +20,8 @@ namespace Domain
         public Client Client { get; set; }
 
         [Required]
-        public List<Meal> OrderMeals { get; set; } = new List<Meal>();
+        [NotMapped]
+        public Dictionary<Meal, DishSize> OrderMeals { get; set; } = new Dictionary<Meal, DishSize>();
 
         [Required]
         public double TotalPrice { get; set; }
@@ -27,15 +30,15 @@ namespace Domain
         [DataType(DataType.Date)]
         public DateTime OrderDate { get; set; } = DateTime.Now.Date;
 
-        public List<Meal> GetMealsWithMonth(int month)
+        public Dictionary<CartLine, DishSize> GetMealsWithMonth(int month)
         {
-            List<Meal> result = new List<Meal>();
+            Dictionary<CartLine, DishSize> result = new Dictionary<CartLine, DishSize>();
 
-            foreach (Meal meal in OrderMeals)
+            foreach (var meal in OrderMeals)
             {
-                if (meal.DateValid.Month == month)
+                if (meal.Key.DateValid.Month == month)
                 {
-                    result.Add(meal);
+                    result.Add(new CartLine { Meal = meal.Key, DayOfWeek = meal.Key.DateValid.DayOfWeek}, meal.Value);
                 }
             }
             return result;

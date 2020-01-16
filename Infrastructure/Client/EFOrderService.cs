@@ -26,7 +26,7 @@ namespace Infrastructure.Client
             _context.SaveChanges();
         }
 
-        public Order GetOrderById(int? id) => _context.Order.Single(o => o.Id == orderId);
+        public Order GetOrderById(int? id) => _context.Order.Single(o => o.Id == id);
 
 
         public List<Order> GetOrders() => _context.Order.ToList();
