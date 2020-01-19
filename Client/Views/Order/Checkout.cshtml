@@ -1,5 +1,5 @@
 ﻿@model Models.Order.CheckoutViewModel
-@using Domain.Dishsize;
+@using Domain;
 
 @{
     Layout = null;
@@ -43,9 +43,9 @@
                                 <div class="mt-3 text-center">
                                     <span style="display:inline;"><b>@cartitems[i].Meal.DateValid.ToString("ddd d MMM yyyy")</b></span>
                                     <select asp-for="CheckoutItems[i + 1]" style="display: inline; margin-left:5%;" class="form-control-sm">
-                                        <option value="@DishSize.Small">Small (-20%)</option>
-                                        <option selected value="@DishSize.Medium" tabindex="0">Medium (+- 0%)</option>
-                                        <option value="@DishSize.Large">Large (+ 20%)</option>
+                                        <option value="@MealSize.Small">Small (-20%)</option>
+                                        <option selected value="@MealSize.Medium" tabindex="0">Medium (+- 0%)</option>
+                                        <option value="@MealSize.Large">Large (+ 20%)</option>
                                     </select>
                                 </div>
 
@@ -55,6 +55,9 @@
                             <button type="submit" class="btn btn-success m-2 mb-2">Place order</button>
                         </div>
                     </form>
+                    <div class="mt-4 text-center">
+                        <a asp-controller="Order" asp-action="ChooseWeek"><button type="submit" class="btn btn-warning">Continue shopping</button></a>
+                    </div>
                 </div>
             </div>
         </div>

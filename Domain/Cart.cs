@@ -66,5 +66,14 @@ namespace Domain
             if (weekday > 3) return true;
             return false;
         }
+
+        public bool MealOnBirthDay(DateTime date)
+        {
+            foreach (var item in Lines)
+            {
+                if (item.Meal.DateValid.Date == date.Date) return true;
+            }
+            return false;
+        }
     }
 }

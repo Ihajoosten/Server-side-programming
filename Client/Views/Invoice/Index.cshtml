@@ -1,5 +1,12 @@
-﻿@{
+﻿@model List<Domain.Order>
+@using Domain;
+@using Domain.Extensions;
+@{
     Layout = null;
+    var orderMeals = ViewBag.OrderMeals;
+    var mealDishes = ViewBag.MealDishes;
+    var meals = ViewBag.Meals;
+    var birthdayDiscount = ViewBag.Birthday;
 }
 
 
@@ -27,60 +34,90 @@
 
     <section id="invoices">
         <div class="container">
+            <h2 class="mb-2 text-center">Invoices</h2>
             <div class="row">
-                <div class="scrollmenu">
-                    @for (int y = 0; y < 4; y++)
+                <div class="col-sm-8 offset-sm-2 p-5">
+
+                    @for (int i = 0; i < Model.Count(); i++)
                     {
-                        <div id="detailForm" style="display:inline-block;" class="col-sm-6 offset-sm-2 p-sm-5 bg-white rounded shadow mb-5">
-                            <h2><span>Invoice 28 Jan 2020</span></h2>
-                            <span>4 meal(s)</span>
+                        <div class="bg-white rounded shadow mb-5 p-4" style="border: 2.25px solid #ffa500; opacity: 0.85;" overflow: auto; white-space: normal;">
+                            <span><b>Orderdate: @Model[i].OrderDate.ToString("ddd d MMM yyyy")</b></span> <br />
+                            <span>@Model[i].Meals.Count meal(s)</span>
                             <div class="mt-4">
-                                @for (int x = 0; x < 2; x++)
-                                {
-                                    <span><b>Monday</b></span>
-                                    <div class="p-2">
-                                        @for (int i = 0; i < 3; i++)
+                                <div class="pb-4">
+                                    @foreach (var meal in Model[i].Meals)
+                                    {
+                                        foreach (var fetchMeal in meals)
                                         {
-                                            <div class="col mb-3">
-                                                <div style="border-bottom: 1px solid">
-                                                    <label style="width: 100%">
-                                                        Chicken Coktail
-                                                        <span style="display:inline; padding-left:40px;">
-                                                            size: medium
-                                                        </span>
-                                                        <span style="display: inline; float: right">€ 7.99</span>
-                                                    </label>
+                                            if (meal.MealId == fetchMeal.Id)
+                                            {
+                                                <div class=" mt-4">
+                                                    <div class="p-2">
+                                                        <span><b>@fetchMeal.DateValid.ToString("ddd d MMM yyyy")</b></span>
+                                                        <span style="display: inline; float: right; padding-right: 13px;"><b>@meal.MealSize</b></span>
+                                                        @foreach (var dish in Model[i].Meals[i].Dishes)
+                                                        {
+
+                                                            <div class="col mb-3 mt-4">
+                                                                <div style="border-bottom: 1px solid">
+                                                                    <label style="width: 100%">
+                                                                        <span>@dish.Name</span>
+                                                                        @if (meal.MealSize == Domain.MealSize.Large)
+                                                                        {
+                                                                            var price = dish.Price;
+                                                                            <span style="display: inline; float: right;">€ @(price * 1.2)</span>
+                                                                            <br />
+                                                                        }
+                                                                        else if (meal.MealSize == Domain.MealSize.Small)
+                                                                        {
+                                                                            var price = dish.Price;
+                                                                            <span style="display: inline; float: right;">€ @(price * 0.8)</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span style="display: inline; float: right;">€ @dish.Price</span>
+                                                                        }
+
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            }
                                         }
-                                    </div>
-                                }
-                            </div>
-                            <hr />
-                            <div class="col">
-                                <div class="p-2">
-                                    <label style="width: 100%">
-                                        <!-- Get toal order price not including discounts -->
-                                        Total: <span style="display: inline; float: right">€ 307.99</span>
-                                    </label>
-                                    <br />
-                                    <label style="width: 100%">
-                                        <!-- Check if it is the clients birthday -->
-                                        Birthday: <span style="display: inline; float: right">€ 0</span>
-                                    </label>
-                                    <br />
-                                    <label style="width: 100%">
-                                        <!-- Check if it the client has more than 15 orders placed -->
-                                        Discount: 15% (more than 15 orders placed)<span style="display: inline; float: right">€ 46.20</span>
-                                    </label>
-                                    <div class="mt-3">
-                                        <label style="width: 100%">
-                                            <!-- Get total order price including discounts -->
-                                            <b>Sub-total:<span style="display: inline; float: right">€ 261.79</span></b>
-                                        </label>
+                                    }
+                                    <hr />
+                                    <div class="col">
+                                        <div class="p-2">
+                                            <!-- total price from cart order-->
+                                            <label style="width: 100%">
+                                                <i>Total: </i><span style="display: inline; float: right">€ @Model[i].TotalPrice</span>
+                                            </label>
+                                            <br />
+                                            <!-- Check if meal is on client birthday, then free meal-->
+                                            <label style="width: 100%">
+                                                <span style="display: inline; float: left; font-size: 15px"><i>- Birthday discount:</i></span>
+                                                <span style="display: inline; float: right;">- € @birthdayDiscount</span>
+                                            </label>
+                                            <br />
+                                            <!-- Check if client ordered 15 or more meals at one time, then 10% discount -->
+                                            <label style="width: 100%">
+                                                <span style="display: inline; float: left;"><i>- Meal discount: </i></span>
+                                                <span style="display: inline; float: right;">- € 0</span>
+
+                                            </label>
+
+                                            <!-- total price included discounts-->
+                                            <div class="mt-3">
+                                                <label style="width: 100%">
+                                                    <i style="display: inline; float: left; font-size: 15px"><b>Sub-total:</b></i>
+                                                    <span style="display: inline; float: right"><b>€ @(Model[i].TotalPrice - birthdayDiscount)</b></span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     }

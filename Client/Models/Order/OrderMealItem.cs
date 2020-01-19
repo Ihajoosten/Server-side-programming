@@ -11,6 +11,6 @@ namespace Client.Models.Order
     {
         public Meal MealItem { get; set; }
 
-        public DishSize MealSize { get; set; }
+        public MealSize MealSize { get; set; }
     }
 }

@@ -67,7 +67,7 @@ namespace Tests.Cook.Services
 
 
             // Use a separate instance of the context to verify correct data was saved to database
-            using var context = new CookDbContext(options);
+            var context = new CookDbContext(options);
             var service = new EFMenuService(context);
             var meals = service.GetMenus();
 
@@ -82,7 +82,7 @@ namespace Tests.Cook.Services
                 .Options;
 
             // Use a separate instance of the context to verify correct data was saved to database
-            using var context = new CookDbContext(options);
+            var context = new CookDbContext(options);
             var service = new EFMenuService(context);
 
             Menu menu = new Menu();

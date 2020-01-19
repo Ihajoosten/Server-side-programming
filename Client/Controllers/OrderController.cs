@@ -10,8 +10,8 @@ using Client.Extentsions.Meal;
 using Microsoft.AspNetCore.Authorization;
 using Client.Models.Order;
 using System.Diagnostics;
-using Domain.Dishsize;
 using Models.Order;
+using static Domain.Order;
 
 namespace Client.Controllers
 {
@@ -44,9 +44,36 @@ namespace Client.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    TempData["start"] = model.Start;
-                    TempData["end"] = model.End;
-                    return RedirectToAction("Order", "Order");
+                    bool nextWeekStart = MealMethods.Week(model.Start) != (MealMethods.Week(DateTime.Now.Date) + 1) ? true : false;
+                    bool nextWeekEnd = MealMethods.Week(model.End) != (MealMethods.Week(DateTime.Now.Date) + 1) ? true : false;
+
+                    // To check if the begin date / end date is in the same week
+                    if (MealMethods.Week(model.Start) != MealMethods.Week(model.End))
+                    {
+                        ModelState.AddModelError(string.Empty, "The given start date and end date were not in the same week!");
+                        return View();
+                    }
+                    else if (model.Start > model.End)
+                    {
+                        ModelState.AddModelError(string.Empty, "You cannot choose an end data that is passed the given start date!");
+                        return View();
+                    }
+                    //else if (nextWeekStart && nextWeekEnd)
+                    //{
+                    //    ModelState.AddModelError(string.Empty, "You cannot order for this week only for the next week after the current week!");
+                    //    return View();
+                    //}
+                    else if (model.Start.DayOfWeek != DayOfWeek.Monday || model.End.DayOfWeek != DayOfWeek.Sunday)
+                    {
+                        ModelState.AddModelError(string.Empty, "You can only order for a full week!");
+                        return View();
+                    }
+                    else
+                    {
+                        TempData["start"] = model.Start;
+                        TempData["end"] = model.End;
+                        return RedirectToAction("Order", "Order");
+                    }
                 }
 
                 ModelState.AddModelError(string.Empty, "Please fill in both dates to continue");
@@ -80,18 +107,7 @@ namespace Client.Controllers
                 DateTime startDate = DateTime.Parse(TempData["start"].ToString());
                 DateTime endDate = DateTime.Parse(TempData["end"].ToString());
 
-                // To check if the begin date / end date is in the same week
-                if (MealMethods.Week(startDate) != MealMethods.Week(endDate))
-                {
-                    ModelState.AddModelError(string.Empty, "The given start date and end date were not in the same week!");
-                    return View();
-                }
-                else if (startDate > endDate)
-                {
-                    ModelState.AddModelError(string.Empty, "You cannot choose an end data that is passed the given startdate!");
-                    return View();
-                }
-                else if (MealMethods.Week(startDate) == MealMethods.Week(endDate))
+                if (MealMethods.Week(startDate) == MealMethods.Week(endDate))
                 {
                     // For each meal in retrieved meals add it to the dictionary by specific day of week
                     foreach (var meal in GetAllWeekMeals(startDate))
@@ -134,7 +150,6 @@ namespace Client.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    double mealPrice = 0;
                     foreach (var item in model.DayMeals)
                     {
 
@@ -168,15 +183,21 @@ namespace Client.Controllers
             if (!_cart.Lines.Any())
             {
                 ModelState.AddModelError(string.Empty, "Sorry, your shoppingcart is empty!");
+                return View();
             }
 
             if (!_cart.IsValid())
             {
                 ModelState.AddModelError(string.Empty, "You need to order at least 4 meals between monday and friday!");
+                return View();
             }
             if (ModelState.IsValid)
             {
-                Dictionary<Meal, DishSize> meals = new Dictionary<Meal, DishSize>();
+                Dictionary<Meal, MealSize> meals = new Dictionary<Meal, MealSize>();
+                List<CartLine> lines = _cart.Lines;
+                List<Dish> dishes = _dishService.GetDishes();
+                Domain.Client client = _clientService.GetClientByEmail(User.Identity.Name);
+
                 foreach (var item in model.CheckoutItems)
                 {
                     foreach (var lineItem in _cart.Lines)
@@ -186,11 +207,6 @@ namespace Client.Controllers
                 }
 
 
-                // Get Curren Client 
-                Domain.Client client = _clientService.GetClientByEmail(User.Identity.Name);
-
-                List<CartLine> lines = _cart.Lines;
-                List<Dish> dishes = _dishService.GetDishes();
                 foreach (var dish in dishes)
                 {
                     foreach (var meal in lines)
@@ -204,52 +220,55 @@ namespace Client.Controllers
                         }
                     }
                 }
-                // Get Total price excluded from discounts
                 double total = _cart.ComputeTotalValue(lines);
+                Debug.WriteLine("------------ TOTAL CART PRICE ----------> " + total);
+
 
                 //Check meal sizes to obtain 20 % or decrement 20 % of total price
                 foreach (var item in meals)
                 {
-                    if (item.Value == DishSize.Large) total += (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
-                    if (item.Value == DishSize.Small) total -= (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
+                    if (item.Value == MealSize.Large)
+                        total += (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
+
+                    if (item.Value == MealSize.Small)
+                        total -= (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
                 }
 
-                // Check if one of the cart item is on the clients birthday
-                foreach (var item in lines)
+                Debug.WriteLine("------------ TOTAL ORDER PRICE ----------> " + total);
+
+                List<OrderMeal> orderMeals = new List<OrderMeal>();
+                List<OrderMealDish> orderMealDishes = new List<OrderMealDish>();
+                foreach (var item in meals)
                 {
-                    if (client.Birthday == item.Meal.DateValid) total -= Domain.Extensions.MealMethods.GetMealPrice(item.Meal);
+                    foreach (var dish in item.Key.MealDishes)
+                    {
+                        orderMealDishes.Add(new OrderMealDish { Name = dish.Name, Price = dish.Price });
+                    }
+                    orderMeals.Add(new OrderMeal
+                    {
+                        MealId = item.Key.Id,
+                        MealSize = item.Value,
+                        Dishes = orderMealDishes,
+                        MealDate = item.Key.DateValid
+                    });
                 }
 
-                //// Check if the client has 15 orders already to give 10% discount
-                var orderList = _orderService.GetOrders();
-                int clientOrders = 0;
-                foreach (var item in orderList)
-                {
-                    if (item.ClientId == client.Id) clientOrders++;
-                }
 
-                bool orderBool = clientOrders % 15 == 0 ? true : false;
-                if (orderBool) total *= 0.9;
-
-                // Setup a new OrderInvoice
-                Order order = new Order
+                Order order = new Order()
                 {
-                    OrderDate = DateTime.Now.Date,
-                    ClientId = client.Id,
-                    OrderMeals = meals,
+                    Client = client,
+                    Meals = orderMeals,
                     TotalPrice = total
                 };
 
-                order.Client = client;
                 _orderService.CreateOrder(order);
                 client.Orders.Add(order);
                 _cart.Clear();
+
                 return RedirectToAction("Index", "Home");
             }
             return View();
-
         }
-
 
 
         public IEnumerable<Meal> GetAllWeekMeals(DateTime date)

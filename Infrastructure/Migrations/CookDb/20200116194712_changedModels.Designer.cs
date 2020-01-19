@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations.CookDb
 {
     [DbContext(typeof(CookDbContext))]
-    [Migration("20200115224858_init")]
-    partial class init
+    [Migration("20200116194712_changedModels")]
+    partial class changedModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,6 +32,8 @@ namespace Infrastructure.Migrations.CookDb
 
                     b.Property<byte[]>("Image");
 
+                    b.Property<int?>("MealId");
+
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -44,6 +46,8 @@ namespace Infrastructure.Migrations.CookDb
                     b.Property<int>("Type");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MealId");
 
                     b.ToTable("Dish");
                 });
@@ -100,6 +104,13 @@ namespace Infrastructure.Migrations.CookDb
                     b.HasIndex("MealId");
 
                     b.ToTable("MenuMeal");
+                });
+
+            modelBuilder.Entity("Domain.Dish", b =>
+                {
+                    b.HasOne("Domain.Meal")
+                        .WithMany("MealDishes")
+                        .HasForeignKey("MealId");
                 });
 
             modelBuilder.Entity("Domain.MealDishes", b =>

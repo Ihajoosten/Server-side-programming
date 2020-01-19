@@ -72,12 +72,12 @@ namespace Tests.Cook.Services
 
 
             // Use a separate instance of the context to verify correct data was saved to database
-            using var context = new CookDbContext(options);
+            var context = new CookDbContext(options);
             var service = new EFMealService(context);
             var meals = service.GetMeals();
 
             Assert.Equal(meals.Count, context.Meal.Count());
-       }
+        }
 
         [Fact]
         public void GetMealById()
@@ -87,7 +87,7 @@ namespace Tests.Cook.Services
                 .Options;
 
             // Use a separate instance of the context to verify correct data was saved to database
-            using var context = new CookDbContext(options);
+            var context = new CookDbContext(options);
             var service = new EFMealService(context);
 
             Meal meall = new Meal();

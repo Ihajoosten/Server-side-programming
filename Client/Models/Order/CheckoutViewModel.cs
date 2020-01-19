@@ -8,9 +8,9 @@ namespace Models.Order
 {
     public class CheckoutViewModel
     {
-        public DishSize Size { get; set; }
+        public MealSize Size { get; set; }
 
-        public Dictionary<int, DishSize> CheckoutItems { get; set; } = new Dictionary<int, DishSize>();
+        public Dictionary<int, MealSize> CheckoutItems { get; set; } = new Dictionary<int, MealSize>();
 
 
     }

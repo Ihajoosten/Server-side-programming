@@ -14,14 +14,10 @@ namespace Domain
         [Key]
         public int Id { get; set; }
 
-        public int ClientId { get; set; }
-
-        [Required]
         public Client Client { get; set; }
 
         [Required]
-        [NotMapped]
-        public Dictionary<Meal, DishSize> OrderMeals { get; set; } = new Dictionary<Meal, DishSize>();
+        public List<OrderMeal> Meals { get; set; } = new List<OrderMeal>();
 
         [Required]
         public double TotalPrice { get; set; }
@@ -30,18 +26,5 @@ namespace Domain
         [DataType(DataType.Date)]
         public DateTime OrderDate { get; set; } = DateTime.Now.Date;
 
-        public Dictionary<CartLine, DishSize> GetMealsWithMonth(int month)
-        {
-            Dictionary<CartLine, DishSize> result = new Dictionary<CartLine, DishSize>();
-
-            foreach (var meal in OrderMeals)
-            {
-                if (meal.Key.DateValid.Month == month)
-                {
-                    result.Add(new CartLine { Meal = meal.Key, DayOfWeek = meal.Key.DateValid.DayOfWeek}, meal.Value);
-                }
-            }
-            return result;
-        }
     }
 }

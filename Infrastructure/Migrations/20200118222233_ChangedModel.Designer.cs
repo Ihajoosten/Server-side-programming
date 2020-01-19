@@ -4,14 +4,16 @@ using Infrastructure.Client;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ClientDbContext))]
-    partial class ClientDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200118222233_ChangedModel")]
+    partial class ChangedModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,13 +144,11 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("MealDate");
-
                     b.Property<int>("MealId");
 
                     b.Property<int>("MealSize");
 
-                    b.Property<int>("OrderId");
+                    b.Property<int?>("OrderId");
 
                     b.HasKey("Id");
 
@@ -165,7 +165,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("OrderMealId");
+                    b.Property<int?>("OrderMealId");
 
                     b.Property<double>("Price");
 
@@ -207,16 +207,14 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Order")
                         .WithMany("Meals")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("Domain.OrderMealDish", b =>
                 {
                     b.HasOne("Domain.OrderMeal")
                         .WithMany("Dishes")
-                        .HasForeignKey("OrderMealId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("OrderMealId");
                 });
 #pragma warning restore 612, 618
         }

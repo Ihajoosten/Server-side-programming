@@ -14,12 +14,15 @@ namespace Infrastructure.Client
 
         public DbSet<Order> Order { get; set; }
 
+        public DbSet<OrderMeal> Ordermeals { get; set; }
+
+        public DbSet<OrderMealDish> OrderMealDishes { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<MealDishes>().HasKey(md => new { md.DishId, md.MealId });
-            modelBuilder.Entity<Domain.Client>();
-            modelBuilder.Entity<Order>();
         }
     }
 }

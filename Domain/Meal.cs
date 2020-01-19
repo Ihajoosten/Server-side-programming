@@ -7,9 +7,16 @@ namespace Domain
 {
     public class Meal
     {
+        private Meal meal;
+
         public Meal()
         {
 
+        }
+
+        public Meal(Meal meal)
+        {
+            this.meal = meal;
         }
 
         [Key]

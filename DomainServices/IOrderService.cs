@@ -11,6 +11,11 @@ namespace DomainServices
 
         IQueryable<Order> Order { get; }
 
+        IQueryable<OrderMeal> orderMeals { get; }
+
+        IQueryable<OrderMealDish> orderMealsDishes { get; }
+
+
         // As a customer I want to see the order details
         Order GetOrderById(int? id);
 
@@ -19,5 +24,10 @@ namespace DomainServices
 
         // As a customer I want to create a new order
         void CreateOrder(Order order);
+
+        List<OrderMeal> GetOrderMeals();
+
+        List<OrderMealDish> GetOrderMealDishes();
+
     }
 }

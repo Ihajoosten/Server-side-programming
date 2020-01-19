@@ -176,8 +176,6 @@ namespace Tests.Cook.Controller
             // Arrange - create the controller
             DishesController target = new DishesController(mock.Object);
 
-            // Assert - check that the repository was called
-            // Assert - check the result type is a ViewResult
             Assert.Throws<KeyNotFoundException>(() => target.Edit(null));
         }
 

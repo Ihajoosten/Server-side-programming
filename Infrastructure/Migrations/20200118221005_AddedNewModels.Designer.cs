@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ClientDbContext))]
-    [Migration("20200115224812_init")]
-    partial class init
+    [Migration("20200118221005_AddedNewModels")]
+    partial class AddedNewModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -73,6 +73,8 @@ namespace Infrastructure.Migrations
 
                     b.Property<byte[]>("Image");
 
+                    b.Property<int?>("MealId");
+
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -86,6 +88,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MealId");
+
                     b.ToTable("Dish");
                 });
 
@@ -97,11 +101,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("DateValid");
 
-                    b.Property<int?>("OrderId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Meal");
                 });
@@ -125,7 +125,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ClientId");
+                    b.Property<int?>("ClientId");
 
                     b.Property<DateTime>("OrderDate");
 
@@ -138,11 +138,51 @@ namespace Infrastructure.Migrations
                     b.ToTable("Order");
                 });
 
-            modelBuilder.Entity("Domain.Meal", b =>
+            modelBuilder.Entity("Domain.OrderMeal", b =>
                 {
-                    b.HasOne("Domain.Order")
-                        .WithMany("OrderMeals")
-                        .HasForeignKey("OrderId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("MealId");
+
+                    b.Property<int>("MealSize");
+
+                    b.Property<int?>("OrderId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MealId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Ordermeals");
+                });
+
+            modelBuilder.Entity("Domain.OrderMealDish", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("OrderMealId");
+
+                    b.Property<double>("Price");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderMealId");
+
+                    b.ToTable("OrderMealDishes");
+                });
+
+            modelBuilder.Entity("Domain.Dish", b =>
+                {
+                    b.HasOne("Domain.Meal")
+                        .WithMany("MealDishes")
+                        .HasForeignKey("MealId");
                 });
 
             modelBuilder.Entity("Domain.MealDishes", b =>
@@ -162,8 +202,26 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Client", "Client")
                         .WithMany("Orders")
-                        .HasForeignKey("ClientId")
+                        .HasForeignKey("ClientId");
+                });
+
+            modelBuilder.Entity("Domain.OrderMeal", b =>
+                {
+                    b.HasOne("Domain.Meal", "Meal")
+                        .WithMany()
+                        .HasForeignKey("MealId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Domain.Order")
+                        .WithMany("Meals")
+                        .HasForeignKey("OrderId");
+                });
+
+            modelBuilder.Entity("Domain.OrderMealDish", b =>
+                {
+                    b.HasOne("Domain.OrderMeal")
+                        .WithMany("Dishes")
+                        .HasForeignKey("OrderMealId");
                 });
 #pragma warning restore 612, 618
         }

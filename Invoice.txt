@@ -1,0 +1,84 @@
+
+- Invoice :
+    -   Order:ds
+        -	Order:
+	        -	Id: int
+	        -	Client: <Client:
+	        -	Total Price: double
+	        -	Order Date: datetime
+	        -	Meals: OrderMeal <Meal, MealSize>
+
+            -   OrderMeal:
+                -   Id: int
+                -   Meal: <Meal>
+                -   MealSize: <MealSize>
+                -   Dishes: List<Dish>
+
+
+
+
+
+	                //List<Dish> dishes = _dishService.GetDishes();
+                //int allOrderedMeals = 0;
+                //foreach (var dish in dishes)
+                //{
+                //    foreach (var meal in lines)
+                //    {
+                //        foreach (var mealDish in meal.Meal.Dishes)
+                //        {
+                //            if (mealDish.DishId == dish.Id)
+                //            {
+                //                meal.Meal.MealDishes.Add(dish);
+                //            }
+                //            allOrderedMeals++;
+                //        }
+                //    }
+                //}
+                //// Get Total price excluded from discounts
+                double total = _cart.ComputeTotalValue(lines);
+                //double totalWithDiscounts = _cart.ComputeTotalValue(lines);
+                //double totalWithoutDiscount = _cart.ComputeTotalValue(lines);
+
+
+
+                ////Check meal sizes to obtain 20 % or decrement 20 % of total price
+                //foreach (var item in meals)
+                //{
+                //    if (item.Value == MealSize.Large)
+                //    {
+                //        total += (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
+                //        totalWithDiscounts += (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
+                //    }
+                //    if (item.Value == MealSize.Small)
+                //    {
+                //        total -= (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
+                //        totalWithDiscounts -= (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
+                //    }
+                //}
+
+                //Debug.WriteLine("---- TOTAL WITH INCLUDED MEAL SIZES ------------------> " + totalWithDiscounts);
+
+                //// Check if one of the cart item is on the clients birthday
+                //double birthdayDiscount = 0.0;
+                //foreach (var item in lines)
+                //{
+                //    if (client.Birthday == item.Meal.DateValid)
+                //    {
+                //        birthdayDiscount += Domain.Extensions.MealMethods.GetMealPrice(item.Meal);
+                //        total -= Domain.Extensions.MealMethods.GetMealPrice(item.Meal);
+                //    }
+                //}
+
+                ////// Check if the client has 15 orders already to give 10% discount
+                //var orderList = _orderService.GetOrders();
+                //int orderedMeals = 0;
+                //foreach (var item in orderList)
+                //{
+                //    if (item.ClientId == client.Id) orderedMeals += item.TotalMeals;
+                //}
+
+                //bool totalMeals = orderedMeals % 15 == 0 ? true : false;
+                //if (totalMeals)
+                //{
+                //    total *= 0.9;
+                //}

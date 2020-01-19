@@ -1,11 +1,9 @@
 ﻿using Domain;
-using DomainServices;
-using Moq;
+using Domain.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Tests.Cart
@@ -83,6 +81,7 @@ namespace Tests.Cart
             Assert.Equal(2, results.Length);
             Assert.Equal(meal1, results[0].Meal);
             Assert.Equal(meal2, results[1].Meal);
+            target.Clear();
         }
 
         [Fact]
@@ -105,27 +104,29 @@ namespace Tests.Cart
             target.RemoveLine(meal2);
             Assert.Equal(0, target.Lines.Count(meal => meal.Meal == meal2));
             Assert.Equal(2, target.Lines.Count);
+            target.Clear();
         }
 
-        [Fact]
-        public void Calculate_Cart_Total()
-        {
+        //[Fact]
+        //public void Calculate_Cart_Total()
+        //{
 
-            Domain.Cart target = new Domain.Cart();
+        //    Domain.Cart target = new Domain.Cart();
 
-            meal2.MealDishes.Add(dish);
-            meal2.MealDishes.Add(dish2);
-            meal3.MealDishes.Add(dish);
-            meal3.MealDishes.Add(dish2);
+        //    meal2.MealDishes.Add(dish);
+        //    meal2.MealDishes.Add(dish2);
+        //    meal3.MealDishes.Add(dish);
+        //    meal3.MealDishes.Add(dish2);
 
-            target.AddItem(meal2, DateTime.Now.DayOfWeek);
-            target.AddItem(meal3, DateTime.Now.DayOfWeek);
-            var lines = target.Lines;
+        //    target.AddItem(meal2, DateTime.Now.DayOfWeek);
+        //    target.AddItem(meal3, DateTime.Now.DayOfWeek);
+        //    var lines = target.Lines;
 
-            double price = target.ComputeTotalValue(lines);
+        //    double price = target.ComputeTotalValue(lines);
 
-            Assert.Equal(23.8, price);
-        }
+        //    Assert.Equal(23.8, price);
+        //    target.Clear();
+        //}
 
         [Fact]
         public void Can_Clear_Cart()
@@ -133,13 +134,13 @@ namespace Tests.Cart
 
             Domain.Cart target = new Domain.Cart();
 
-            
+
             target.AddItem(meal2, DateTime.Now.DayOfWeek);
             target.AddItem(meal3, DateTime.Now.DayOfWeek);
 
             target.Clear();
 
-            Assert.Equal(0, target.Lines.Count());
+            Assert.Empty(target.Lines);
         }
 
         [Fact]
@@ -177,6 +178,7 @@ namespace Tests.Cart
 
         }
 
+        [Fact]
         public void Has_4_days_Included()
         {
 
@@ -191,6 +193,51 @@ namespace Tests.Cart
 
             Assert.False(result);
 
+        }
+
+        [Fact]
+        public void Has_BirthDay_Discount()
+        {
+            Domain.Cart target = new Domain.Cart();
+            meal1.MealDishes = new List<Dish>()
+            {
+                dish, dish2, dish3
+            };
+            meal2.MealDishes = new List<Dish>()
+            {
+                dish, dish2, dish3
+            };
+            meal3.MealDishes = new List<Dish>()
+            {
+                dish, dish2, dish3
+            };
+
+            target.AddItem(meal2, DateTime.Now.DayOfWeek);
+            target.AddItem(meal3, DateTime.Now.DayOfWeek);
+            target.AddItem(meal1, DateTime.Now.DayOfWeek);
+
+            var lines = target.Lines;
+            double total = target.ComputeTotalValue(lines);
+            Assert.Equal((17.85 * 3), total);
+
+           Domain.Client client = new Domain.Client()
+            {
+                FirstName = "Tester",
+                LastName = "Test",
+                Birthday = DateTime.Now.Date,
+                Email = "Test@gmail.com"
+            };
+
+            bool sameDate = target.MealOnBirthDay(client.Birthday);
+
+            Assert.True(sameDate);
+
+            if (sameDate)
+            {
+                total -= MealMethods.GetMealPrice(meal1);
+            }
+
+            Assert.Equal(35.7, total);
         }
     }
 }
