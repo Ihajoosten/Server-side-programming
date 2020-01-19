@@ -17,6 +17,8 @@ namespace Domain
         [DataType(DataType.Date)]
         public DateTime MealDate { get; set; }
 
+        public bool birthdayMeal { get; set; }
+
         [Required]
         public MealSize MealSize { get; set; }
 

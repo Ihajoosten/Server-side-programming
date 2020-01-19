@@ -221,7 +221,6 @@ namespace Client.Controllers
                     }
                 }
                 double total = _cart.ComputeTotalValue(lines);
-                Debug.WriteLine("------------ TOTAL CART PRICE ----------> " + total);
 
 
                 //Check meal sizes to obtain 20 % or decrement 20 % of total price
@@ -234,12 +233,12 @@ namespace Client.Controllers
                         total -= (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
                 }
 
-                Debug.WriteLine("------------ TOTAL ORDER PRICE ----------> " + total);
-
+                
                 List<OrderMeal> orderMeals = new List<OrderMeal>();
                 List<OrderMealDish> orderMealDishes = new List<OrderMealDish>();
                 foreach (var item in meals)
                 {
+                    bool bdm = item.Key.DateValid == client.Birthday ? true : false;
                     foreach (var dish in item.Key.MealDishes)
                     {
                         orderMealDishes.Add(new OrderMealDish { Name = dish.Name, Price = dish.Price });
@@ -249,7 +248,8 @@ namespace Client.Controllers
                         MealId = item.Key.Id,
                         MealSize = item.Value,
                         Dishes = orderMealDishes,
-                        MealDate = item.Key.DateValid
+                        MealDate = item.Key.DateValid,
+                        birthdayMeal = bdm                        
                     });
                 }
 

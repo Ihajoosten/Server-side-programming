@@ -37,12 +37,11 @@ namespace Client.Controllers
             List<OrderMealDish> mealDishes = _orderService.GetOrderMealDishes();
             List<Meal> meals = _mealService.GetMeals();
             double birthdayDiscount = 0;
-
-
             ViewBag.OrderMeals = orderMeals;
             ViewBag.MealDishes = mealDishes;
             ViewBag.Meals = meals;
             ViewBag.Birthday = birthdayDiscount;
+            ViewBag.Client = client;
             return View(orders);
         }
     }
