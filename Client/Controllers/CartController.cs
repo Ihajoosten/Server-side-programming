@@ -8,6 +8,11 @@ using Models.Cart;
 using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
 using System;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using Client.Extentsions.Dish;
+using System.Collections.Generic;
+using Client.Extentsions.Meal;
 
 namespace Client.Controllers
 {
@@ -26,9 +31,14 @@ namespace Client.Controllers
         }
 
 
-        public ViewResult Cart()
+        public async Task<ViewResult> Cart()
         {
-            ViewBag.Dishes = _dishService.GetDishes();
+            // Fetching Dishes into local JArray
+            JArray dishArray = await DishMethods.GetDishes();
+            // Converting JArray items to Collection object of given type
+            List<Dish> dishes = dishArray.ToObject<List<Dish>>();
+
+            ViewBag.Dishes = dishes;
             return View(new CartViewModel
             {
                 Cart = _cart,
@@ -38,6 +48,9 @@ namespace Client.Controllers
 
         public RedirectToActionResult AddToCart(int mealId, string returnUrl)
         {
+            //JObject mealObject = await MealMethods.GetMealById(mealId);
+            //Meal meal = mealObject.ToObject<Meal>();
+
             Meal meal = _mealService.GetMealById(mealId);
             if (meal != null)
             {
@@ -49,6 +62,9 @@ namespace Client.Controllers
 
         public RedirectToActionResult RemoveFromCart(int mealId)
         {
+            //JObject mealObject = await MealMethods.GetMealById(mealId);
+            //Meal meal = mealObject.ToObject<Meal>();
+
             Meal meal = _mealService.GetMealById(mealId);
             if (meal != null)
             {
@@ -60,6 +76,12 @@ namespace Client.Controllers
 
         public RedirectToActionResult RemoveDish(int mealId, int dishId)
         {
+            //JObject mealObject = await MealMethods.GetMealById(mealId);
+            //Meal meal = mealObject.ToObject<Meal>();
+
+            //JObject dishObject = await DishMethods.GetDishById(dishId);
+            //Dish meal = dishObject.ToObject<Dish>();
+
             Meal meal = _mealService.GetMealById(mealId);
             Dish dish = _dishService.GetDishById(dishId);
             if (meal != null && dish != null)

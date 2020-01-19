@@ -3,6 +3,7 @@ using DomainServices;
 using Microsoft.AspNetCore.Mvc;
 using Models.Cart;
 using Moq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Tests.Client.Controller
@@ -10,23 +11,19 @@ namespace Tests.Client.Controller
     public class CartControllerTests
     {
         [Fact]
-        public void Cart()
+        public async Task Cart()
         {
             // Arrange
             var mockDish = new Mock<IDishService>();
             var mockMeal = new Mock<IMealService>();
             var cart = new Mock<Domain.Cart>();
-
-
-            mockDish.Setup(repo => repo.GetDishes());
             var controller = new CartController(cart.Object, mockMeal.Object, mockDish.Object);
 
             // Act
-            var result = controller.Cart();
+            var result = await controller.Cart();
 
             // Assert
             Assert.IsType<ViewResult>(result);
-            Assert.IsAssignableFrom<CartViewModel>(result.ViewData.Model);
         }
 
         [Fact]

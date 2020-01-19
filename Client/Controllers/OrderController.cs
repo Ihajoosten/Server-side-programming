@@ -12,6 +12,8 @@ using Client.Models.Order;
 using System.Diagnostics;
 using Models.Order;
 using static Domain.Order;
+using Client.Extentsions.Dish;
+using System.Threading.Tasks;
 
 namespace Client.Controllers
 {
@@ -20,14 +22,12 @@ namespace Client.Controllers
     {
         private readonly IMealService _mealService;
         private readonly IClientService _clientService;
-        private readonly IDishService _dishService;
         private readonly IOrderService _orderService;
         private readonly Cart _cart;
 
-        public OrderController(IMealService service, IDishService dishService, IClientService clientService, IOrderService orderService, Cart cart)
+        public OrderController(IMealService service, IClientService clientService, IOrderService orderService, Cart cart)
         {
             _mealService = service;
-            _dishService = dishService;
             _clientService = clientService;
             _orderService = orderService;
             _cart = cart;
@@ -86,17 +86,15 @@ namespace Client.Controllers
         }
 
         /** WERKT **/
-        public IActionResult Order()
+        public async Task<IActionResult> Order()
         {
             if (User.Identity.IsAuthenticated)
             {
 
-                //// Fetching Dishes into local JArray
-                //JArray dishArray = await DishMethods.GetDishes();
-                //// Converting JArray items to Collection object of given type
-                //List<Dish> allDishes = dishArray.ToObject<List<Dish>>();
-
-                List<Dish> allDishes = _dishService.GetDishes();
+                // Fetching Dishes into local JArray
+                JArray dishArray = await DishMethods.GetDishes();
+                // Converting JArray items to Collection object of given type
+                List<Dish> allDishes = dishArray.ToObject<List<Dish>>();
 
                 Dictionary<int, List<Meal>> dict = new Dictionary<int, List<Meal>>();
 
@@ -110,7 +108,7 @@ namespace Client.Controllers
                 if (MealMethods.Week(startDate) == MealMethods.Week(endDate))
                 {
                     // For each meal in retrieved meals add it to the dictionary by specific day of week
-                    foreach (var meal in GetAllWeekMeals(startDate))
+                    foreach (var meal in await MealMethods.GetAllWeekMeals(startDate))
                     {
                         var day = meal.DateValid.DayOfWeek;
                         dict[(int)day].Add(meal);
@@ -146,6 +144,11 @@ namespace Client.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+                //// Fetching Dishes into local JArray
+                //JArray mealArray = await MealMethods.GetMeals();
+                //// Converting JArray items to Collection object of given type
+                //List<Meal> allMeals = mealArray.ToObject<List<Meal>>();
+
                 List<Meal> allMeals = _mealService.GetMeals();
 
                 if (ModelState.IsValid)
@@ -175,7 +178,7 @@ namespace Client.Controllers
         }
 
         [HttpPost]
-        public IActionResult Checkout(CheckoutViewModel model)
+        public async Task<IActionResult> Checkout(CheckoutViewModel model)
         {
             ViewBag.Lines = _cart.Lines;
 
@@ -195,7 +198,12 @@ namespace Client.Controllers
             {
                 Dictionary<Meal, MealSize> meals = new Dictionary<Meal, MealSize>();
                 List<CartLine> lines = _cart.Lines;
-                List<Dish> dishes = _dishService.GetDishes();
+
+                // Fetching Dishes into local JArray
+                JArray dishArray = await DishMethods.GetDishes();
+                // Converting JArray items to Collection object of given type
+                List<Dish> dishes = dishArray.ToObject<List<Dish>>(); 
+                
                 Domain.Client client = _clientService.GetClientByEmail(User.Identity.Name);
 
                 foreach (var item in model.CheckoutItems)
@@ -233,7 +241,7 @@ namespace Client.Controllers
                         total -= (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
                 }
 
-                
+
                 List<OrderMeal> orderMeals = new List<OrderMeal>();
                 List<OrderMealDish> orderMealDishes = new List<OrderMealDish>();
                 foreach (var item in meals)
@@ -249,7 +257,7 @@ namespace Client.Controllers
                         MealSize = item.Value,
                         Dishes = orderMealDishes,
                         MealDate = item.Key.DateValid,
-                        birthdayMeal = bdm                        
+                        birthdayMeal = bdm
                     });
                 }
 
@@ -268,14 +276,6 @@ namespace Client.Controllers
                 return RedirectToAction("Index", "Home");
             }
             return View();
-        }
-
-
-        public IEnumerable<Meal> GetAllWeekMeals(DateTime date)
-        {
-            List<Meal> allMeals = _mealService.GetMeals();
-
-            return allMeals.Where(m => MealMethods.Week(m.DateValid) == MealMethods.Week(date));
         }
     }
 }
