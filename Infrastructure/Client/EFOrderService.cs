@@ -27,18 +27,13 @@ namespace Infrastructure.Client
                 foreach (var meal in order.Meals)
                 {
                     _context.Ordermeals.Add(meal);
-                }
-                _context.SaveChanges();
 
-
-                for (int i = 0; i < order.Meals.Count; i++)
-                {
-                    foreach (var item in order.Meals[i].Dishes.ToList())
+                    foreach (var dish in meal.Dishes)
                     {
-                        if (item.OrderMealId != order.Meals[i].Id)
-                        _context.OrderMealDishes.Add(new OrderMealDish { Name = item.Name, Price = item.Price, OrderMealId = order.Meals[i].Id });
+                        _context.Add(dish);
                     }
                 }
+                _context.SaveChanges();
             }
         }
 

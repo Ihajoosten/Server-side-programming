@@ -241,7 +241,7 @@ namespace Client.Controllers
                     bool bdm = item.Key.DateValid == client.Birthday ? true : false;
                     foreach (var dish in item.Key.MealDishes)
                     {
-                        orderMealDishes.Add(new OrderMealDish { Name = dish.Name, Price = dish.Price });
+                        orderMealDishes.Add(new OrderMealDish { Name = dish.Name, Price = dish.Price, MealId = item.Key.Id });
                     }
                     orderMeals.Add(new OrderMeal
                     {

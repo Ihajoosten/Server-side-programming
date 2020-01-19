@@ -61,61 +61,68 @@
                                                     <div class="p-2">
                                                         <span><b>@fetchMeal.DateValid.ToString("ddd d MMM yyyy")</b></span>
                                                         <span style="display: inline; float: right; padding-right: 13px;"><b>@meal.MealSize</b></span>
-                                                        @foreach (var dish in Model[i].Meals[i].Dishes)
+                                                        @for (int y = 0; y < Model[i].Meals.Count; y++)
                                                         {
-                                                            dishCount++;
-                                                            <div class="col mb-3 mt-4">
-                                                                <div style="border-bottom: 1px solid">
-                                                                    <label style="width: 100%">
-                                                                        <span>@dish.Name</span>
-                                                                        @if (!meal.birthdayMeal)
-                                                                        { 
-                                                                            @if (meal.MealSize == Domain.MealSize.Large)
-                                                                            {
-                                                                                var price = dish.Price;
-                                                                                <span style="display: inline; float: right;">€ @(price * 1.2)</span>
-                                                                                <br />
-                                                                            }
-                                                                            else if (meal.MealSize == Domain.MealSize.Small)
-                                                                            {
-                                                                                var price = dish.Price;
-                                                                                <span style="display: inline; float: right;">€ @(price * 0.8)</span>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <span style="display: inline; float: right;">€ @dish.Price</span>
-                                                                            }
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            @if (meal.MealSize == Domain.MealSize.Large)
-                                                                            {
-                                                                                var price = dish.Price;
-                                                                                <span style="display: inline; float: right;">€ @(price * 1.2)</span>
-                                                                                <br />
-                                                                                <span style="display: inline; float: right;"><i class="text-muted">Birthday discount: -@(dish.Price * 1.2)</i></span>
-                                                                                <br />
-                                                                                birthdayDiscount += (price * 1.2);
-                                                                            }
-                                                                            else if (meal.MealSize == Domain.MealSize.Small)
-                                                                            {
-                                                                                var price = dish.Price;
-                                                                                <span style="display: inline; float: right;">€ @(price * 0.8)</span>
-                                                                                <br />
-                                                                                <span style="display: inline; float: right;"><i class="text-muted">Birthday discount: -@(dish.Price * 0.8)</i></span>
-                                                                                birthdayDiscount += (price * 0.8);
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                birthdayDiscount += dish.Price;
-                                                                                <span style="display: inline; float: right;">€ @dish.Price</span>
-                                                                                <br />
-                                                                                <span style="display: inline; float: right;"><i class="text-muted">Birthday discount: -@dish.Price</i></span>
-                                                                            }
-                                                                        }
-                                                                    </label>
-                                                                </div>
-                                                            </div>
+                                                            @foreach (var dish in Model[i].Meals[y].Dishes)
+                                                            {
+                                                                if (meal.MealId == dish.MealId)
+                                                                {
+                                                                    dishCount++;
+                                                                    <div class="col mb-3 mt-4">
+                                                                        <div style="border-bottom: 1px solid">
+                                                                            <label style="width: 100%">
+                                                                                <span>@dish.Name</span>
+                                                                                @if (!meal.birthdayMeal)
+                                                                                {
+                                                                                    @if (meal.MealSize == Domain.MealSize.Large)
+                                                                                    {
+                                                                                        var price = dish.Price;
+                                                                                        <span style="display: inline; float: right;">€ @(price * 1.2)</span>
+                                                                                        <br />
+                                                                                    }
+                                                                                    else if (meal.MealSize == Domain.MealSize.Small)
+                                                                                    {
+                                                                                        var price = dish.Price;
+                                                                                        <span style="display: inline; float: right;">€ @(price * 0.8)</span>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <span style="display: inline; float: right;">€ @dish.Price</span>
+                                                                                    }
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    @if (meal.MealSize == Domain.MealSize.Large)
+                                                                                    {
+                                                                                        var price = dish.Price;
+                                                                                        <span style="display: inline; float: right;">€ @(price * 1.2)</span>
+                                                                                        <br />
+                                                                                        <span style="display: inline; float: right;"><i class="text-muted">Birthday discount: -@(dish.Price * 1.2)</i></span>
+                                                                                        <br />
+                                                                                        birthdayDiscount += (price * 1.2);
+                                                                                    }
+                                                                                    else if (meal.MealSize == Domain.MealSize.Small)
+                                                                                    {
+                                                                                        var price = dish.Price;
+                                                                                        <span style="display: inline; float: right;">€ @(price * 0.8)</span>
+                                                                                        <br />
+                                                                                        <span style="display: inline; float: right;"><i class="text-muted">Birthday discount: -@(dish.Price * 0.8)</i></span>
+                                                                                        birthdayDiscount += (price * 0.8);
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        birthdayDiscount += dish.Price;
+                                                                                        <span style="display: inline; float: right;">€ @dish.Price</span>
+                                                                                        <br />
+                                                                                        <span style="display: inline; float: right;"><i class="text-muted">Birthday discount: -@dish.Price</i></span>
+                                                                                    }
+                                                                                }
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
                                                         }
                                                     </div>
                                                 </div>
