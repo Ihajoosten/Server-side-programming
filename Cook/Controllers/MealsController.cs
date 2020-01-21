@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Domain;
 using DomainServices;
 using Cook.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cook.Controllers
 {
+    [Authorize]
     public class MealsController : Controller
     {
         private readonly IDishService _dishService;

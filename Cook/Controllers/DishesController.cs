@@ -7,9 +7,11 @@ using Domain;
 using DomainServices;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cook.Controllers
 {
+    [Authorize]
     public class DishesController : Controller
     {
         private readonly IDishService _service;

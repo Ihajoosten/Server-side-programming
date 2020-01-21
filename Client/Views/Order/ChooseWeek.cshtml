@@ -34,7 +34,7 @@
                     <label><h2 class="text-black-50">Select for wich week you want to order your meals.</h2></label>
                     <br />
                     <hr />
-                    <form method="post">
+                    <form asp-action="ChooseWeek" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger"></div>
                         <div class="row">
                             <div class="form-group col">
@@ -48,7 +48,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-4">
-                                <a asp-controller="Order" asp-action="ChooseWeek"><button type="submit" class="btn btn-success">Next</button></a>
+                                <button type="submit" class="btn btn-success">Next</button>
                             </div>
                         </div>
                     </form>

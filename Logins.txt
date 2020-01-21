@@ -1,9 +1,0 @@
-
--	Cook:
-	username: luc@gmail.com
-	password: Test1234!
-
--	Client:
-	username: lucjoosten1234@outlook.com
-	password: Kaya1234!
-

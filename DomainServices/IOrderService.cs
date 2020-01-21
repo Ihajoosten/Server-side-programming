@@ -11,9 +11,9 @@ namespace DomainServices
 
         IQueryable<Order> Order { get; }
 
-        IQueryable<OrderMeal> orderMeals { get; }
+        IQueryable<OrderMeal> OrderMeals { get; }
 
-        IQueryable<OrderMealDish> orderMealsDishes { get; }
+        IQueryable<OrderMealDish> OrderMealsDishes { get; }
 
 
         // As a customer I want to see the order details

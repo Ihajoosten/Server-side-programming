@@ -67,6 +67,28 @@ namespace Tests.Cart
             DateValid = DateTime.Now.Date,
         };
 
+        [Fact]
+        public void Calculate_Cart_Total()
+        {
+
+            Domain.Cart target = new Domain.Cart();
+
+            meal2.MealDishes.Add(dish);
+            meal2.MealDishes.Add(dish2);
+            meal3.MealDishes.Add(dish);
+            meal3.MealDishes.Add(dish2);
+
+
+            target.AddItem(meal2, DateTime.Now.DayOfWeek);
+            target.AddItem(meal3, DateTime.Now.DayOfWeek);
+            var lines = target.Lines;
+
+            double price = target.ComputeTotalValue(lines);
+
+            Assert.Equal(59.5, price);
+        }
+
+
 
         [Fact]
         public void Can_Add_New_Lines()
@@ -107,26 +129,6 @@ namespace Tests.Cart
             target.Clear();
         }
 
-        //[Fact]
-        //public void Calculate_Cart_Total()
-        //{
-
-        //    Domain.Cart target = new Domain.Cart();
-
-        //    meal2.MealDishes.Add(dish);
-        //    meal2.MealDishes.Add(dish2);
-        //    meal3.MealDishes.Add(dish);
-        //    meal3.MealDishes.Add(dish2);
-
-        //    target.AddItem(meal2, DateTime.Now.DayOfWeek);
-        //    target.AddItem(meal3, DateTime.Now.DayOfWeek);
-        //    var lines = target.Lines;
-
-        //    double price = target.ComputeTotalValue(lines);
-
-        //    Assert.Equal(23.8, price);
-        //    target.Clear();
-        //}
 
         [Fact]
         public void Can_Clear_Cart()

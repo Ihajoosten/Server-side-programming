@@ -26,7 +26,7 @@ namespace Client.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Fetching Dishes into local JArray
+            // Fetching Meals into local JArray
             JArray mealArray = await MealMethods.GetMeals();
             // Converting JArray items to Collection object of given type
             List<Meal> meals = mealArray.ToObject<List<Meal>>();

@@ -14,9 +14,9 @@ namespace Infrastructure.Client
 
         public IQueryable<Order> Order => _context.Order.Include(o => o.Meals);
 
-        public IQueryable<OrderMeal> orderMeals => _context.Ordermeals;
+        public IQueryable<OrderMeal> OrderMeals => _context.Ordermeals;
 
-        public IQueryable<OrderMealDish> orderMealsDishes => _context.OrderMealDishes;
+        public IQueryable<OrderMealDish> OrderMealsDishes => _context.OrderMealDishes;
 
         public void CreateOrder(Order order)
         {

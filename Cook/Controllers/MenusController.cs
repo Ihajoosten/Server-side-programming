@@ -10,9 +10,11 @@ using Infrastructure.Cook;
 using DomainServices;
 using Cook.Models.Menu;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cook.Controllers
 {
+    [Authorize]
     public class MenusController : Controller
     {
         private readonly CookDbContext _context;

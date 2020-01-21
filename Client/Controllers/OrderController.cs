@@ -196,84 +196,103 @@ namespace Client.Controllers
             }
             if (ModelState.IsValid)
             {
-                Dictionary<Meal, MealSize> meals = new Dictionary<Meal, MealSize>();
-                List<CartLine> lines = _cart.Lines;
-
-                // Fetching Dishes into local JArray
-                JArray dishArray = await DishMethods.GetDishes();
-                // Converting JArray items to Collection object of given type
-                List<Dish> dishes = dishArray.ToObject<List<Dish>>(); 
-                
-                Domain.Client client = _clientService.GetClientByEmail(User.Identity.Name);
-
-                foreach (var item in model.CheckoutItems)
+                try
                 {
-                    foreach (var lineItem in _cart.Lines)
-                    {
-                        if (item.Key == lineItem.Meal.Id) meals.Add(lineItem.Meal, item.Value);
-                    }
-                }
 
 
-                foreach (var dish in dishes)
-                {
-                    foreach (var meal in lines)
+                    Dictionary<Meal, MealSize> meals = new Dictionary<Meal, MealSize>();
+                    List<CartLine> lines = _cart.Lines;
+
+                    // Fetching Dishes into local JArray
+                    JArray dishArray = await DishMethods.GetDishes();
+                    // Converting JArray items to Collection object of given type
+                    List<Dish> dishes = dishArray.ToObject<List<Dish>>();
+
+                    Domain.Client client = _clientService.GetClientByEmail(User.Identity.Name);
+
+                    foreach (var item in model.CheckoutItems)
                     {
-                        foreach (var mealDish in meal.Meal.Dishes)
+                        foreach (var lineItem in _cart.Lines)
                         {
-                            if (mealDish.DishId == dish.Id)
+                            if (item.Key == lineItem.Meal.Id) meals.Add(lineItem.Meal, item.Value);
+                        }
+                    }
+
+
+                    foreach (var dish in dishes)
+                    {
+                        foreach (var meal in lines)
+                        {
+                            foreach (var mealDish in meal.Meal.Dishes)
                             {
-                                meal.Meal.MealDishes.Add(dish);
+                                if (mealDish.DishId == dish.Id)
+                                {
+                                    meal.Meal.MealDishes.Add(dish);
+                                }
                             }
                         }
                     }
-                }
-                double total = _cart.ComputeTotalValue(lines);
+                    double total = _cart.ComputeTotalValue(lines);
 
 
-                //Check meal sizes to obtain 20 % or decrement 20 % of total price
-                foreach (var item in meals)
-                {
-                    if (item.Value == MealSize.Large)
-                        total += (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
-
-                    if (item.Value == MealSize.Small)
-                        total -= (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
-                }
-
-
-                List<OrderMeal> orderMeals = new List<OrderMeal>();
-                List<OrderMealDish> orderMealDishes = new List<OrderMealDish>();
-                foreach (var item in meals)
-                {
-                    bool bdm = item.Key.DateValid == client.Birthday ? true : false;
-                    foreach (var dish in item.Key.MealDishes)
+                    //Check meal sizes to obtain 20 % or decrement 20 % of total price
+                    foreach (var item in meals)
                     {
-                        orderMealDishes.Add(new OrderMealDish { Name = dish.Name, Price = dish.Price, MealId = item.Key.Id });
+                        if (item.Value == MealSize.Large)
+                            total += (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
+
+                        if (item.Value == MealSize.Small)
+                            total -= (Domain.Extensions.MealMethods.GetMealPrice(item.Key) * 0.2);
                     }
-                    orderMeals.Add(new OrderMeal
+
+
+                    List<OrderMeal> orderMeals = new List<OrderMeal>();
+                    List<OrderMealDish> orderMealDishes = new List<OrderMealDish>();
+                    foreach (var item in meals)
                     {
-                        MealId = item.Key.Id,
-                        MealSize = item.Value,
-                        Dishes = orderMealDishes,
-                        MealDate = item.Key.DateValid,
-                        birthdayMeal = bdm
-                    });
+                        bool bdm = item.Key.DateValid == client.Birthday ? true : false;
+                        foreach (var dish in item.Key.MealDishes)
+                        {
+                            orderMealDishes.Add(new OrderMealDish { Name = dish.Name, Price = dish.Price, MealId = item.Key.Id });
+                        }
+                        orderMeals.Add(new OrderMeal
+                        {
+                            MealId = item.Key.Id,
+                            MealSize = item.Value,
+                            Dishes = orderMealDishes,
+                            MealDate = item.Key.DateValid,
+                            birthdayMeal = bdm
+                        });
+                    }
+
+
+                    Order order = new Order()
+                    {
+                        Client = client,
+                        Meals = orderMeals,
+                        TotalPrice = total
+                    };
+
+                    try
+                    {
+                        _orderService.CreateOrder(order);
+                        client.Orders.Add(order);
+                        _cart.Clear();
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                    catch (Exception)
+                    {
+
+                        throw new Exception();
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw new Exception();
                 }
 
-
-                Order order = new Order()
-                {
-                    Client = client,
-                    Meals = orderMeals,
-                    TotalPrice = total
-                };
-
-                _orderService.CreateOrder(order);
-                client.Orders.Add(order);
-                _cart.Clear();
-
-                return RedirectToAction("Index", "Home");
             }
             return View();
         }
